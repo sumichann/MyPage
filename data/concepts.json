@@ -1,108 +1,25 @@
 {
-  "generatedAt": "2026-08-21T13:49:47.910969Z",
+  "generatedAt": "2026-08-21T13:59:28.135299Z",
   "model": "gpt-5.4-mini",
   "concepts": [
     {
-      "label": "AIによる個人情報のパターン発見",
-      "summary": "個人情報の中から規則や関係を見つけるためにAIを使う関心。",
-      "weight": 5,
-      "category": "interest",
-      "related": [
-        "Webデザイン",
-        "接続語ベースのランディングページ",
-        "annotation-app"
-      ],
-      "evidence": [
-        "content/profile.md"
-      ]
-    },
-    {
-      "label": "Webデザインによる自己表現",
-      "summary": "インタラクションを通じてアイデンティティを表現するWebデザインへの志向。",
-      "weight": 5,
-      "category": "interest",
-      "related": [
-        "MyPage",
-        "GitHub Pages",
-        "接続語ベースのランディングページ"
-      ],
-      "evidence": [
-        "content/profile.md",
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "接続語で構成する個人ランディングページ",
-      "summary": "自己紹介文よりも、つながった語のネットワークで見せる個人サイトの構想。",
-      "weight": 5,
+      "label": "GitHub Pages 個人サイト",
+      "summary": "GitHub Pagesで公開した個人サイトを持つ。",
+      "weight": 8,
       "category": "project",
       "related": [
-        "MyPage",
-        "Webデザインによる自己表現",
-        "AIによる個人情報のパターン発見"
-      ],
-      "evidence": [
-        "content/profile.md",
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "GitHub Pages公開サイト",
-      "summary": "GitHub Pagesで公開する個人サイトを運用している。",
-      "weight": 4,
-      "category": "project",
-      "related": [
-        "MyPage",
-        "Webデザインによる自己表現"
+        "Python",
+        "GitHub"
       ],
       "evidence": [
         "github.com/sumichann"
       ]
     },
     {
-      "label": "MyPage",
-      "summary": "個人サイトとして公開されているリポジトリ。",
-      "weight": 4,
-      "category": "project",
-      "related": [
-        "GitHub Pages公開サイト",
-        "Webデザインによる自己表現"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "annotation-app",
-      "summary": "注釈作業に関わるPythonプロジェクト。",
-      "weight": 3,
-      "category": "project",
-      "related": [
-        "AIによる個人情報のパターン発見",
-        "riise_webapp_checking"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "音声修士実験",
-      "summary": "音声に関する修士実験のコードがある。",
-      "weight": 3,
-      "category": "research",
-      "related": [
-        "Jupyter Notebook",
-        "Python"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "Python",
-      "summary": "複数リポジトリで使われている主な実装言語。",
-      "weight": 3,
-      "category": "tool",
+      "label": "Python 開発",
+      "summary": "複数のリポジトリでPythonを主に使っている。",
+      "weight": 7,
+      "category": "skill",
       "related": [
         "MyPage",
         "annotation-app",
@@ -113,22 +30,9 @@
       ]
     },
     {
-      "label": "Jupyter Notebook",
-      "summary": "実験コードの記述に使われているノートブック環境。",
-      "weight": 2,
-      "category": "tool",
-      "related": [
-        "音声修士実験",
-        "Python"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "riise_webapp_checking",
-      "summary": "Webアプリ確認に関わるPythonプロジェクト。",
-      "weight": 2,
+      "label": "アノテーションアプリ",
+      "summary": "annotation-app という注釈用アプリ関連の開発がある。",
+      "weight": 6,
       "category": "project",
       "related": [
         "Python",
@@ -139,25 +43,114 @@
       ]
     },
     {
-      "label": "公開可能な情報のみを扱う方針",
-      "summary": "秘密情報を避け、公開サイトに安全に反映できる内容だけを扱う方針。",
-      "weight": 4,
-      "category": "value",
+      "label": "音声修士実験",
+      "summary": "音声分野の修士実験コードを扱っている。",
+      "weight": 6,
+      "category": "project",
       "related": [
-        "GitHub Pages公開サイト",
-        "接続語で構成する個人ランディングページ"
+        "Jupyter Notebook",
+        "master_experience"
       ],
       "evidence": [
-        "content/profile.md"
+        "github.com/sumichann"
       ]
     },
     {
-      "label": "プロフィール非公開の余白",
-      "summary": "名前以外の自己情報は多くを明示しない構成。",
-      "weight": 2,
-      "category": "value",
+      "label": "Jupyter Notebook",
+      "summary": "研究・実験コードの実装環境としてNotebookを使っている。",
+      "weight": 5,
+      "category": "tool",
       "related": [
-        "接続語で構成する個人ランディングページ"
+        "音声修士実験",
+        "master_experience"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "Webアプリ検証",
+      "summary": "riise_webapp_checking というWebアプリの確認・検証系リポジトリがある。",
+      "weight": 5,
+      "category": "project",
+      "related": [
+        "Python",
+        "riise_webapp_checking"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "GitHub リポジトリ群",
+      "summary": "複数の個別リポジトリを運用している。",
+      "weight": 4,
+      "category": "platform",
+      "related": [
+        "MyPage",
+        "annotation-app",
+        "master_experience",
+        "riise_webapp_checking"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "sumiaki",
+      "summary": "GitHub上のアカウント名として示されている。",
+      "weight": 3,
+      "category": "identity",
+      "related": [
+        "GitHub"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "未命名リポジトリ",
+      "summary": "名称が「-」のリポジトリが見える。",
+      "weight": 1,
+      "category": "artifact",
+      "related": [
+        "GitHub リポジトリ群"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "blog 未設定",
+      "summary": "プロフィールのブログ欄は空である。",
+      "weight": 1,
+      "category": "profile",
+      "related": [
+        "sumiaki"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "所在地・所属未記載",
+      "summary": "所在地や会社情報はプロフィールに記載がない。",
+      "weight": 1,
+      "category": "profile",
+      "related": [
+        "sumiaki"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "MyPage",
+      "summary": "個人サイト用のリポジトリ名として明示されている。",
+      "weight": 4,
+      "category": "project",
+      "related": [
+        "GitHub Pages 個人サイト"
       ],
       "evidence": [
         "github.com/sumichann"
