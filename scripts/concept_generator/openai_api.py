@@ -18,6 +18,12 @@ INSTRUCTIONS = " ".join(
         "Prefer specific nouns and short noun phrases over generic personality adjectives.",
         "Merge duplicates, preserve meaningful contrasts, and write concise Japanese summaries.",
         "Weights represent identity relevance, not raw frequency.",
+        "Classify every concept as exactly one category: identity for names, roles, or profile; "
+        "interest for interests not covered by a more specific category; project for concrete "
+        "repositories, products, or creations; research for research themes or experiments; "
+        "skill for capabilities or practices; tool for languages, platforms, or software; "
+        "music for music, artists, listening, or performance; books for books, authors, reading, "
+        "or literature; thought for ideas, values, philosophy, or worldview.",
         "Evidence must name source identifiers, never invent private facts.",
     ]
 )

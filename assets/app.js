@@ -2,12 +2,15 @@ const field = document.querySelector("#concept-field");
 const count = document.querySelector("#concept-count");
 
 const categoryWeight = {
+  identity: 780,
   project: 760,
   research: 700,
   interest: 650,
-  value: 620,
+  thought: 650,
+  music: 620,
+  books: 620,
+  skill: 600,
   tool: 560,
-  tooling: 560,
 };
 
 function labelHash(label) {

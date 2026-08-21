@@ -106,16 +106,35 @@ a {
   --concept-color: #c44924;
 }
 
+.concept[data-category="identity"] {
+  --concept-color: #2d2926;
+}
+
+.concept[data-category="interest"] {
+  --concept-color: #b06b16;
+}
+
 .concept[data-category="research"] {
   --concept-color: #2856a7;
 }
 
-.concept[data-category="tool"],
-.concept[data-category="tooling"] {
+.concept[data-category="skill"] {
+  --concept-color: #14756c;
+}
+
+.concept[data-category="tool"] {
   --concept-color: #267047;
 }
 
-.concept[data-category="value"] {
+.concept[data-category="music"] {
+  --concept-color: #9b3d74;
+}
+
+.concept[data-category="books"] {
+  --concept-color: #80552f;
+}
+
+.concept[data-category="thought"] {
   --concept-color: #8b3f72;
 }
 

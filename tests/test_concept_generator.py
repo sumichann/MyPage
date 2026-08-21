@@ -17,6 +17,7 @@ from concept_generator.openai_api import (
     generate_concepts,
 )
 from concept_generator.output import write_concepts
+from concept_generator.schema import CONCEPT_CATEGORIES
 from concept_generator.sources import (
     collect_editorial_sources,
     collect_public_github_profile,
@@ -91,6 +92,24 @@ class OpenAITests(unittest.TestCase):
         self.assertFalse(payload["store"])
         self.assertEqual(payload["text"]["format"]["type"], "json_schema")
         self.assertTrue(payload["text"]["format"]["strict"])
+        category_schema = payload["text"]["format"]["schema"]["properties"]["concepts"]["items"][
+            "properties"
+        ]["category"]
+        self.assertEqual(category_schema["enum"], CONCEPT_CATEGORIES)
+        self.assertEqual(
+            CONCEPT_CATEGORIES,
+            [
+                "identity",
+                "interest",
+                "project",
+                "research",
+                "skill",
+                "tool",
+                "music",
+                "books",
+                "thought",
+            ],
+        )
 
     def test_extract_response_text(self) -> None:
         response = {

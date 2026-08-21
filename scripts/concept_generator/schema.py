@@ -1,6 +1,19 @@
 """Structured Output schema for the generated concept map."""
 
 
+CONCEPT_CATEGORIES = [
+    "identity",
+    "interest",
+    "project",
+    "research",
+    "skill",
+    "tool",
+    "music",
+    "books",
+    "thought",
+]
+
+
 CONCEPT_SCHEMA = {
     "type": "object",
     "additionalProperties": False,
@@ -16,7 +29,7 @@ CONCEPT_SCHEMA = {
                     "label": {"type": "string", "minLength": 1, "maxLength": 40},
                     "summary": {"type": "string", "minLength": 1, "maxLength": 180},
                     "weight": {"type": "integer", "minimum": 1, "maximum": 100},
-                    "category": {"type": "string", "minLength": 1, "maxLength": 32},
+                    "category": {"type": "string", "enum": CONCEPT_CATEGORIES},
                     "related": {
                         "type": "array",
                         "maxItems": 6,
