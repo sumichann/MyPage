@@ -39,6 +39,13 @@ class SettingsTests(unittest.TestCase):
 
 
 class SourceTests(unittest.TestCase):
+    def test_missing_content_directory_has_no_editorial_sources(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            sources = collect_editorial_sources(root / "content", root)
+
+        self.assertEqual(sources, [])
+
     def test_editorial_sources_are_sorted_and_named_relative_to_root(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
