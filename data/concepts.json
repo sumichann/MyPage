@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-21T14:31:04.899104Z",
+  "generatedAt": "2026-08-21T14:32:04.901946Z",
   "model": "gpt-5.4-mini",
   "concepts": [
     {
@@ -19,28 +19,13 @@
       ]
     },
     {
-      "label": "sumiho's drums",
-      "summary": "YouTubeの共同チャンネル。",
-      "weight": 9,
-      "category": "identity",
-      "related": [
-        "ドラム",
-        "バンドカバー",
-        "RADWIMPS",
-        "cetow"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
       "label": "MyPage",
-      "summary": "GitHub Pagesで公開した個人サイト。",
-      "weight": 7,
+      "summary": "GitHub Pagesで公開された個人サイト。",
+      "weight": 8,
       "category": "project",
       "related": [
         "Python",
-        "GitHub Pages"
+        "sumiaki"
       ],
       "evidence": [
         "github.com/sumichann"
@@ -48,8 +33,8 @@
     },
     {
       "label": "annotation-app",
-      "summary": "Pythonで作ったアノテーション用アプリ。",
-      "weight": 6,
+      "summary": "Python製のアノテーション用アプリ。",
+      "weight": 7,
       "category": "project",
       "related": [
         "Python"
@@ -60,7 +45,7 @@
     },
     {
       "label": "master_experience",
-      "summary": "音声の修士実験コード。",
+      "summary": "音声修士実験のコード。",
       "weight": 8,
       "category": "project",
       "related": [
@@ -73,8 +58,8 @@
     },
     {
       "label": "riise_webapp_checking",
-      "summary": "Python製のWebアプリ確認用リポジトリ。",
-      "weight": 5,
+      "summary": "Webアプリ確認用のPythonプロジェクト。",
+      "weight": 6,
       "category": "project",
       "related": [
         "Python"
@@ -85,8 +70,8 @@
     },
     {
       "label": "Python",
-      "summary": "GitHubリポジトリで使われている主要言語。",
-      "weight": 6,
+      "summary": "主要な実装言語。",
+      "weight": 7,
       "category": "tool",
       "related": [
         "MyPage",
@@ -99,8 +84,8 @@
     },
     {
       "label": "Jupyter Notebook",
-      "summary": "master_experienceで使われる実行環境。",
-      "weight": 5,
+      "summary": "実験コードで使われたノートブック環境。",
+      "weight": 6,
       "category": "tool",
       "related": [
         "master_experience"
@@ -110,65 +95,71 @@
       ]
     },
     {
-      "label": "GitHub Pages",
-      "summary": "個人サイトの公開基盤。",
-      "weight": 5,
-      "category": "tool",
+      "label": "sumiho's drums",
+      "summary": "共同運営のYouTubeチャンネル。",
+      "weight": 9,
+      "category": "project",
       "related": [
-        "MyPage"
+        "RADWIMPS",
+        "cover",
+        "band",
+        "drums",
+        "guitar"
       ],
       "evidence": [
-        "github.com/sumichann"
+        "youtube.com/@sumihosdrums"
       ]
     },
     {
-      "label": "音声修士実験",
-      "summary": "音声分野の修士研究に取り組んでいる。",
+      "label": "drums",
+      "summary": "演奏の中心にあるドラム。",
       "weight": 8,
-      "category": "research",
-      "related": [
-        "master_experience"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "ギター",
-      "summary": "YouTubeでギター演奏やカバー動画を投稿している。",
-      "weight": 9,
       "category": "skill",
       "related": [
-        "RADWIMPS",
-        "8films",
-        "cetow"
+        "sumiho's drums",
+        "band",
+        "cover"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
       ]
     },
     {
-      "label": "ドラム",
-      "summary": "ドラム演奏を軸にした動画がある。",
-      "weight": 9,
+      "label": "guitar",
+      "summary": "ギター演奏や購入記念の動画がある。",
+      "weight": 7,
       "category": "skill",
       "related": [
-        "QOOPIE",
-        "cetow",
-        "RADWIMPS"
+        "cover",
+        "band"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
       ]
     },
     {
-      "label": "バンドカバー",
-      "summary": "バンド曲のコピー演奏を継続して投稿している。",
-      "weight": 9,
+      "label": "band",
+      "summary": "バンドでの演奏・カバー活動。",
+      "weight": 8,
+      "category": "skill",
+      "related": [
+        "cover",
+        "ライブ",
+        "コピーバンド"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "cover",
+      "summary": "楽曲カバーの投稿が多い。",
+      "weight": 8,
       "category": "skill",
       "related": [
         "RADWIMPS",
         "cetow",
+        "Uchu Conbini",
         "QOOPIE"
       ],
       "evidence": [
@@ -177,8 +168,8 @@
     },
     {
       "label": "RADWIMPS",
-      "summary": "五月祭やライブで複数曲をカバーしている中心的な対象。",
-      "weight": 10,
+      "summary": "繰り返し演奏しているアーティスト。",
+      "weight": 9,
       "category": "music",
       "related": [
         "君と羊と青",
@@ -193,8 +184,8 @@
     },
     {
       "label": "cetow",
-      "summary": "cetowの楽曲を練習・カバーしている。",
-      "weight": 8,
+      "summary": "練習・カバーで取り上げているバンド。",
+      "weight": 7,
       "category": "music",
       "related": [
         "migrant",
@@ -206,8 +197,8 @@
     },
     {
       "label": "QOOPIE",
-      "summary": "QOOPIEの楽曲を演奏している。",
-      "weight": 6,
+      "summary": "カバー対象のバンド。",
+      "weight": 5,
       "category": "music",
       "related": [
         "O.D.D",
@@ -218,77 +209,12 @@
       ]
     },
     {
-      "label": "8films",
-      "summary": "ギター購入1年記念で演奏した楽曲。",
+      "label": "Uchu Conbini",
+      "summary": "カバーしている音楽グループ。",
       "weight": 5,
       "category": "music",
       "related": [
-        "ギター"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "君と羊と青",
-      "summary": "五月祭ステージで演奏したRADWIMPS曲。",
-      "weight": 8,
-      "category": "music",
-      "related": [
-        "RADWIMPS",
-        "五月祭"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "ハイパーベンチレイション",
-      "summary": "五月祭ステージで演奏したRADWIMPS曲。",
-      "weight": 8,
-      "category": "music",
-      "related": [
-        "RADWIMPS",
-        "五月祭"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "トレモロ",
-      "summary": "五月祭ステージで演奏したRADWIMPS曲。",
-      "weight": 7,
-      "category": "music",
-      "related": [
-        "RADWIMPS",
-        "五月祭"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "ふたりごと",
-      "summary": "五月祭で演奏したRADWIMPS曲。",
-      "weight": 6,
-      "category": "music",
-      "related": [
-        "RADWIMPS",
-        "五月祭"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "光",
-      "summary": "卒業ライブで演奏したRADWIMPS曲。",
-      "weight": 6,
-      "category": "music",
-      "related": [
-        "RADWIMPS",
-        "下北沢 ReG"
+        "8films"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -296,37 +222,12 @@
     },
     {
       "label": "五月祭",
-      "summary": "東京大学の五月祭ステージでバンド演奏している。",
-      "weight": 9,
-      "category": "interest",
+      "summary": "東京大学の五月祭ステージでの演奏。",
+      "weight": 8,
+      "category": "project",
       "related": [
         "RADWIMPS",
-        "ライブ"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "ライブ",
-      "summary": "学園祭や会場での演奏記録が多い。",
-      "weight": 7,
-      "category": "interest",
-      "related": [
-        "五月祭",
-        "下北沢 ReG"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "コピー",
-      "summary": "原曲に近い再現演奏への志向が見える。",
-      "weight": 6,
-      "category": "thought",
-      "related": [
-        "バンドカバー",
+        "ライブ",
         "コピーバンド"
       ],
       "evidence": [
@@ -334,15 +235,54 @@
       ]
     },
     {
-      "label": "写真フォルダの放出",
-      "summary": "写真を見返しやすく保存共有する発想。",
-      "weight": 5,
-      "category": "thought",
+      "label": "ライブ",
+      "summary": "ステージ演奏の記録が多い。",
+      "weight": 7,
+      "category": "skill",
       "related": [
-        "sumiho's drums"
+        "五月祭",
+        "コピーバンド"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "コピーバンド",
+      "summary": "原曲再現を行うバンド活動。",
+      "weight": 7,
+      "category": "skill",
+      "related": [
+        "RADWIMPS",
+        "band",
+        "cover"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "音声",
+      "summary": "修士実験に関わる研究テーマ。",
+      "weight": 6,
+      "category": "research",
+      "related": [
+        "master_experience"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "個人サイト",
+      "summary": "GitHub Pagesで公開する自己発信の場。",
+      "weight": 5,
+      "category": "thought",
+      "related": [
+        "MyPage"
+      ],
+      "evidence": [
+        "github.com/sumichann"
       ]
     }
   ]
