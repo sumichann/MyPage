@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from concept_generator.config import Settings
 from concept_generator.openai_api import (
+    INSTRUCTIONS,
     build_request_payload,
     extract_response_text,
     generate_concepts,
@@ -191,13 +192,17 @@ class OpenAITests(unittest.TestCase):
                 "interest",
                 "project",
                 "research",
-                "skill",
+                "tech-skill",
                 "tool",
                 "music",
                 "books",
                 "thought",
             ],
         )
+
+    def test_tech_skill_requires_demonstrated_technical_work(self) -> None:
+        self.assertIn("tech-skill for demonstrated technical capabilities", INSTRUCTIONS)
+        self.assertIn("Do not use tech-skill for instruments", INSTRUCTIONS)
 
     def test_extract_response_text(self) -> None:
         response = {

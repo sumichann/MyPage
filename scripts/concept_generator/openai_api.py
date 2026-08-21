@@ -21,9 +21,15 @@ INSTRUCTIONS = " ".join(
         "Classify every concept as exactly one category: identity for names, roles, or profile; "
         "interest for interests not covered by a more specific category; project for concrete "
         "repositories, products, or creations; research for research themes or experiments; "
-        "skill for capabilities or practices; tool for languages, platforms, or software; "
+        "tech-skill for demonstrated technical capabilities in software development, programming, "
+        "data analysis, infrastructure, or other engineering work; tool for languages, platforms, "
+        "or software; "
         "music for music, artists, listening, or performance; books for books, authors, reading, "
         "or literature; thought for ideas, values, philosophy, or worldview.",
+        "Use tech-skill only when the sources show concrete technical work or output. Do not use "
+        "tech-skill for instruments, artistic performance, interests, or mere tool names; classify "
+        "musical instruments and performance as music, and software or languages as tool unless "
+        "the evidence demonstrates a broader technical capability.",
         "Evidence must name source identifiers, never invent private facts.",
     ]
 )

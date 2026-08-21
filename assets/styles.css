@@ -55,6 +55,35 @@ a {
   padding-top: 1.15rem;
 }
 
+.layout-toggle {
+  padding: 0.42rem 0.68rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgb(241 239 231 / 82%);
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  backdrop-filter: blur(0.5rem);
+}
+
+.layout-toggle:hover:not(:disabled),
+.layout-toggle[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.layout-toggle:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.layout-toggle:disabled {
+  cursor: wait;
+  opacity: 0.45;
+}
+
 .site-footer {
   bottom: 0;
   display: grid;
@@ -64,8 +93,11 @@ a {
   color: var(--muted);
 }
 
-.site-footer > a {
+.social-links {
+  display: flex;
+  gap: 0.9rem;
   justify-self: end;
+  white-space: nowrap;
 }
 
 .site-header p,
@@ -82,18 +114,18 @@ a {
 }
 
 .concept-field {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: space-evenly;
-  align-items: baseline;
-  justify-content: space-evenly;
-  gap: clamp(1rem, 3.2vw, 4rem) clamp(1.25rem, 4vw, 5rem);
+  position: relative;
+  height: 100vh;
+  height: 100svh;
   min-height: 100vh;
   min-height: 100svh;
-  padding: clamp(5rem, 10vh, 8rem) clamp(1rem, 4vw, 5rem);
+  overflow: hidden;
 }
 
 .concept {
+  position: absolute;
+  top: 50%;
+  left: 50%;
   max-width: min(92vw, 26ch);
   margin: 0;
   color: var(--concept-color, var(--ink));
@@ -104,9 +136,23 @@ a {
   overflow-wrap: anywhere;
   text-align: center;
   text-wrap: balance;
-  transform: rotate(var(--concept-tilt, 0deg));
-  animation: settle 700ms both;
-  animation-delay: var(--concept-delay, 0ms);
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(var(--concept-tilt, 0deg));
+  transition:
+    top 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    left 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 450ms ease,
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--concept-delay, 0ms);
+  will-change: top, left, transform;
+}
+
+.concept[data-positioned="true"] {
+  opacity: 1;
+}
+
+.concept-field[data-layout="cluster"] .concept {
+  transform: translate(-50%, -50%) rotate(0deg);
 }
 
 .concept[data-category="project"],
@@ -129,8 +175,8 @@ a {
   --concept-color: #2856a7;
 }
 
-.concept[data-category="skill"],
-.legend-item[data-category="skill"] {
+.concept[data-category="tech-skill"],
+.legend-item[data-category="tech-skill"] {
   --concept-color: #14756c;
 }
 
@@ -184,9 +230,13 @@ a {
 }
 
 .loading {
-  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
   color: var(--muted);
   font-size: clamp(1rem, 2vw, 1.5rem);
+  transform: translate(-50%, -50%);
 }
 
 .error {
@@ -201,26 +251,9 @@ noscript {
   border: 1px solid var(--line);
 }
 
-@keyframes settle {
-  from {
-    opacity: 0;
-    transform: translateY(1.25rem) rotate(var(--concept-tilt, 0deg));
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) rotate(var(--concept-tilt, 0deg));
-  }
-}
-
 @media (max-width: 44rem) {
   .site-note {
     display: none;
-  }
-
-  .concept-field {
-    gap: 1.75rem 1.25rem;
-    padding: 5rem 1.1rem 8rem;
   }
 
   .concept {
@@ -242,6 +275,6 @@ noscript {
 
 @media (prefers-reduced-motion: reduce) {
   .concept {
-    animation: none;
+    transition: none;
   }
 }
