@@ -129,8 +129,8 @@ a {
   --concept-color: #2856a7;
 }
 
-.concept[data-category="skill"],
-.legend-item[data-category="skill"] {
+.concept[data-category="tech-skill"],
+.legend-item[data-category="tech-skill"] {
   --concept-color: #14756c;
 }
 

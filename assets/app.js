@@ -9,7 +9,7 @@ const categoryWeight = {
   thought: 650,
   music: 620,
   books: 620,
-  skill: 600,
+  "tech-skill": 600,
   tool: 560,
 };
 

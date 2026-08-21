@@ -6,7 +6,7 @@ CONCEPT_CATEGORIES = [
     "interest",
     "project",
     "research",
-    "skill",
+    "tech-skill",
     "tool",
     "music",
     "books",
