@@ -1,38 +1,165 @@
 {
-  "generatedAt": null,
-  "model": null,
+  "generatedAt": "2026-08-21T13:39:07.886463Z",
+  "model": "gpt-5.4-mini",
   "concepts": [
     {
-      "label": "AI",
-      "summary": "情報の中から、自分でも気づいていない輪郭を見つける道具。",
-      "weight": 92,
-      "category": "tool",
-      "related": ["Web", "Identity"],
-      "evidence": ["content/profile.md"]
+      "label": "AIによる個人情報のパターン発見",
+      "summary": "個人情報の中から規則や傾向を見つけるためにAIを使う方向性。",
+      "weight": 5,
+      "category": "interest",
+      "related": [
+        "personal landing page",
+        "connected words",
+        "annotation-app"
+      ],
+      "evidence": [
+        "content/profile.md"
+      ]
     },
     {
-      "label": "Web",
-      "summary": "自分を一つの完成形に固定せず、変化ごと公開できる場所。",
-      "weight": 84,
-      "category": "medium",
-      "related": ["AI", "Design"],
-      "evidence": ["content/profile.md"]
+      "label": "インタラクションとしてのWebデザイン",
+      "summary": "Webデザインを見た目だけでなく、操作体験を通じて自己表現する手段として捉えている。",
+      "weight": 5,
+      "category": "interest",
+      "related": [
+        "MyPage",
+        "personal landing page",
+        "identity"
+      ],
+      "evidence": [
+        "content/profile.md",
+        "github.com/sumichann"
+      ]
     },
     {
-      "label": "Design",
-      "summary": "一覧性と奥行きを、同じ画面の中で両立させる試み。",
-      "weight": 80,
-      "category": "practice",
-      "related": ["Web", "Identity"],
-      "evidence": ["content/profile.md"]
+      "label": "単なる経歴ではないランディングページ",
+      "summary": "自己紹介文よりも、言葉同士のつながりで構成された個人サイトを志向している。",
+      "weight": 4,
+      "category": "project",
+      "related": [
+        "MyPage",
+        "connected words",
+        "identity"
+      ],
+      "evidence": [
+        "content/profile.md",
+        "github.com/sumichann"
+      ]
     },
     {
-      "label": "Identity",
-      "summary": "名前の集合と、その背後にある経験や関係から立ち上がるもの。",
-      "weight": 88,
-      "category": "theme",
-      "related": ["AI", "Design"],
-      "evidence": ["content/profile.md"]
+      "label": "GitHub Pagesの個人サイト",
+      "summary": "GitHub Pagesで公開する個人サイトを持っている。",
+      "weight": 4,
+      "category": "project",
+      "related": [
+        "personal landing page",
+        "Webデザイン"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "annotation-app",
+      "summary": "注釈やラベリングを扱うPython系のアプリケーション。",
+      "weight": 3,
+      "category": "project",
+      "related": [
+        "AIによる個人情報のパターン発見"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "音声修士実験",
+      "summary": "音声に関する修士実験のコードを扱っていた。",
+      "weight": 3,
+      "category": "research",
+      "related": [
+        "Jupyter Notebook",
+        "研究"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "PythonとJupyter Notebook",
+      "summary": "PythonとJupyter Notebookを使った実装・実験の基盤がある。",
+      "weight": 3,
+      "category": "tooling",
+      "related": [
+        "annotation-app",
+        "音声修士実験"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "connected words",
+      "summary": "単語同士の連結や関係性を重視する発想。",
+      "weight": 3,
+      "category": "concept",
+      "related": [
+        "personal landing page",
+        "AIによる個人情報のパターン発見"
+      ],
+      "evidence": [
+        "content/profile.md"
+      ]
+    },
+    {
+      "label": "identity",
+      "summary": "公開サイトや言葉の構成を通じて自己を表す関心。",
+      "weight": 2,
+      "category": "value",
+      "related": [
+        "インタラクションとしてのWebデザイン",
+        "単なる経歴ではないランディングページ"
+      ],
+      "evidence": [
+        "content/profile.md"
+      ]
+    },
+    {
+      "label": "research code",
+      "summary": "実験や検証のためのコードを書く傾向。",
+      "weight": 2,
+      "category": "work",
+      "related": [
+        "PythonとJupyter Notebook",
+        "音声修士実験"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "sumiaki",
+      "summary": "GitHubプロフィール上の表示名。",
+      "weight": 1,
+      "category": "identity",
+      "related": [
+        "GitHub Pagesの個人サイト"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "MyPage",
+      "summary": "GitHub Pagesで公開されている個人サイトのリポジトリ名。",
+      "weight": 4,
+      "category": "project",
+      "related": [
+        "GitHub Pagesの個人サイト",
+        "単なる経歴ではないランディングページ"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
     }
   ]
 }
