@@ -1,0 +1,51 @@
+name: Generate personal concept map
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "content/**"
+      - "scripts/generate_concepts.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: concept-map-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate concepts with OpenAI
+        run: python scripts/generate_concepts.py
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-5.4-mini
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_USERNAME: sumichann
+
+      - name: Commit generated data
+        run: |
+          if git diff --quiet -- data/concepts.json; then
+            echo "No concept changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- data/concepts.json
+          git commit -m "Update AI-generated concept map"
+          git push
