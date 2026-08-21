@@ -5,10 +5,11 @@ Personal website published with GitHub Pages at <https://kusahata.com>.
 ## AI-generated concept map
 
 The site can generate a structured personal concept map at deploy time using
-the OpenAI Responses API. Source notes live in `content/`, the generator is
-split into focused modules under `scripts/concept_generator/`, and its public
-output is `data/concepts.json`. The `scripts/generate_concepts.py` file is the
-thin command-line entry point.
+the OpenAI Responses API. The current source is public GitHub profile and
+repository metadata. Optional editorial sources can be added under `content/`.
+The generator is split into focused modules under `scripts/concept_generator/`,
+and its public output is `data/concepts.json`. The
+`scripts/generate_concepts.py` file is the thin command-line entry point.
 
 Before running the workflow, add a repository Actions secret named
 `OPENAI_API_KEY`. Never commit an API key or put it in the website source.
