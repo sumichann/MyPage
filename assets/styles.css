@@ -1,0 +1,172 @@
+:root {
+  color-scheme: light;
+  font-family: "Helvetica Neue", "Hiragino Sans", "Yu Gothic", sans-serif;
+  font-synthesis: none;
+  --paper: #f1efe7;
+  --ink: #17221a;
+  --muted: #697069;
+  --line: rgb(23 34 26 / 18%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--paper);
+}
+
+body {
+  min-width: 20rem;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 14% 18%, rgb(255 255 255 / 72%), transparent 28rem),
+    radial-gradient(circle at 88% 82%, rgb(210 220 195 / 52%), transparent 32rem),
+    var(--paper);
+  color: var(--ink);
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.site-header,
+.site-footer {
+  position: fixed;
+  z-index: 2;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: clamp(1rem, 2.5vw, 2.5rem);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.site-header {
+  top: 0;
+  padding-top: 1.15rem;
+}
+
+.site-footer {
+  bottom: 0;
+  padding-bottom: 1.15rem;
+  color: var(--muted);
+}
+
+.site-header p,
+.site-footer p {
+  margin: 0;
+}
+
+.site-name {
+  font-weight: 700;
+}
+
+.site-note {
+  color: var(--muted);
+}
+
+.concept-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-evenly;
+  align-items: baseline;
+  justify-content: space-evenly;
+  gap: clamp(1rem, 3.2vw, 4rem) clamp(1.25rem, 4vw, 5rem);
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: clamp(5rem, 10vh, 8rem) clamp(1rem, 4vw, 5rem);
+}
+
+.concept {
+  max-width: min(92vw, 26ch);
+  margin: 0;
+  color: var(--concept-color, var(--ink));
+  font-size: var(--concept-size, 2rem);
+  font-weight: var(--concept-weight, 600);
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+  overflow-wrap: anywhere;
+  text-align: center;
+  text-wrap: balance;
+  transform: rotate(var(--concept-tilt, 0deg));
+  animation: settle 700ms both;
+  animation-delay: var(--concept-delay, 0ms);
+}
+
+.concept[data-category="project"] {
+  --concept-color: #c44924;
+}
+
+.concept[data-category="research"] {
+  --concept-color: #2856a7;
+}
+
+.concept[data-category="tool"],
+.concept[data-category="tooling"] {
+  --concept-color: #267047;
+}
+
+.concept[data-category="value"] {
+  --concept-color: #8b3f72;
+}
+
+.loading {
+  margin: auto;
+  color: var(--muted);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}
+
+.error {
+  color: #a32d1f;
+}
+
+noscript {
+  position: fixed;
+  inset: auto 1rem 1rem;
+  padding: 0.75rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem) rotate(var(--concept-tilt, 0deg));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--concept-tilt, 0deg));
+  }
+}
+
+@media (max-width: 44rem) {
+  .site-note {
+    display: none;
+  }
+
+  .concept-field {
+    gap: 1.75rem 1.25rem;
+    padding-inline: 1.1rem;
+  }
+
+  .concept {
+    max-width: 100%;
+    line-height: 1.02;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .concept {
+    animation: none;
+  }
+}
