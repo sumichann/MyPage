@@ -1,3 +1,3 @@
-# MyPage
+# kusahata.com
 
-Personal website published with GitHub Pages.
+Personal website published with GitHub Pages at <https://kusahata.com>.
