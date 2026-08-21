@@ -22,6 +22,7 @@ from concept_generator.sources import (
     collect_editorial_sources,
     collect_public_github_profile,
 )
+from concept_generator.youtube import collect_public_youtube_channel
 
 
 class SettingsTests(unittest.TestCase):
@@ -29,14 +30,31 @@ class SettingsTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "OPENAI_API_KEY"):
             Settings.from_environment({}, Path("/project"))
 
+    def test_youtube_api_key_is_required(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, "YOUTUBE_API_KEY"):
+            Settings.from_environment({"OPENAI_API_KEY": "test-key"}, Path("/project"))
+
     def test_defaults_are_stable(self) -> None:
         settings = Settings.from_environment(
-            {"OPENAI_API_KEY": "test-key"},
+            {"OPENAI_API_KEY": "test-key", "YOUTUBE_API_KEY": "youtube-key"},
             Path("/project"),
         )
         self.assertEqual(settings.model, "gpt-5.4-mini")
         self.assertEqual(settings.github_username, "sumichann")
+        self.assertEqual(settings.youtube_handle, "@sumihosdrums")
+        self.assertEqual(settings.youtube_max_videos, 30)
         self.assertEqual(settings.output_path, Path("/project/data/concepts.json"))
+
+    def test_youtube_video_limit_is_validated(self) -> None:
+        with self.assertRaisesRegex(ValueError, "between 1 and 50"):
+            Settings.from_environment(
+                {
+                    "OPENAI_API_KEY": "test-key",
+                    "YOUTUBE_API_KEY": "youtube-key",
+                    "YOUTUBE_MAX_VIDEOS": "51",
+                },
+                Path("/project"),
+            )
 
 
 class SourceTests(unittest.TestCase):
@@ -83,6 +101,76 @@ class SourceTests(unittest.TestCase):
 
         self.assertEqual(source["source"], "github.com/sumichann")
         self.assertEqual([repo["name"] for repo in profile["repositories"]], ["original"])
+
+    def test_youtube_source_uses_handle_and_preserves_upload_order(self) -> None:
+        responses = [
+            {
+                "items": [
+                    {
+                        "id": "channel-id",
+                        "snippet": {
+                            "title": "Sumiho's Drums",
+                            "description": "Drum channel",
+                            "publishedAt": "2020-01-01T00:00:00Z",
+                            "country": "JP",
+                        },
+                        "contentDetails": {"relatedPlaylists": {"uploads": "uploads-id"}},
+                        "statistics": {"subscriberCount": "10", "videoCount": "2"},
+                    }
+                ]
+            },
+            {
+                "items": [
+                    {"contentDetails": {"videoId": "new-video"}},
+                    {"contentDetails": {"videoId": "old-video"}},
+                ]
+            },
+            {
+                "items": [
+                    {
+                        "id": "old-video",
+                        "snippet": {"title": "Old", "description": "old description"},
+                        "contentDetails": {"duration": "PT1M"},
+                        "statistics": {"viewCount": "20"},
+                    },
+                    {
+                        "id": "new-video",
+                        "snippet": {
+                            "title": "New drum cover",
+                            "description": "new description",
+                            "tags": ["drums", "cover"],
+                        },
+                        "contentDetails": {"duration": "PT2M"},
+                        "statistics": {"viewCount": "30", "likeCount": "4"},
+                    },
+                ]
+            },
+        ]
+        requested_urls = []
+
+        def requester(url, **_kwargs):
+            requested_urls.append(url)
+            return responses.pop(0)
+
+        source = collect_public_youtube_channel("sumihosdrums", "secret-key", 2, requester)
+        channel = json.loads(source["text"])
+
+        self.assertEqual(source["source"], "youtube.com/@sumihosdrums")
+        self.assertIn("forHandle=%40sumihosdrums", requested_urls[0])
+        self.assertIn("playlistId=uploads-id", requested_urls[1])
+        self.assertIn("maxResults=2", requested_urls[1])
+        self.assertEqual(
+            [video["id"] for video in channel["videos"]],
+            ["new-video", "old-video"],
+        )
+        self.assertEqual(channel["videos"][0]["tags"], ["drums", "cover"])
+
+    def test_youtube_error_redacts_api_key(self) -> None:
+        def requester(*_args, **_kwargs):
+            raise RuntimeError("request failed with key=secret-key")
+
+        with self.assertRaisesRegex(RuntimeError, r"key=\[REDACTED\]"):
+            collect_public_youtube_channel("@sumihosdrums", "secret-key", requester=requester)
 
 
 class OpenAITests(unittest.TestCase):

@@ -6,6 +6,7 @@ from .config import Settings
 from .openai_api import generate_concepts
 from .output import write_concepts
 from .sources import collect_editorial_sources, collect_public_github_profile
+from .youtube import collect_public_youtube_channel
 
 
 def main() -> None:
@@ -15,6 +16,11 @@ def main() -> None:
         collect_public_github_profile(
             settings.github_username,
             settings.github_token,
+        ),
+        collect_public_youtube_channel(
+            settings.youtube_handle,
+            settings.youtube_api_key,
+            settings.youtube_max_videos,
         ),
     ]
     concepts = generate_concepts(
