@@ -1,91 +1,12 @@
 {
-  "generatedAt": "2026-08-21T13:59:28.135299Z",
+  "generatedAt": "2026-08-21T14:11:44.414572Z",
   "model": "gpt-5.4-mini",
   "concepts": [
     {
-      "label": "GitHub Pages 個人サイト",
-      "summary": "GitHub Pagesで公開した個人サイトを持つ。",
-      "weight": 8,
-      "category": "project",
-      "related": [
-        "Python",
-        "GitHub"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "Python 開発",
-      "summary": "複数のリポジトリでPythonを主に使っている。",
-      "weight": 7,
-      "category": "skill",
-      "related": [
-        "MyPage",
-        "annotation-app",
-        "riise_webapp_checking"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "アノテーションアプリ",
-      "summary": "annotation-app という注釈用アプリ関連の開発がある。",
-      "weight": 6,
-      "category": "project",
-      "related": [
-        "Python",
-        "annotation-app"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "音声修士実験",
-      "summary": "音声分野の修士実験コードを扱っている。",
-      "weight": 6,
-      "category": "project",
-      "related": [
-        "Jupyter Notebook",
-        "master_experience"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "Jupyter Notebook",
-      "summary": "研究・実験コードの実装環境としてNotebookを使っている。",
+      "label": "sumiaki",
+      "summary": "GitHubプロフィール上の名前。",
       "weight": 5,
-      "category": "tool",
-      "related": [
-        "音声修士実験",
-        "master_experience"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "Webアプリ検証",
-      "summary": "riise_webapp_checking というWebアプリの確認・検証系リポジトリがある。",
-      "weight": 5,
-      "category": "project",
-      "related": [
-        "Python",
-        "riise_webapp_checking"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "GitHub リポジトリ群",
-      "summary": "複数の個別リポジトリを運用している。",
-      "weight": 4,
-      "category": "platform",
+      "category": "identity",
       "related": [
         "MyPage",
         "annotation-app",
@@ -97,48 +18,124 @@
       ]
     },
     {
-      "label": "sumiaki",
-      "summary": "GitHub上のアカウント名として示されている。",
+      "label": "GitHub Pagesの個人サイト",
+      "summary": "GitHub Pagesで公開した個人ウェブサイト。",
+      "weight": 4,
+      "category": "project",
+      "related": [
+        "MyPage",
+        "Python"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "annotation-app",
+      "summary": "Pythonで書かれたアノテーション用アプリ。",
+      "weight": 4,
+      "category": "project",
+      "related": [
+        "Python"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "音声修士実験",
+      "summary": "音声に関する修士実験のコード。",
+      "weight": 4,
+      "category": "research",
+      "related": [
+        "master_experience",
+        "Jupyter Notebook"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "riise_webapp_checking",
+      "summary": "Webアプリの確認用と思われるPythonプロジェクト。",
       "weight": 3,
-      "category": "identity",
+      "category": "project",
       "related": [
-        "GitHub"
+        "Python"
       ],
       "evidence": [
         "github.com/sumichann"
       ]
     },
     {
-      "label": "未命名リポジトリ",
-      "summary": "名称が「-」のリポジトリが見える。",
-      "weight": 1,
-      "category": "artifact",
+      "label": "Python",
+      "summary": "主要な実装言語として複数リポジトリで使われている。",
+      "weight": 4,
+      "category": "tool",
       "related": [
-        "GitHub リポジトリ群"
+        "MyPage",
+        "annotation-app",
+        "riise_webapp_checking"
       ],
       "evidence": [
         "github.com/sumichann"
       ]
     },
     {
-      "label": "blog 未設定",
-      "summary": "プロフィールのブログ欄は空である。",
-      "weight": 1,
-      "category": "profile",
+      "label": "Jupyter Notebook",
+      "summary": "実験コードの記述に使われている。",
+      "weight": 3,
+      "category": "tool",
       "related": [
-        "sumiaki"
+        "master_experience"
       ],
       "evidence": [
         "github.com/sumichann"
       ]
     },
     {
-      "label": "所在地・所属未記載",
-      "summary": "所在地や会社情報はプロフィールに記載がない。",
-      "weight": 1,
-      "category": "profile",
+      "label": "音声",
+      "summary": "修士実験のテーマとして扱われている。",
+      "weight": 3,
+      "category": "interest",
       "related": [
-        "sumiaki"
+        "音声修士実験"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "個人サイト運営",
+      "summary": "自身のページを公開・管理している。",
+      "weight": 3,
+      "category": "skill",
+      "related": [
+        "GitHub Pagesの個人サイト"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "アノテーション",
+      "summary": "データ注釈系の作業・実装に関わっている。",
+      "weight": 3,
+      "category": "skill",
+      "related": [
+        "annotation-app"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "Webアプリ確認",
+      "summary": "Webアプリの動作確認や検証に関わる。",
+      "weight": 2,
+      "category": "skill",
+      "related": [
+        "riise_webapp_checking"
       ],
       "evidence": [
         "github.com/sumichann"
@@ -146,11 +143,25 @@
     },
     {
       "label": "MyPage",
-      "summary": "個人サイト用のリポジトリ名として明示されている。",
+      "summary": "個人サイト用リポジトリ名。",
       "weight": 4,
       "category": "project",
       "related": [
-        "GitHub Pages 個人サイト"
+        "GitHub Pagesの個人サイト",
+        "Python"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "master_experience",
+      "summary": "音声修士実験のコードリポジトリ。",
+      "weight": 4,
+      "category": "project",
+      "related": [
+        "音声修士実験",
+        "Jupyter Notebook"
       ],
       "evidence": [
         "github.com/sumichann"
