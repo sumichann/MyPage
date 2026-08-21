@@ -93,8 +93,11 @@ a {
   color: var(--muted);
 }
 
-.site-footer > a {
+.social-links {
+  display: flex;
+  gap: 0.9rem;
   justify-self: end;
+  white-space: nowrap;
 }
 
 .site-header p,
