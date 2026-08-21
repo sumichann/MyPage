@@ -1,0 +1,38 @@
+{
+  "generatedAt": null,
+  "model": null,
+  "concepts": [
+    {
+      "label": "AI",
+      "summary": "情報の中から、自分でも気づいていない輪郭を見つける道具。",
+      "weight": 92,
+      "category": "tool",
+      "related": ["Web", "Identity"],
+      "evidence": ["content/profile.md"]
+    },
+    {
+      "label": "Web",
+      "summary": "自分を一つの完成形に固定せず、変化ごと公開できる場所。",
+      "weight": 84,
+      "category": "medium",
+      "related": ["AI", "Design"],
+      "evidence": ["content/profile.md"]
+    },
+    {
+      "label": "Design",
+      "summary": "一覧性と奥行きを、同じ画面の中で両立させる試み。",
+      "weight": 80,
+      "category": "practice",
+      "related": ["Web", "Identity"],
+      "evidence": ["content/profile.md"]
+    },
+    {
+      "label": "Identity",
+      "summary": "名前の集合と、その背後にある経験や関係から立ち上がるもの。",
+      "weight": 88,
+      "category": "theme",
+      "related": ["AI", "Design"],
+      "evidence": ["content/profile.md"]
+    }
+  ]
+}
