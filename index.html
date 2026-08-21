@@ -3,44 +3,34 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="kusahata.com">
-    <title>kusahata.com</title>
-    <style>
-      :root {
-        color-scheme: light dark;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      }
-
-      body {
-        display: grid;
-        min-height: 100vh;
-        margin: 0;
-        place-items: center;
-        background: #f4f1e8;
-        color: #1e2d22;
-      }
-
-      main {
-        width: min(40rem, calc(100% - 3rem));
-      }
-
-      h1 {
-        margin: 0 0 1rem;
-        font-size: clamp(2.5rem, 8vw, 5.5rem);
-        letter-spacing: -0.05em;
-      }
-
-      p {
-        margin: 0;
-        color: #526157;
-        font-size: 1.05rem;
-      }
-    </style>
+    <meta
+      name="description"
+      content="公開された痕跡からAIが抽出した、kusahataを構成する言葉。"
+    >
+    <title>kusahata — words in progress</title>
+    <link rel="stylesheet" href="assets/styles.css">
   </head>
   <body>
-    <main>
-      <h1>kusahata.com</h1>
-      <p>Website coming soon.</p>
+    <header class="site-header">
+      <p class="site-name">kusahata.com</p>
+      <p class="site-note">words in progress</p>
+    </header>
+
+    <main
+      id="concept-field"
+      class="concept-field"
+      aria-label="kusahataを構成する言葉"
+      aria-busy="true"
+    >
+      <p class="loading">collecting traces...</p>
     </main>
+
+    <footer class="site-footer">
+      <p id="concept-count">AI-generated concept map</p>
+      <a href="https://github.com/sumichann" rel="me">GitHub ↗</a>
+    </footer>
+
+    <noscript>このページの表示にはJavaScriptが必要です。</noscript>
+    <script type="module" src="assets/app.js"></script>
   </body>
 </html>
