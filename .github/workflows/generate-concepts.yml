@@ -7,7 +7,7 @@ on:
       - main
     paths:
       - "content/**"
-      - "scripts/generate-concepts.mjs"
+      - "scripts/generate_concepts.py"
 
 permissions:
   contents: write
@@ -25,13 +25,13 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: 22
+          python-version: "3.12"
 
       - name: Generate concepts with OpenAI
-        run: node scripts/generate-concepts.mjs
+        run: python scripts/generate_concepts.py
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: gpt-5.4-mini

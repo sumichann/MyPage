@@ -6,7 +6,7 @@ Personal website published with GitHub Pages at <https://kusahata.com>.
 
 The site can generate a structured personal concept map at deploy time using
 the OpenAI Responses API. Source notes live in `content/`, the generator is
-`scripts/generate-concepts.mjs`, and its public output is
+`scripts/generate_concepts.py`, and its public output is
 `data/concepts.json`.
 
 Before running the workflow, add a repository Actions secret named
