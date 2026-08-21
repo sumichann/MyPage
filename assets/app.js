@@ -93,7 +93,8 @@ function sizeField(measurements) {
     return area + (item.width + 24) * (item.height + 20);
   }, 0);
   const activeCategories = new Set(measurements.map(({ word }) => word.dataset.category)).size;
-  const clusterRows = field.clientWidth <= 560 ? activeCategories : Math.ceil(activeCategories / 3);
+  const clusterColumns = field.clientWidth <= 560 ? 2 : 3;
+  const clusterRows = Math.ceil(activeCategories / clusterColumns);
   const areaHeight = totalArea / (width * density) + 220;
   const clusterHeight = clusterRows * (field.clientWidth <= 560 ? 190 : 250) + 190;
   field.style.height = `${Math.ceil(Math.max(window.innerHeight, areaHeight, clusterHeight))}px`;
@@ -169,7 +170,7 @@ function clusterPositions(measurements, bounds) {
   const availableWidth = bounds.right - bounds.left;
   const availableHeight = bounds.bottom - bounds.top;
   const columns = field.clientWidth <= 560
-    ? 1
+    ? Math.min(2, categories.length)
     : Math.min(3, Math.max(1, Math.ceil(Math.sqrt(categories.length * availableWidth / availableHeight))));
   const rows = Math.ceil(categories.length / columns);
   const cellWidth = availableWidth / columns;
@@ -253,7 +254,7 @@ function renderConcepts(concepts) {
     word.dataset.category = concept.category;
     word.textContent = concept.label;
     const size = visualSize(concept, minWeight, maxWeight);
-    const mobileSize = Math.min(2.75, Math.max(0.95, size * 0.68));
+    const mobileSize = Math.min(1.38, Math.max(0.48, size * 0.34));
     word.style.setProperty("--concept-size", `${size.toFixed(2)}rem`);
     word.style.setProperty("--concept-size-mobile", `${mobileSize.toFixed(2)}rem`);
     word.style.setProperty("--concept-weight", categoryWeight[concept.category] || 600);
