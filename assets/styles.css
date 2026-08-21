@@ -258,6 +258,7 @@ noscript {
 
   .concept {
     max-width: 100%;
+    font-size: var(--concept-size-mobile, 1.4rem);
     line-height: 1.02;
   }
 

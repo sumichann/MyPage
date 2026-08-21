@@ -29,6 +29,7 @@ const categoryWeight = {
 let layoutMode = "scatter";
 let scatterSeed = createSeed();
 let resizeTimer;
+let lastLayoutWidth = window.innerWidth;
 
 function labelHash(label) {
   return [...label].reduce((hash, character) => {
@@ -251,7 +252,10 @@ function renderConcepts(concepts) {
     word.className = "concept";
     word.dataset.category = concept.category;
     word.textContent = concept.label;
-    word.style.setProperty("--concept-size", `${visualSize(concept, minWeight, maxWeight).toFixed(2)}rem`);
+    const size = visualSize(concept, minWeight, maxWeight);
+    const mobileSize = Math.min(2.75, Math.max(0.95, size * 0.68));
+    word.style.setProperty("--concept-size", `${size.toFixed(2)}rem`);
+    word.style.setProperty("--concept-size-mobile", `${mobileSize.toFixed(2)}rem`);
     word.style.setProperty("--concept-weight", categoryWeight[concept.category] || 600);
     word.style.setProperty("--concept-tilt", `${tilt.toFixed(2)}deg`);
     word.style.setProperty("--concept-delay", `${Math.min(index * 45, 480)}ms`);
@@ -294,6 +298,10 @@ layoutToggle.addEventListener("click", () => {
 });
 
 window.addEventListener("resize", () => {
+  const nextWidth = window.innerWidth;
+  if (Math.abs(nextWidth - lastLayoutWidth) < 16) return;
+
+  lastLayoutWidth = nextWidth;
   window.clearTimeout(resizeTimer);
   resizeTimer = window.setTimeout(layoutWords, 160);
 });
