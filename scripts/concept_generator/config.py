@@ -13,6 +13,7 @@ class Settings:
     root: Path
     content_dir: Path
     output_path: Path
+    note_feed_path: Path
     api_key: str
     model: str
     github_username: str
@@ -52,6 +53,7 @@ class Settings:
             root=project_root,
             content_dir=project_root / "content",
             output_path=project_root / "data" / "concepts.json",
+            note_feed_path=project_root / "data" / "note-feed.json",
             api_key=api_key,
             model=values.get("OPENAI_MODEL", "gpt-5.4-mini"),
             github_username=values.get("GITHUB_USERNAME", "sumichann"),

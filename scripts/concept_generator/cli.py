@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .config import Settings
+from .note import collect_note_source
 from .openai_api import generate_concepts
 from .output import write_concepts
 from .sources import collect_editorial_sources, collect_public_github_profile
@@ -22,6 +23,7 @@ def main() -> None:
             settings.youtube_api_key,
             settings.youtube_max_videos,
         ),
+        collect_note_source(settings.note_feed_path),
     ]
     concepts = generate_concepts(
         settings.api_key,

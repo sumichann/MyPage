@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - "content/**"
+      - "data/note-feed.json"
       - "scripts/generate_concepts.py"
       - "scripts/concept_generator/**"
       - "tests/**"
