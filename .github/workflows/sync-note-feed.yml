@@ -3,10 +3,10 @@ name: Sync note feed
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 */6 * * *"
+    # Every Sunday at 09:17 JST (00:17 UTC).
+    - cron: "17 0 * * 0"
 
 permissions:
-  actions: write
   contents: write
 
 concurrency:
@@ -36,11 +36,9 @@ jobs:
           NOTE_RSS_URL: https://note.com/chenchuchu/rss
 
       - name: Commit feed data
-        id: commit
         run: |
           if git diff --quiet -- data/note-feed.json; then
             echo "No note feed changes to commit."
-            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -48,10 +46,3 @@ jobs:
           git add -- data/note-feed.json
           git commit -m "Update note RSS feed"
           git push
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-
-      - name: Generate concepts from the updated feed
-        if: steps.commit.outputs.changed == 'true'
-        run: gh workflow run generate-concepts.yml --ref main
-        env:
-          GH_TOKEN: ${{ github.token }}

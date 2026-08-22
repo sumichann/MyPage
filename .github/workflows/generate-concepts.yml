@@ -2,6 +2,9 @@ name: Generate personal concept map
 
 on:
   workflow_dispatch:
+  schedule:
+    # Every Sunday at 09:47 JST (00:47 UTC), after the note RSS sync.
+    - cron: "47 0 * * 0"
   push:
     branches:
       - main

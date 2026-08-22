@@ -19,9 +19,10 @@ YouTube Data API v3. Never commit an API key or put it in the website source.
 
 Run the **Generate personal concept map** workflow manually, or edit a file in
 `content/` on `main` to trigger it automatically. The **Sync note feed**
-workflow checks note every six hours and commits `data/note-feed.json` only
-when the feed changes. It dispatches concept generation after that commit, so
-an unchanged feed does not make an OpenAI API request.
+workflow checks note every Sunday at 09:17 JST and commits
+`data/note-feed.json` only when the feed changes. The concept generator runs
+every Sunday at 09:47 JST, after the note sync, and refreshes its live GitHub
+and YouTube sources at that time.
 
 Run the generator unit tests with:
 
