@@ -6,7 +6,8 @@ Personal website published with GitHub Pages at <https://kusahata.com>.
 
 The site can generate a structured personal concept map at deploy time using
 the OpenAI Responses API. The current sources are public GitHub profile and
-repository metadata plus public YouTube channel and video metadata. Optional
+repository metadata, public YouTube channel and video metadata, and the
+normalized public RSS feed from <https://note.com/chenchuchu>. Optional
 editorial sources can be added under `content/`.
 The generator is split into focused modules under `scripts/concept_generator/`,
 and its public output is `data/concepts.json`. The
@@ -17,7 +18,10 @@ Before running the workflow, add repository Actions secrets named
 YouTube Data API v3. Never commit an API key or put it in the website source.
 
 Run the **Generate personal concept map** workflow manually, or edit a file in
-`content/` on `main` to trigger it automatically.
+`content/` on `main` to trigger it automatically. The **Sync note feed**
+workflow checks note every six hours and commits `data/note-feed.json` only
+when the feed changes. It dispatches concept generation after that commit, so
+an unchanged feed does not make an OpenAI API request.
 
 Run the generator unit tests with:
 

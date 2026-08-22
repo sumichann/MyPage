@@ -11,6 +11,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from concept_generator.config import Settings
+from concept_generator.note import (
+    collect_note_source,
+    fetch_note_feed,
+    parse_note_feed,
+    write_note_feed,
+)
 from concept_generator.openai_api import (
     INSTRUCTIONS,
     build_request_payload,
@@ -45,6 +51,7 @@ class SettingsTests(unittest.TestCase):
         self.assertEqual(settings.youtube_handle, "@sumihosdrums")
         self.assertEqual(settings.youtube_max_videos, 30)
         self.assertEqual(settings.output_path, Path("/project/data/concepts.json"))
+        self.assertEqual(settings.note_feed_path, Path("/project/data/note-feed.json"))
 
     def test_youtube_video_limit_is_validated(self) -> None:
         with self.assertRaisesRegex(ValueError, "between 1 and 50"):
@@ -172,6 +179,55 @@ class SourceTests(unittest.TestCase):
 
         with self.assertRaisesRegex(RuntimeError, r"key=\[REDACTED\]"):
             collect_public_youtube_channel("@sumihosdrums", "secret-key", requester=requester)
+
+    def test_note_feed_strips_html_and_preserves_article_order(self) -> None:
+        rss = """<?xml version="1.0" encoding="UTF-8"?>
+        <rss><channel>
+          <title>sumiaki</title><link>https://note.com/chenchuchu</link>
+          <item>
+            <title>New article</title>
+            <description><![CDATA[<p>Hello &amp; <strong>world</strong></p><figure>photo</figure>]]></description>
+            <pubDate>Sun, 23 Aug 2026 12:00:00 +0900</pubDate>
+            <link>https://note.com/chenchuchu/n/new</link>
+          </item>
+          <item><title>Old article</title><description>plain text</description></item>
+        </channel></rss>"""
+
+        feed = parse_note_feed(rss)
+
+        self.assertEqual(feed["channel"]["title"], "sumiaki")
+        self.assertEqual(
+            [article["title"] for article in feed["articles"]],
+            ["New article", "Old article"],
+        )
+        self.assertEqual(feed["articles"][0]["description"], "Hello & world photo")
+
+    def test_note_fetch_uses_rss_headers(self) -> None:
+        calls = []
+
+        def requester(url, **kwargs):
+            calls.append((url, kwargs))
+            return "<rss><channel><title>Sumi</title></channel></rss>"
+
+        feed = fetch_note_feed("https://example.com/rss", requester)
+
+        self.assertEqual(feed["channel"]["title"], "Sumi")
+        self.assertEqual(calls[0][0], "https://example.com/rss")
+        self.assertIn("application/rss+xml", calls[0][1]["headers"]["Accept"])
+
+    def test_note_feed_write_is_stable_and_collectable(self) -> None:
+        feed = {
+            "channel": {"title": "Sumi", "url": "https://note.com/chenchuchu"},
+            "articles": [{"title": "Travel"}],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "data" / "note-feed.json"
+            self.assertTrue(write_note_feed(path, feed))
+            self.assertFalse(write_note_feed(path, feed))
+            source = collect_note_source(path)
+
+        self.assertEqual(source["source"], "note.com/chenchuchu")
+        self.assertEqual(json.loads(source["text"]), feed)
 
 
 class OpenAITests(unittest.TestCase):
