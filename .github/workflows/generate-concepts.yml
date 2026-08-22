@@ -8,6 +8,7 @@ on:
     paths:
       - "content/**"
       - "data/note-feed.json"
+      - "data/youtube-feed.json"
       - "scripts/generate_concepts.py"
       - "scripts/concept_generator/**"
       - "tests/**"
@@ -43,9 +44,6 @@ jobs:
           OPENAI_MODEL: gpt-5.4-mini
           GITHUB_TOKEN: ${{ github.token }}
           GITHUB_USERNAME: sumichann
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          YOUTUBE_HANDLE: "@sumihosdrums"
-          YOUTUBE_MAX_VIDEOS: "30"
 
       - name: Commit generated data
         run: |

@@ -1,30 +1,32 @@
 {
-  "generatedAt": "2026-08-22T16:40:41.068987Z",
+  "generatedAt": "2026-08-22T16:47:01.222099Z",
   "model": "gpt-5.4-mini",
   "concepts": [
     {
       "label": "sumiaki",
-      "summary": "GitHub と note の発信名。",
-      "weight": 10,
+      "summary": "GitHubやnote、YouTubeで活動する本人名。",
+      "weight": 5,
       "category": "identity",
       "related": [
         "MyPage",
         "annotation-app",
-        "master_experience",
-        "riise_webapp_checking"
+        "sumiho's drums",
+        "中南米旅行"
       ],
       "evidence": [
         "github.com/sumichann",
-        "note.com/chenchuchu"
+        "note.com/chenchuchu",
+        "youtube.com/@sumihosdrums"
       ]
     },
     {
       "label": "MyPage",
-      "summary": "GitHub Pages で公開した個人サイト。",
-      "weight": 8,
+      "summary": "GitHub Pagesで公開した個人サイト。",
+      "weight": 4,
       "category": "project",
       "related": [
-        "github.com/sumichann"
+        "Python",
+        "sumiaki"
       ],
       "evidence": [
         "github.com/sumichann"
@@ -32,11 +34,12 @@
     },
     {
       "label": "annotation-app",
-      "summary": "Python 製のアプリ。",
-      "weight": 6,
+      "summary": "Pythonで作られた注釈用アプリ。",
+      "weight": 3,
       "category": "project",
       "related": [
-        "github.com/sumichann"
+        "Python",
+        "riise_webapp_checking"
       ],
       "evidence": [
         "github.com/sumichann"
@@ -45,11 +48,11 @@
     {
       "label": "master_experience",
       "summary": "音声修士実験のコード。",
-      "weight": 7,
+      "weight": 4,
       "category": "project",
       "related": [
-        "音声処理",
-        "Jupyter Notebook"
+        "Jupyter Notebook",
+        "研究"
       ],
       "evidence": [
         "github.com/sumichann"
@@ -57,11 +60,12 @@
     },
     {
       "label": "riise_webapp_checking",
-      "summary": "Web アプリ確認用の Python リポジトリ。",
-      "weight": 5,
+      "summary": "Webアプリ確認用のPythonリポジトリ。",
+      "weight": 3,
       "category": "project",
       "related": [
-        "github.com/sumichann"
+        "Python",
+        "annotation-app"
       ],
       "evidence": [
         "github.com/sumichann"
@@ -69,8 +73,8 @@
     },
     {
       "label": "Python",
-      "summary": "GitHub リポジトリで使われている主要言語。",
-      "weight": 6,
+      "summary": "GitHub上の主要な実装言語。",
+      "weight": 4,
       "category": "tool",
       "related": [
         "MyPage",
@@ -83,8 +87,8 @@
     },
     {
       "label": "Jupyter Notebook",
-      "summary": "修士実験コードで使われたノートブック形式。",
-      "weight": 4,
+      "summary": "修士実験コードで使われたノートブック環境。",
+      "weight": 3,
       "category": "tool",
       "related": [
         "master_experience"
@@ -94,16 +98,28 @@
       ]
     },
     {
+      "label": "音声修士実験",
+      "summary": "音声分野の修士研究に関する実験コード。",
+      "weight": 4,
+      "category": "research",
+      "related": [
+        "master_experience"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
       "label": "ドラム",
-      "summary": "YouTube でドラム演奏やドラムカバーを投稿している。",
-      "weight": 10,
+      "summary": "YouTubeでの演奏活動の中心。",
+      "weight": 5,
       "category": "music",
       "related": [
+        "sumiho's drums",
         "RADWIMPS",
         "cetow",
         "QOOPIE",
-        "ギター",
-        "バンド"
+        "ギター"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -111,27 +127,12 @@
     },
     {
       "label": "ギター",
-      "summary": "ギター購入やギター演奏の投稿がある。",
-      "weight": 8,
-      "category": "music",
-      "related": [
-        "ドラム",
-        "RADWIMPS"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "バンドカバー",
-      "summary": "バンド曲のコピーやカバー演奏を公開している。",
-      "weight": 9,
+      "summary": "弾いてみたやバンド演奏で登場する楽器。",
+      "weight": 4,
       "category": "music",
       "related": [
         "RADWIMPS",
-        "cetow",
-        "QOOPIE",
-        "ライブ"
+        "Uchu Conbini"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -139,15 +140,13 @@
     },
     {
       "label": "RADWIMPS",
-      "summary": "複数曲をコピー・演奏している中心的なバンド。",
-      "weight": 9,
+      "summary": "コピー演奏している主要なバンド。",
+      "weight": 5,
       "category": "music",
       "related": [
-        "バンドカバー",
-        "五月祭ステージ",
-        "君と羊と青",
-        "ハイパーベンチレイション",
         "トレモロ",
+        "ハイパーベンチレイション",
+        "君と羊と青",
         "ふたりごと"
       ],
       "evidence": [
@@ -155,40 +154,13 @@
       ]
     },
     {
-      "label": "五月祭ステージ",
-      "summary": "東京大学五月祭で RADWIMPS のコピーを演奏。",
-      "weight": 8,
-      "category": "music",
-      "related": [
-        "RADWIMPS",
-        "ライブ",
-        "東京大学"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "ライブ",
-      "summary": "学園祭や卒業ライブでの演奏動画がある。",
-      "weight": 7,
-      "category": "music",
-      "related": [
-        "五月祭ステージ",
-        "下北沢 ReG"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
       "label": "cetow",
-      "summary": "練習やカバー対象のバンド。",
-      "weight": 6,
+      "summary": "練習やカバーの対象になっている楽曲・バンド。",
+      "weight": 4,
       "category": "music",
       "related": [
-        "ドラム",
-        "バンドカバー"
+        "migrant",
+        "cycle art"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -196,24 +168,77 @@
     },
     {
       "label": "QOOPIE",
-      "summary": "ドラムカバーの対象となったバンド。",
-      "weight": 5,
+      "summary": "ドラムカバーの対象バンド。",
+      "weight": 3,
       "category": "music",
       "related": [
-        "ドラム",
-        "バンドカバー"
+        "O.D.D",
+        "Oliver"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
       ]
     },
     {
-      "label": "note旅行記",
-      "summary": "中南米旅行を連載形式で記録している。",
-      "weight": 7,
+      "label": "Uchu Conbini",
+      "summary": "「8films」を弾いている対象バンド。",
+      "weight": 3,
+      "category": "music",
+      "related": [
+        "8films",
+        "ギター"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "東大五月祭",
+      "summary": "バンド演奏の舞台になっている学園祭。",
+      "weight": 4,
+      "category": "identity",
+      "related": [
+        "RADWIMPS",
+        "ライブ"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "共同チャンネル",
+      "summary": "小名木くんと運営するYouTubeチャンネル。",
+      "weight": 3,
+      "category": "identity",
+      "related": [
+        "sumiho's drums",
+        "小名木くん"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "記憶の放出",
+      "summary": "写真を溜め込まず公開して残すという目的意識。",
+      "weight": 2,
+      "category": "thought",
+      "related": [
+        "共同チャンネル"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "中南米旅行",
+      "summary": "メキシコやペルーをめぐる旅行記シリーズ。",
+      "weight": 5,
       "category": "project",
       "related": [
-        "中南米旅行",
+        "メキシコシティ",
+        "バンクーバー",
+        "タコス",
         "海外旅行"
       ],
       "evidence": [
@@ -221,40 +246,36 @@
       ]
     },
     {
-      "label": "中南米旅行",
-      "summary": "バンクーバー、メキシコ、ペルーをめぐる旅行記。",
-      "weight": 8,
-      "category": "interest",
-      "related": [
-        "note旅行記",
-        "海外旅行",
-        "メキシコシティ",
-        "バンクーバー"
-      ],
-      "evidence": [
-        "note.com/chenchuchu"
-      ]
-    },
-    {
       "label": "海外旅行",
-      "summary": "旅の高揚感や発見を重視している。",
-      "weight": 6,
+      "summary": "新しい土地での発見を楽しむ姿勢。",
+      "weight": 4,
       "category": "thought",
       "related": [
-        "中南米旅行",
-        "note旅行記"
+        "中南米旅行"
       ],
       "evidence": [
         "note.com/chenchuchu"
       ]
     },
     {
-      "label": "小さな発見",
-      "summary": "些細な発見を楽しみ、疑問を持ち、想像を広げたいという姿勢。",
-      "weight": 7,
-      "category": "thought",
+      "label": "メキシコシティ",
+      "summary": "中南米旅行で訪れた都市。",
+      "weight": 3,
+      "category": "identity",
       "related": [
-        "海外旅行",
+        "革命記念塔",
+        "タコス"
+      ],
+      "evidence": [
+        "note.com/chenchuchu"
+      ]
+    },
+    {
+      "label": "バンクーバー",
+      "summary": "中南米旅行の出発地・経由地。",
+      "weight": 3,
+      "category": "identity",
+      "related": [
         "中南米旅行"
       ],
       "evidence": [
@@ -263,12 +284,47 @@
     },
     {
       "label": "タコス",
-      "summary": "メキシコで強く印象に残っている食べ物。",
-      "weight": 4,
+      "summary": "旅行中に強く意識される食べ物。",
+      "weight": 3,
       "category": "interest",
       "related": [
-        "中南米旅行",
         "メキシコシティ"
+      ],
+      "evidence": [
+        "note.com/chenchuchu"
+      ]
+    },
+    {
+      "label": "プーティン",
+      "summary": "カナダで食べた料理。",
+      "weight": 2,
+      "category": "interest",
+      "related": [
+        "バンクーバー"
+      ],
+      "evidence": [
+        "note.com/chenchuchu"
+      ]
+    },
+    {
+      "label": "フェンタニル中毒者のゾンビタウン",
+      "summary": "旅程中に遭遇した危険で異様な地域認識。",
+      "weight": 2,
+      "category": "thought",
+      "related": [
+        "中南米旅行"
+      ],
+      "evidence": [
+        "note.com/chenchuchu"
+      ]
+    },
+    {
+      "label": "想像力を膨らませること",
+      "summary": "小さな発見を楽しみ続けたいという価値観。",
+      "weight": 3,
+      "category": "thought",
+      "related": [
+        "海外旅行"
       ],
       "evidence": [
         "note.com/chenchuchu"

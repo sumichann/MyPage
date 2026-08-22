@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import urllib.parse
+from pathlib import Path
 from typing import Any, Callable
 
 from .http_client import request_json
@@ -39,11 +40,30 @@ def collect_public_youtube_channel(
     max_videos: int = 30,
     requester: JsonRequester = request_json,
 ) -> dict[str, str]:
+    public_channel = fetch_public_youtube_channel(
+        handle,
+        api_key,
+        max_videos,
+        requester,
+    )
+    normalized_handle = handle if handle.startswith("@") else f"@{handle}"
+    return {
+        "source": f"youtube.com/{normalized_handle}",
+        "text": json.dumps(public_channel, ensure_ascii=False, indent=2),
+    }
+
+
+def fetch_public_youtube_channel(
+    handle: str,
+    api_key: str,
+    max_videos: int = 30,
+    requester: JsonRequester = request_json,
+) -> dict[str, Any]:
     normalized_handle = handle if handle.startswith("@") else f"@{handle}"
     channel_response = _request_youtube_resource(
         "channels",
         {
-            "part": "snippet,contentDetails,statistics",
+            "part": "snippet,contentDetails",
             "forHandle": normalized_handle,
         },
         api_key,
@@ -79,7 +99,7 @@ def collect_public_youtube_channel(
         videos_response = _request_youtube_resource(
             "videos",
             {
-                "part": "snippet,contentDetails,statistics",
+                "part": "snippet,contentDetails",
                 "id": ",".join(video_ids),
             },
             api_key,
@@ -88,7 +108,6 @@ def collect_public_youtube_channel(
         videos_by_id = {video["id"]: video for video in videos_response.get("items", [])}
 
     snippet = channel.get("snippet", {})
-    statistics = channel.get("statistics", {})
     public_channel = {
         "channel": {
             "id": channel.get("id"),
@@ -97,11 +116,6 @@ def collect_public_youtube_channel(
             "description": snippet.get("description"),
             "publishedAt": snippet.get("publishedAt"),
             "country": snippet.get("country"),
-            "statistics": {
-                "subscriberCount": statistics.get("subscriberCount"),
-                "videoCount": statistics.get("videoCount"),
-                "viewCount": statistics.get("viewCount"),
-            },
         },
         "videos": [],
     }
@@ -111,7 +125,6 @@ def collect_public_youtube_channel(
         if not video:
             continue
         video_snippet = video.get("snippet", {})
-        video_statistics = video.get("statistics", {})
         public_channel["videos"].append(
             {
                 "id": video_id,
@@ -122,15 +135,25 @@ def collect_public_youtube_channel(
                 "tags": video_snippet.get("tags", []),
                 "categoryId": video_snippet.get("categoryId"),
                 "duration": video.get("contentDetails", {}).get("duration"),
-                "statistics": {
-                    "viewCount": video_statistics.get("viewCount"),
-                    "likeCount": video_statistics.get("likeCount"),
-                    "commentCount": video_statistics.get("commentCount"),
-                },
             }
         )
 
+    return public_channel
+
+
+def write_youtube_feed(path: Path, feed: dict[str, Any]) -> bool:
+    serialized = json.dumps(feed, ensure_ascii=False, indent=2) + "\n"
+    if path.exists() and path.read_text(encoding="utf-8") == serialized:
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(serialized, encoding="utf-8")
+    return True
+
+
+def collect_youtube_source(path: Path) -> dict[str, str]:
+    feed = json.loads(path.read_text(encoding="utf-8"))
+    handle = feed.get("channel", {}).get("handle", "@sumihosdrums")
     return {
-        "source": f"youtube.com/{normalized_handle}",
-        "text": json.dumps(public_channel, ensure_ascii=False, indent=2),
+        "source": f"youtube.com/{handle}",
+        "text": json.dumps(feed, ensure_ascii=False, indent=2),
     }

@@ -29,7 +29,11 @@ from concept_generator.sources import (
     collect_editorial_sources,
     collect_public_github_profile,
 )
-from concept_generator.youtube import collect_public_youtube_channel
+from concept_generator.youtube import (
+    collect_public_youtube_channel,
+    collect_youtube_source,
+    write_youtube_feed,
+)
 
 
 class SettingsTests(unittest.TestCase):
@@ -37,32 +41,16 @@ class SettingsTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "OPENAI_API_KEY"):
             Settings.from_environment({}, Path("/project"))
 
-    def test_youtube_api_key_is_required(self) -> None:
-        with self.assertRaisesRegex(RuntimeError, "YOUTUBE_API_KEY"):
-            Settings.from_environment({"OPENAI_API_KEY": "test-key"}, Path("/project"))
-
     def test_defaults_are_stable(self) -> None:
         settings = Settings.from_environment(
-            {"OPENAI_API_KEY": "test-key", "YOUTUBE_API_KEY": "youtube-key"},
+            {"OPENAI_API_KEY": "test-key"},
             Path("/project"),
         )
         self.assertEqual(settings.model, "gpt-5.4-mini")
         self.assertEqual(settings.github_username, "sumichann")
-        self.assertEqual(settings.youtube_handle, "@sumihosdrums")
-        self.assertEqual(settings.youtube_max_videos, 30)
         self.assertEqual(settings.output_path, Path("/project/data/concepts.json"))
         self.assertEqual(settings.note_feed_path, Path("/project/data/note-feed.json"))
-
-    def test_youtube_video_limit_is_validated(self) -> None:
-        with self.assertRaisesRegex(ValueError, "between 1 and 50"):
-            Settings.from_environment(
-                {
-                    "OPENAI_API_KEY": "test-key",
-                    "YOUTUBE_API_KEY": "youtube-key",
-                    "YOUTUBE_MAX_VIDEOS": "51",
-                },
-                Path("/project"),
-            )
+        self.assertEqual(settings.youtube_feed_path, Path("/project/data/youtube-feed.json"))
 
 
 class SourceTests(unittest.TestCase):
@@ -179,6 +167,20 @@ class SourceTests(unittest.TestCase):
 
         with self.assertRaisesRegex(RuntimeError, r"key=\[REDACTED\]"):
             collect_public_youtube_channel("@sumihosdrums", "secret-key", requester=requester)
+
+    def test_youtube_feed_write_is_stable_and_collectable(self) -> None:
+        feed = {
+            "channel": {"handle": "@sumihosdrums", "title": "Sumiho's Drums"},
+            "videos": [{"id": "video-id", "title": "Drum cover"}],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "data" / "youtube-feed.json"
+            self.assertTrue(write_youtube_feed(path, feed))
+            self.assertFalse(write_youtube_feed(path, feed))
+            source = collect_youtube_source(path)
+
+        self.assertEqual(source["source"], "youtube.com/@sumihosdrums")
+        self.assertEqual(json.loads(source["text"]), feed)
 
     def test_note_feed_strips_html_and_preserves_article_order(self) -> None:
         rss = """<?xml version="1.0" encoding="UTF-8"?>
