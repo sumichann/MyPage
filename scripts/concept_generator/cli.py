@@ -7,7 +7,7 @@ from .note import collect_note_source
 from .openai_api import generate_concepts
 from .output import write_concepts
 from .sources import collect_editorial_sources, collect_public_github_profile
-from .youtube import collect_public_youtube_channel
+from .youtube import collect_youtube_source
 
 
 def main() -> None:
@@ -18,11 +18,7 @@ def main() -> None:
             settings.github_username,
             settings.github_token,
         ),
-        collect_public_youtube_channel(
-            settings.youtube_handle,
-            settings.youtube_api_key,
-            settings.youtube_max_videos,
-        ),
+        collect_youtube_source(settings.youtube_feed_path),
         collect_note_source(settings.note_feed_path),
     ]
     concepts = generate_concepts(

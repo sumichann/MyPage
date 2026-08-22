@@ -1,0 +1,65 @@
+name: Sync external sources
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every Sunday at 09:17 JST (00:17 UTC).
+    - cron: "17 0 * * 0"
+
+permissions:
+  actions: write
+  contents: write
+
+concurrency:
+  group: external-source-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Fetch public note RSS feed
+        run: python scripts/sync_note_feed.py
+        env:
+          NOTE_RSS_URL: https://note.com/chenchuchu/rss
+
+      - name: Fetch public YouTube metadata
+        run: python scripts/sync_youtube_feed.py
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          YOUTUBE_HANDLE: "@sumihosdrums"
+          YOUTUBE_MAX_VIDEOS: "30"
+
+      - name: Commit changed source data
+        id: commit
+        run: |
+          if git diff --quiet -- data/note-feed.json data/youtube-feed.json; then
+            echo "No external source changes to commit."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- data/note-feed.json data/youtube-feed.json
+          git commit -m "Update external source data"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Generate concepts from updated sources
+        if: steps.commit.outputs.changed == 'true'
+        run: gh workflow run generate-concepts.yml --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}
