@@ -331,7 +331,7 @@ a {
   min-height: 100svh;
   padding: clamp(7rem, 12vw, 11rem) clamp(1.5rem, 7vw, 7rem) clamp(10rem, 16vw, 14rem);
   border-top: 1px solid var(--line);
-  background: rgb(241 239 231 / 94%);
+  background: var(--paper);
 }
 
 .section-label,
@@ -349,12 +349,12 @@ a {
 
 .history-section > h2,
 .features-section > h2 {
-  max-width: 12ch;
+  max-width: 16ch;
   margin: 0;
-  font-size: clamp(2.8rem, 7vw, 7rem);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
   font-weight: 650;
-  line-height: 0.88;
-  letter-spacing: -0.065em;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
 }
 
 .history-groups {
@@ -386,7 +386,7 @@ a {
 }
 
 .history-role {
-  font-size: clamp(1.4rem, 2.5vw, 2.6rem);
+  font-size: clamp(1.2rem, 2vw, 2rem);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: -0.04em;
@@ -396,10 +396,6 @@ a {
   margin-top: 0.4rem !important;
   color: var(--muted);
   font-size: clamp(0.9rem, 1.2vw, 1.15rem);
-}
-
-.features-section {
-  background: rgb(232 232 220 / 94%);
 }
 
 .feature-list {
@@ -441,7 +437,7 @@ a {
 .feature-item h3 {
   max-width: 28ch;
   margin: 0 0 1rem;
-  font-size: clamp(1.5rem, 3vw, 3rem);
+  font-size: clamp(1.25rem, 2.2vw, 2.15rem);
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.045em;
