@@ -409,6 +409,51 @@ a {
   letter-spacing: -0.04em;
 }
 
+.likes-link {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  text-decoration: none;
+}
+
+.likes-link:hover span:first-child,
+.likes-link:focus-visible span:first-child {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.latest-note {
+  max-width: 32rem;
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+}
+
+.latest-note p,
+.latest-note time {
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.latest-note p {
+  margin: 0 0 0.75rem;
+}
+
+.latest-note a {
+  display: block;
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.025em;
+}
+
+.latest-note time {
+  display: block;
+  margin-top: 0.65rem;
+}
+
 .section-label,
 .history-group h3,
 .history-date {
