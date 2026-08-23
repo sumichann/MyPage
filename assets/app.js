@@ -1,7 +1,6 @@
 const field = document.querySelector("#concept-field");
 const count = document.querySelector("#concept-count");
 const layoutToggle = document.querySelector("#layout-toggle");
-const mixerPanel = document.querySelector("#human-mixer");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
 
@@ -34,7 +33,6 @@ const categoryWeight = {
 let layoutMode = "scatter";
 let scatterSeed = createSeed();
 let resizeTimer;
-let mixerLayoutTimer;
 let lastLayoutWidth = window.innerWidth;
 
 const fallbackMixByCategory = {
@@ -105,7 +103,7 @@ function mixedProminence(mix, levels) {
   return mixAxes.reduce((total, axis) => total + mix[axis] * levels[axis], 0) / totalScore;
 }
 
-function applyMixer({ relayout = true } = {}) {
+function applyMixer() {
   const levels = currentMixLevels();
   const words = [...field.querySelectorAll(".concept")];
 
@@ -116,10 +114,9 @@ function applyMixer({ relayout = true } = {}) {
   words.forEach((word) => {
     const mix = JSON.parse(word.dataset.mix);
     const prominence = mixedProminence(mix, levels);
-    const sizeFactor = 0.55 + prominence * 0.45;
-    const size = clamp(Number(word.dataset.baseSize) * sizeFactor, 0.65, 6.2);
-    const mobileSize = clamp(Number(word.dataset.baseMobileSize) * sizeFactor, 0.38, 1.8);
-    const opacity = clamp(0.24 + prominence * 0.76, 0.24, 1);
+    const size = clamp(Number(word.dataset.baseSize) * prominence, 0, 6.2);
+    const mobileSize = clamp(Number(word.dataset.baseMobileSize) * prominence, 0, 1.8);
+    const opacity = prominence === 0 ? 0 : clamp(0.24 + prominence * 0.76, 0.24, 1);
 
     word.style.setProperty("--concept-size", `${size.toFixed(2)}rem`);
     word.style.setProperty("--concept-size-mobile", `${mobileSize.toFixed(2)}rem`);
@@ -127,22 +124,15 @@ function applyMixer({ relayout = true } = {}) {
     word.style.zIndex = String(Math.round(prominence * 100));
     word.style.setProperty("--concept-delay", "0ms");
   });
-
-  if (!relayout || words.length === 0) return;
-  window.clearTimeout(mixerLayoutTimer);
-  mixerLayoutTimer = window.setTimeout(layoutWords, 140);
 }
 
 function layoutBounds() {
   const mobile = field.clientWidth <= 704;
-  const compactMixer = field.clientWidth <= 900;
   const side = mobile ? 14 : 36;
-  const mixerWidth = compactMixer ? 0 : mixerPanel.offsetWidth + 24;
-  const mixerBottom = mixerPanel.offsetTop + mixerPanel.offsetHeight + 18;
   return {
     left: side,
-    right: field.clientWidth - side - mixerWidth,
-    top: compactMixer ? Math.max(mobile ? 82 : 72, mixerBottom) : 72,
+    right: field.clientWidth - side,
+    top: mobile ? 82 : 72,
     bottom: field.clientHeight - (mobile ? 132 : 92),
   };
 }
@@ -156,11 +146,7 @@ function measureWords(words) {
 }
 
 function sizeField(measurements) {
-  const mixerWidth = field.clientWidth > 900 ? mixerPanel.offsetWidth + 24 : 0;
-  const width = Math.max(
-    280,
-    field.clientWidth - (field.clientWidth <= 704 ? 28 : 72) - mixerWidth,
-  );
+  const width = Math.max(280, field.clientWidth - (field.clientWidth <= 704 ? 28 : 72));
   const density = field.clientWidth <= 704 ? 0.3 : 0.44;
   const totalArea = measurements.reduce((area, item) => {
     return area + (item.width + 24) * (item.height + 20);
@@ -343,7 +329,7 @@ function renderConcepts(concepts) {
   field.setAttribute("aria-busy", "false");
   count.textContent = `${concepts.length} words / AI-generated`;
   layoutToggle.disabled = false;
-  applyMixer({ relayout: false });
+  applyMixer();
   requestAnimationFrame(layoutWords);
 }
 
