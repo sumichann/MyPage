@@ -292,6 +292,7 @@ a {
 }
 
 .concept-field[data-layout] .concept--section-bound.concept--section-landed {
+  opacity: calc(var(--concept-opacity, 1) * 0.4);
   font-size: var(--travel-size) !important;
   transform:
     translate(
