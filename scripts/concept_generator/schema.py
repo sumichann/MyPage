@@ -3,6 +3,7 @@
 
 CONCEPT_CATEGORIES = [
     "identity",
+    "background",
     "interest",
     "project",
     "research",

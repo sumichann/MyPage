@@ -24,8 +24,9 @@ INSTRUCTIONS = " ".join(
         "play means music, performance, experimentation, or playfulness; explore means travel, "
         "discovery, movement, or curiosity; reflect means thought, reading, interpretation, values, "
         "or turning experience into meaning. A concept may score highly on multiple axes.",
-        "Classify every concept as exactly one category: identity for names, roles, or profile; "
-        "interest for interests not covered by a more specific category; project for concrete "
+        "Classify every concept as exactly one category: identity for names, handles, or direct "
+        "personal identifiers; background for education, affiliations, laboratories, employers, "
+        "or career roles; interest for interests not covered by a more specific category; project for concrete "
         "repositories, products, or creations; research for research themes or experiments; "
         "tech-skill for demonstrated technical capabilities in software development, programming, "
         "data analysis, infrastructure, or other engineering work; tool for languages, platforms, "
