@@ -374,6 +374,18 @@ a {
   min-height: clamp(22rem, 48svh, 34rem);
 }
 
+.about-copy {
+  max-width: 42rem;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.about-copy p {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.75rem);
+  line-height: 1.4;
+  letter-spacing: -0.035em;
+}
+
 .section-concept-stack {
   position: absolute;
   bottom: 0;
