@@ -134,21 +134,21 @@ function updateSectionConcept() {
 
   const fieldRect = field.getBoundingClientRect();
   const targetRect = sectionConceptTarget.getBoundingClientRect();
-  const sourceX = fieldRect.left + window.scrollX + Number.parseFloat(travellingConcept.style.left);
   const sourceY = fieldRect.top + window.scrollY + Number.parseFloat(travellingConcept.style.top);
-  const targetX = targetRect.left + window.scrollX + targetRect.width / 2;
   const targetY = targetRect.top + window.scrollY + targetRect.height / 2;
   const travelDistance = Math.max(1, targetY - sourceY);
-  const travelViewportY = Math.min(sourceY, window.innerHeight * 0.62);
-  const startScroll = Math.max(0, sourceY - travelViewportY);
-  const progress = clamp((window.scrollY - startScroll) / travelDistance, 0, 1);
+  const startViewportY = Math.min(sourceY, window.innerHeight * 0.3);
+  const endViewportY = window.innerHeight * 0.72;
+  const startScroll = Math.max(0, sourceY - startViewportY);
+  const endScroll = Math.max(startScroll + 1, targetY - endViewportY);
+  const progress = clamp((window.scrollY - startScroll) / (endScroll - startScroll), 0, 1);
   const sourceSize = displayedConceptSize(travellingConcept);
   const targetSize = Number.parseFloat(getComputedStyle(sectionConceptTarget).fontSize)
     * displayedConceptScale(travellingConcept);
   const size = sourceSize + (targetSize - sourceSize) * progress;
 
   travellingConcept.classList.add("concept--section-bound");
-  travellingConcept.style.setProperty("--travel-x", `${((targetX - sourceX) * progress).toFixed(2)}px`);
+  travellingConcept.style.setProperty("--travel-x", "0px");
   travellingConcept.style.setProperty("--travel-y", `${((targetY - sourceY) * progress).toFixed(2)}px`);
   travellingConcept.style.setProperty("--travel-size", `${size.toFixed(2)}px`);
 }
