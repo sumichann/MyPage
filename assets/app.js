@@ -3,6 +3,7 @@ const count = document.querySelector("#concept-count");
 const layoutToggle = document.querySelector("#layout-toggle");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
+const sectionConceptTarget = document.querySelector("[data-concept-target='東京大学']");
 
 const mixAxes = ["research", "create", "play", "explore", "reflect"];
 
@@ -33,6 +34,8 @@ const categoryWeight = {
 let layoutMode = "scatter";
 let scatterSeed = createSeed();
 let resizeTimer;
+let sectionConceptFrame;
+let travellingConcept;
 let lastLayoutWidth = window.innerWidth;
 
 const fallbackMixByCategory = {
@@ -103,6 +106,58 @@ function mixedProminence(mix, levels) {
   return mixAxes.reduce((total, axis) => total + mix[axis] * levels[axis], 0) / totalScore;
 }
 
+function displayedConceptSize(word) {
+  const property = window.innerWidth <= 704 ? "--concept-size-mobile" : "--concept-size";
+  const remSize = Number.parseFloat(word.style.getPropertyValue(property));
+  const rootSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
+  return remSize * rootSize;
+}
+
+function displayedConceptScale(word) {
+  const baseSize = window.innerWidth <= 704
+    ? Number(word.dataset.baseMobileSize)
+    : Number(word.dataset.baseSize);
+  if (baseSize === 0) return 0;
+  const property = window.innerWidth <= 704 ? "--concept-size-mobile" : "--concept-size";
+  return Number.parseFloat(word.style.getPropertyValue(property)) / baseSize;
+}
+
+function updateSectionConcept() {
+  sectionConceptFrame = undefined;
+  if (!sectionConceptTarget) return;
+
+  if (!travellingConcept?.isConnected) {
+    travellingConcept = [...field.querySelectorAll(".concept")]
+      .find((word) => word.textContent.trim() === sectionConceptTarget.dataset.conceptTarget);
+  }
+  if (!travellingConcept?.dataset.positioned) return;
+
+  const fieldRect = field.getBoundingClientRect();
+  const targetRect = sectionConceptTarget.getBoundingClientRect();
+  const sourceX = fieldRect.left + window.scrollX + Number.parseFloat(travellingConcept.style.left);
+  const sourceY = fieldRect.top + window.scrollY + Number.parseFloat(travellingConcept.style.top);
+  const targetX = targetRect.left + window.scrollX + targetRect.width / 2;
+  const targetY = targetRect.top + window.scrollY + targetRect.height / 2;
+  const travelDistance = Math.max(1, targetY - sourceY);
+  const travelViewportY = Math.min(sourceY, window.innerHeight * 0.62);
+  const startScroll = Math.max(0, sourceY - travelViewportY);
+  const progress = clamp((window.scrollY - startScroll) / travelDistance, 0, 1);
+  const sourceSize = displayedConceptSize(travellingConcept);
+  const targetSize = Number.parseFloat(getComputedStyle(sectionConceptTarget).fontSize)
+    * displayedConceptScale(travellingConcept);
+  const size = sourceSize + (targetSize - sourceSize) * progress;
+
+  travellingConcept.classList.add("concept--section-bound");
+  travellingConcept.style.setProperty("--travel-x", `${((targetX - sourceX) * progress).toFixed(2)}px`);
+  travellingConcept.style.setProperty("--travel-y", `${((targetY - sourceY) * progress).toFixed(2)}px`);
+  travellingConcept.style.setProperty("--travel-size", `${size.toFixed(2)}px`);
+}
+
+function scheduleSectionConceptUpdate() {
+  if (sectionConceptFrame !== undefined) return;
+  sectionConceptFrame = requestAnimationFrame(updateSectionConcept);
+}
+
 function applyMixer() {
   const levels = currentMixLevels();
   const words = [...field.querySelectorAll(".concept")];
@@ -124,6 +179,8 @@ function applyMixer() {
     word.style.zIndex = String(Math.round(prominence * 100));
     word.style.setProperty("--concept-delay", "0ms");
   });
+
+  scheduleSectionConceptUpdate();
 }
 
 function layoutBounds() {
@@ -296,6 +353,7 @@ function layoutWords() {
     word.style.top = `${position.y.toFixed(1)}px`;
     word.dataset.positioned = "true";
   });
+  scheduleSectionConceptUpdate();
 }
 
 function renderConcepts(concepts) {
@@ -380,6 +438,8 @@ window.addEventListener("resize", () => {
   window.clearTimeout(resizeTimer);
   resizeTimer = window.setTimeout(layoutWords, 160);
 });
+
+window.addEventListener("scroll", scheduleSectionConceptUpdate, { passive: true });
 
 updateToggle();
 loadConcepts();
