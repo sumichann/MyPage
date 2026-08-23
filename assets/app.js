@@ -11,6 +11,7 @@ const mixAxes = ["research", "create", "play", "explore", "reflect"];
 
 const categoryOrder = [
   "identity",
+  "background",
   "interest",
   "project",
   "research",
@@ -23,6 +24,7 @@ const categoryOrder = [
 
 const categoryWeight = {
   identity: 780,
+  background: 740,
   project: 760,
   research: 700,
   interest: 650,
@@ -42,6 +44,7 @@ let lastLayoutWidth = window.innerWidth;
 
 const fallbackMixByCategory = {
   identity: { research: 1, create: 1, play: 1, explore: 1, reflect: 1 },
+  background: { research: 2, create: 1, play: 0, explore: 0, reflect: 1 },
   interest: { research: 0, create: 0, play: 1, explore: 3, reflect: 1 },
   project: { research: 1, create: 3, play: 0, explore: 1, reflect: 0 },
   research: { research: 3, create: 1, play: 0, explore: 0, reflect: 1 },

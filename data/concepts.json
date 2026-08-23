@@ -31,7 +31,7 @@
       "label": "東京大学大学院工学系研究科",
       "summary": "東京大学の大学院で研究活動をしている所属先。",
       "weight": 5,
-      "category": "identity",
+      "category": "background",
       "mix": {
         "research": 3,
         "create": 1,
