@@ -323,6 +323,79 @@ a {
   --concept-color: #8b3f72;
 }
 
+.history-section {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: clamp(7rem, 12vw, 11rem) clamp(1.5rem, 7vw, 7rem) clamp(10rem, 16vw, 14rem);
+  border-top: 1px solid var(--line);
+  background: rgb(241 239 231 / 94%);
+}
+
+.section-label,
+.history-group h3,
+.history-date {
+  color: var(--muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section-label {
+  margin: 0 0 1.25rem;
+}
+
+.history-section > h2 {
+  max-width: 12ch;
+  margin: 0;
+  font-size: clamp(2.8rem, 7vw, 7rem);
+  font-weight: 650;
+  line-height: 0.88;
+  letter-spacing: -0.065em;
+}
+
+.history-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(3rem, 8vw, 8rem);
+  margin-top: clamp(4rem, 9vw, 8rem);
+}
+
+.history-group h3 {
+  margin: 0 0 1.5rem;
+  font-weight: 600;
+}
+
+.history-list {
+  display: grid;
+  gap: 2.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-list p {
+  margin: 0;
+}
+
+.history-date {
+  margin-bottom: 0.65rem !important;
+}
+
+.history-role {
+  font-size: clamp(1.4rem, 2.5vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.history-place {
+  margin-top: 0.4rem !important;
+  color: var(--muted);
+  font-size: clamp(0.9rem, 1.2vw, 1.15rem);
+}
+
 .category-legend {
   display: flex;
   flex-wrap: wrap;
@@ -412,6 +485,14 @@ noscript {
 
   .mixer-channel {
     font-size: 0.54rem;
+  }
+
+  .history-section {
+    padding-top: 15rem;
+  }
+
+  .history-groups {
+    grid-template-columns: 1fr;
   }
 
   .site-footer {
