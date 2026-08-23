@@ -36,6 +36,7 @@ let scatterSeed = createSeed();
 let resizeTimer;
 let sectionConceptFrame;
 let travellingConcept;
+let sectionConceptDropped = false;
 let lastLayoutWidth = window.innerWidth;
 
 const fallbackMixByCategory = {
@@ -106,13 +107,6 @@ function mixedProminence(mix, levels) {
   return mixAxes.reduce((total, axis) => total + mix[axis] * levels[axis], 0) / totalScore;
 }
 
-function displayedConceptSize(word) {
-  const property = window.innerWidth <= 704 ? "--concept-size-mobile" : "--concept-size";
-  const remSize = Number.parseFloat(word.style.getPropertyValue(property));
-  const rootSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
-  return remSize * rootSize;
-}
-
 function displayedConceptScale(word) {
   const baseSize = window.innerWidth <= 704
     ? Number(word.dataset.baseMobileSize)
@@ -136,21 +130,23 @@ function updateSectionConcept() {
   const targetRect = sectionConceptTarget.getBoundingClientRect();
   const sourceY = fieldRect.top + window.scrollY + Number.parseFloat(travellingConcept.style.top);
   const targetY = targetRect.top + window.scrollY + targetRect.height / 2;
-  const travelDistance = Math.max(1, targetY - sourceY);
-  const startViewportY = Math.min(sourceY, window.innerHeight * 0.3);
-  const endViewportY = window.innerHeight * 0.72;
-  const startScroll = Math.max(0, sourceY - startViewportY);
-  const endScroll = Math.max(startScroll + 1, targetY - endViewportY);
-  const progress = clamp((window.scrollY - startScroll) / (endScroll - startScroll), 0, 1);
-  const sourceSize = displayedConceptSize(travellingConcept);
+  const triggerScroll = Math.max(48, targetY - window.innerHeight * 0.82);
+  const resetScroll = Math.max(0, triggerScroll - 120);
+
+  if (!sectionConceptDropped && window.scrollY >= triggerScroll) {
+    sectionConceptDropped = true;
+  } else if (sectionConceptDropped && window.scrollY <= resetScroll) {
+    sectionConceptDropped = false;
+  }
+
   const targetSize = Number.parseFloat(getComputedStyle(sectionConceptTarget).fontSize)
     * displayedConceptScale(travellingConcept);
-  const size = sourceSize + (targetSize - sourceSize) * progress;
 
   travellingConcept.classList.add("concept--section-bound");
+  travellingConcept.classList.toggle("concept--section-landed", sectionConceptDropped);
   travellingConcept.style.setProperty("--travel-x", "0px");
-  travellingConcept.style.setProperty("--travel-y", `${((targetY - sourceY) * progress).toFixed(2)}px`);
-  travellingConcept.style.setProperty("--travel-size", `${size.toFixed(2)}px`);
+  travellingConcept.style.setProperty("--travel-y", `${(targetY - sourceY).toFixed(2)}px`);
+  travellingConcept.style.setProperty("--travel-size", `${targetSize.toFixed(2)}px`);
 }
 
 function scheduleSectionConceptUpdate() {
