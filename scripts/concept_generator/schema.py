@@ -13,6 +13,18 @@ CONCEPT_CATEGORIES = [
     "thought",
 ]
 
+MIX_AXES = ["research", "create", "play", "explore", "reflect"]
+
+MIX_SCHEMA = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        axis: {"type": "integer", "minimum": 0, "maximum": 3}
+        for axis in MIX_AXES
+    },
+    "required": MIX_AXES,
+}
+
 
 CONCEPT_SCHEMA = {
     "type": "object",
@@ -30,6 +42,7 @@ CONCEPT_SCHEMA = {
                     "summary": {"type": "string", "minLength": 1, "maxLength": 180},
                     "weight": {"type": "integer", "minimum": 1, "maximum": 100},
                     "category": {"type": "string", "enum": CONCEPT_CATEGORIES},
+                    "mix": MIX_SCHEMA,
                     "related": {
                         "type": "array",
                         "maxItems": 6,
@@ -47,6 +60,7 @@ CONCEPT_SCHEMA = {
                     "summary",
                     "weight",
                     "category",
+                    "mix",
                     "related",
                     "evidence",
                 ],

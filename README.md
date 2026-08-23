@@ -15,6 +15,11 @@ The generator is split into focused modules under `scripts/concept_generator/`,
 and its public output is `data/concepts.json`. The
 `scripts/generate_concepts.py` file is the thin command-line entry point.
 
+Each generated concept also has five independent human-mixer scores:
+`research`, `create`, `play`, `explore`, and `reflect`. The landing-page mixer
+combines those scores with the concept's identity weight to adjust its visual
+size, opacity, and stacking order without changing its category color.
+
 Before running the workflows, add repository Actions secrets named
 `OPENAI_API_KEY`, `YOUTUBE_API_KEY`, and `BRAVE_SEARCH_API_KEY`. The YouTube key
 needs access to the YouTube Data API v3. Never commit an API key or put it in

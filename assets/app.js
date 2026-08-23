@@ -1,6 +1,12 @@
 const field = document.querySelector("#concept-field");
 const count = document.querySelector("#concept-count");
 const layoutToggle = document.querySelector("#layout-toggle");
+const mixerToggle = document.querySelector("#mixer-toggle");
+const mixerPanel = document.querySelector("#human-mixer");
+const mixerReset = document.querySelector("#mixer-reset");
+const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
+
+const mixAxes = ["research", "create", "play", "explore", "reflect"];
 
 const categoryOrder = [
   "identity",
@@ -29,7 +35,20 @@ const categoryWeight = {
 let layoutMode = "scatter";
 let scatterSeed = createSeed();
 let resizeTimer;
+let mixerLayoutTimer;
 let lastLayoutWidth = window.innerWidth;
+
+const fallbackMixByCategory = {
+  identity: { research: 1, create: 1, play: 1, explore: 1, reflect: 1 },
+  interest: { research: 0, create: 0, play: 1, explore: 3, reflect: 1 },
+  project: { research: 1, create: 3, play: 0, explore: 1, reflect: 0 },
+  research: { research: 3, create: 1, play: 0, explore: 0, reflect: 1 },
+  "tech-skill": { research: 1, create: 3, play: 1, explore: 0, reflect: 0 },
+  tool: { research: 1, create: 2, play: 1, explore: 0, reflect: 0 },
+  music: { research: 0, create: 1, play: 3, explore: 0, reflect: 0 },
+  books: { research: 0, create: 0, play: 0, explore: 1, reflect: 3 },
+  thought: { research: 0, create: 0, play: 0, explore: 1, reflect: 3 },
+};
 
 function labelHash(label) {
   return [...label].reduce((hash, character) => {
@@ -65,6 +84,54 @@ function seededRandom(seed) {
 function clamp(value, minimum, maximum) {
   if (maximum < minimum) return (minimum + maximum) / 2;
   return Math.min(maximum, Math.max(minimum, value));
+}
+
+function normalizeMix(concept) {
+  const fallback = fallbackMixByCategory[concept.category] || fallbackMixByCategory.identity;
+  return Object.fromEntries(mixAxes.map((axis) => {
+    const score = Number(concept.mix?.[axis]);
+    return [axis, Number.isFinite(score) ? clamp(score, 0, 3) : fallback[axis]];
+  }));
+}
+
+function currentMixLevels() {
+  return Object.fromEntries(mixerInputs.map((input) => {
+    return [input.dataset.mixAxis, Number(input.value) / 100];
+  }));
+}
+
+function mixedProminence(mix, levels) {
+  const totalScore = mixAxes.reduce((total, axis) => total + mix[axis], 0);
+  if (totalScore === 0) return 1;
+  return mixAxes.reduce((total, axis) => total + mix[axis] * levels[axis], 0) / totalScore;
+}
+
+function applyMixer({ relayout = true } = {}) {
+  const levels = currentMixLevels();
+  const words = [...field.querySelectorAll(".concept")];
+
+  mixerInputs.forEach((input) => {
+    input.nextElementSibling.value = input.value;
+  });
+
+  words.forEach((word) => {
+    const mix = JSON.parse(word.dataset.mix);
+    const prominence = mixedProminence(mix, levels);
+    const sizeFactor = 0.55 + prominence * 0.45;
+    const size = clamp(Number(word.dataset.baseSize) * sizeFactor, 0.65, 6.2);
+    const mobileSize = clamp(Number(word.dataset.baseMobileSize) * sizeFactor, 0.38, 1.8);
+    const opacity = clamp(0.24 + prominence * 0.76, 0.24, 1);
+
+    word.style.setProperty("--concept-size", `${size.toFixed(2)}rem`);
+    word.style.setProperty("--concept-size-mobile", `${mobileSize.toFixed(2)}rem`);
+    word.style.setProperty("--concept-opacity", opacity.toFixed(2));
+    word.style.zIndex = String(Math.round(prominence * 100));
+    word.style.setProperty("--concept-delay", "0ms");
+  });
+
+  if (!relayout || words.length === 0) return;
+  window.clearTimeout(mixerLayoutTimer);
+  mixerLayoutTimer = window.setTimeout(layoutWords, 140);
 }
 
 function layoutBounds() {
@@ -255,6 +322,9 @@ function renderConcepts(concepts) {
     word.textContent = concept.label;
     const size = visualSize(concept, minWeight, maxWeight);
     const mobileSize = Math.min(1.38, Math.max(0.48, size * 0.34));
+    word.dataset.mix = JSON.stringify(normalizeMix(concept));
+    word.dataset.baseSize = size.toFixed(3);
+    word.dataset.baseMobileSize = mobileSize.toFixed(3);
     word.style.setProperty("--concept-size", `${size.toFixed(2)}rem`);
     word.style.setProperty("--concept-size-mobile", `${mobileSize.toFixed(2)}rem`);
     word.style.setProperty("--concept-weight", categoryWeight[concept.category] || 600);
@@ -267,6 +337,7 @@ function renderConcepts(concepts) {
   field.setAttribute("aria-busy", "false");
   count.textContent = `${concepts.length} words / AI-generated`;
   layoutToggle.disabled = false;
+  applyMixer({ relayout: false });
   requestAnimationFrame(layoutWords);
 }
 
@@ -296,6 +367,34 @@ layoutToggle.addEventListener("click", () => {
   if (layoutMode === "scatter") scatterSeed = createSeed();
   updateToggle();
   layoutWords();
+});
+
+mixerToggle.addEventListener("click", () => {
+  const open = mixerPanel.dataset.open !== "true";
+  mixerPanel.dataset.open = String(open);
+  mixerPanel.setAttribute("aria-hidden", String(!open));
+  mixerPanel.inert = !open;
+  mixerToggle.setAttribute("aria-expanded", String(open));
+});
+
+mixerInputs.forEach((input) => {
+  input.addEventListener("input", () => applyMixer());
+});
+
+mixerReset.addEventListener("click", () => {
+  mixerInputs.forEach((input) => {
+    input.value = "100";
+  });
+  applyMixer();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || mixerPanel.dataset.open !== "true") return;
+  mixerPanel.dataset.open = "false";
+  mixerPanel.setAttribute("aria-hidden", "true");
+  mixerPanel.inert = true;
+  mixerToggle.setAttribute("aria-expanded", "false");
+  mixerToggle.focus();
 });
 
 window.addEventListener("resize", () => {

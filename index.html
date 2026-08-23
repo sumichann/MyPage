@@ -14,14 +14,63 @@
     <header class="site-header">
       <p class="site-name">kusahata.com</p>
       <p class="site-note">words in progress</p>
-      <button
-        id="layout-toggle"
-        class="layout-toggle"
-        type="button"
-        aria-pressed="false"
-        disabled
-      >group by genre</button>
+      <div class="header-actions">
+        <button
+          id="mixer-toggle"
+          class="control-button"
+          type="button"
+          aria-expanded="false"
+          aria-controls="human-mixer"
+        >human mixer</button>
+        <button
+          id="layout-toggle"
+          class="control-button"
+          type="button"
+          aria-pressed="false"
+          disabled
+        >group by genre</button>
+      </div>
     </header>
+
+    <section
+      id="human-mixer"
+      class="mixer-panel"
+      aria-label="human mixer"
+      aria-hidden="true"
+      inert
+    >
+      <div class="mixer-heading">
+        <p>human mixer</p>
+        <button id="mixer-reset" class="mixer-reset" type="button">reset mix</button>
+      </div>
+      <div class="mixer-channels">
+        <label class="mixer-channel">
+          <span>research</span>
+          <input data-mix-axis="research" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>create</span>
+          <input data-mix-axis="create" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>play</span>
+          <input data-mix-axis="play" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>explore</span>
+          <input data-mix-axis="explore" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>reflect</span>
+          <input data-mix-axis="reflect" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+      </div>
+    </section>
 
     <main
       id="concept-field"

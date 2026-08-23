@@ -19,6 +19,11 @@ INSTRUCTIONS = " ".join(
         "Prefer specific nouns and short noun phrases over generic personality adjectives.",
         "Merge duplicates, preserve meaningful contrasts, and write concise Japanese summaries.",
         "Weights represent identity relevance, not raw frequency.",
+        "For every concept, score all five mix axes from 0 to 3. research means academic inquiry, "
+        "measurement, or investigation; create means building, designing, writing, or making; "
+        "play means music, performance, experimentation, or playfulness; explore means travel, "
+        "discovery, movement, or curiosity; reflect means thought, reading, interpretation, values, "
+        "or turning experience into meaning. A concept may score highly on multiple axes.",
         "Classify every concept as exactly one category: identity for names, roles, or profile; "
         "interest for interests not covered by a more specific category; project for concrete "
         "repositories, products, or creations; research for research themes or experiments; "
