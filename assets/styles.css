@@ -336,9 +336,7 @@ a {
 }
 
 .features-section {
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: clamp(7rem, 12vw, 11rem) clamp(1.5rem, 7vw, 7rem) clamp(10rem, 16vw, 14rem);
+  padding: clamp(5.5rem, 8vw, 7rem) clamp(1.5rem, 7vw, 7rem) clamp(6rem, 10vw, 8rem);
 }
 
 .section-label,
@@ -368,7 +366,7 @@ a {
 }
 
 .features-section > h2 {
-  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-size: clamp(1.8rem, 3.5vw, 3.25rem);
 }
 
 .history-groups {
@@ -413,7 +411,7 @@ a {
 }
 
 .feature-list {
-  margin: clamp(4rem, 9vw, 8rem) 0 0;
+  margin: clamp(2.5rem, 5vw, 4rem) 0 0;
   padding: 0;
   border-bottom: 1px solid var(--line);
   list-style: none;
@@ -423,7 +421,7 @@ a {
   display: grid;
   grid-template-columns: minmax(8rem, 0.3fr) minmax(0, 1fr);
   gap: clamp(2rem, 7vw, 7rem);
-  padding: clamp(2rem, 4vw, 3.5rem) 0;
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0;
   border-top: 1px solid var(--line);
 }
 
@@ -450,8 +448,8 @@ a {
 
 .feature-item h3 {
   max-width: 28ch;
-  margin: 0 0 1rem;
-  font-size: clamp(1.25rem, 2.2vw, 2.15rem);
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.1rem, 1.7vw, 1.65rem);
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.045em;
