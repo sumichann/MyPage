@@ -3,7 +3,7 @@ const count = document.querySelector("#concept-count");
 const layoutToggle = document.querySelector("#layout-toggle");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
-const sectionConceptTarget = document.querySelector("[data-concept-target='東京大学']");
+const sectionConceptTargets = [...document.querySelectorAll("[data-concept-categories]")];
 
 const mixAxes = ["research", "create", "play", "explore", "reflect"];
 
@@ -35,8 +35,7 @@ let layoutMode = "scatter";
 let scatterSeed = createSeed();
 let resizeTimer;
 let sectionConceptFrame;
-let travellingConcept;
-let sectionConceptDropped = false;
+let sectionConceptAssignments = [];
 let lastLayoutWidth = window.innerWidth;
 
 const fallbackMixByCategory = {
@@ -116,42 +115,66 @@ function displayedConceptScale(word) {
   return Number.parseFloat(word.style.getPropertyValue(property)) / baseSize;
 }
 
-function updateSectionConcept() {
-  sectionConceptFrame = undefined;
-  if (!sectionConceptTarget) return;
+function collectSectionConceptAssignments() {
+  const words = [...field.querySelectorAll(".concept")];
+  const claimed = new Set();
 
-  if (!travellingConcept?.isConnected) {
-    travellingConcept = [...field.querySelectorAll(".concept")]
-      .find((word) => word.textContent.trim() === sectionConceptTarget.dataset.conceptTarget);
+  return sectionConceptTargets.flatMap((target) => {
+    const categories = new Set(target.dataset.conceptCategories.split(/\s+/));
+    const excluded = new Set((target.dataset.conceptExclude || "").split("|").filter(Boolean));
+    const matches = words.filter((word) => {
+      const label = word.textContent.trim();
+      return !claimed.has(word) && categories.has(word.dataset.category) && !excluded.has(label);
+    });
+
+    matches.forEach((word) => claimed.add(word));
+    return matches.map((word, index) => ({ word, target, index, dropped: false }));
+  });
+}
+
+function updateSectionConcepts() {
+  sectionConceptFrame = undefined;
+  if (sectionConceptTargets.length === 0) return;
+
+  if (sectionConceptAssignments.length === 0
+      || sectionConceptAssignments.some(({ word }) => !word.isConnected)) {
+    sectionConceptAssignments = collectSectionConceptAssignments();
   }
-  if (!travellingConcept?.dataset.positioned) return;
 
   const fieldRect = field.getBoundingClientRect();
-  const targetRect = sectionConceptTarget.getBoundingClientRect();
-  const sourceY = fieldRect.top + window.scrollY + Number.parseFloat(travellingConcept.style.top);
-  const targetY = targetRect.top + window.scrollY + targetRect.height / 2;
-  const triggerScroll = Math.max(48, targetY - window.innerHeight * 0.82);
-  const resetScroll = Math.max(0, triggerScroll - 120);
+  sectionConceptAssignments.forEach((assignment) => {
+    const { word, target, index } = assignment;
+    if (!word.dataset.positioned) return;
 
-  if (!sectionConceptDropped && window.scrollY >= triggerScroll) {
-    sectionConceptDropped = true;
-  } else if (sectionConceptDropped && window.scrollY <= resetScroll) {
-    sectionConceptDropped = false;
-  }
+    const targetRect = target.getBoundingClientRect();
+    const sourceY = fieldRect.top + window.scrollY + Number.parseFloat(word.style.top);
+    const targetY = targetRect.top + window.scrollY + targetRect.height / 2;
+    const maximumScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    const preferredTrigger = Math.max(48, targetY - window.innerHeight * 0.82);
+    const triggerScroll = Math.min(preferredTrigger, Math.max(0, maximumScroll - 1));
+    const resetScroll = Math.max(0, triggerScroll - 120);
 
-  const targetSize = Number.parseFloat(getComputedStyle(sectionConceptTarget).fontSize)
-    * displayedConceptScale(travellingConcept);
+    if (!assignment.dropped && window.scrollY >= triggerScroll) {
+      assignment.dropped = true;
+    } else if (assignment.dropped && window.scrollY <= resetScroll) {
+      assignment.dropped = false;
+    }
 
-  travellingConcept.classList.add("concept--section-bound");
-  travellingConcept.classList.toggle("concept--section-landed", sectionConceptDropped);
-  travellingConcept.style.setProperty("--travel-x", "0px");
-  travellingConcept.style.setProperty("--travel-y", `${(targetY - sourceY).toFixed(2)}px`);
-  travellingConcept.style.setProperty("--travel-size", `${targetSize.toFixed(2)}px`);
+    const targetSize = Number.parseFloat(getComputedStyle(target).fontSize)
+      * displayedConceptScale(word);
+
+    word.classList.add("concept--section-bound");
+    word.classList.toggle("concept--section-landed", assignment.dropped);
+    word.style.setProperty("--travel-x", "0px");
+    word.style.setProperty("--travel-y", `${(targetY - sourceY).toFixed(2)}px`);
+    word.style.setProperty("--travel-size", `${targetSize.toFixed(2)}px`);
+    word.style.setProperty("--drop-delay", `${index * 55}ms`);
+  });
 }
 
 function scheduleSectionConceptUpdate() {
   if (sectionConceptFrame !== undefined) return;
-  sectionConceptFrame = requestAnimationFrame(updateSectionConcept);
+  sectionConceptFrame = requestAnimationFrame(updateSectionConcepts);
 }
 
 function applyMixer() {
