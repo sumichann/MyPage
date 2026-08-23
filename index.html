@@ -64,12 +64,14 @@
     </section>
 
     <main>
+      <!-- 単語が表示される領域 -->
       <section
         id="concept-field"
         class="concept-field"
         aria-label="kusahataを構成する言葉"
         aria-busy="true"
       >
+      <!-- ここが単語で置き換わる -->
         <p class="loading">collecting traces...</p>
       </section>
 
@@ -180,6 +182,17 @@
             </article>
           </li>
         </ol>
+      </section>
+
+      <section class="likes-section" aria-labelledby="likes-title">
+        <div class="section-concept-stack" aria-hidden="true">
+          <span
+            class="section-concept-target"
+            data-concept-categories="music books interest"
+          >music, books, and interests</span>
+        </div>
+        <p class="section-label">personal</p>
+        <h2 id="likes-title">What I Like</h2>
       </section>
     </main>
 

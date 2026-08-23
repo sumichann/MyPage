@@ -351,7 +351,8 @@ a {
 }
 
 .history-section,
-.features-section {
+.features-section,
+.likes-section {
   position: relative;
   z-index: 1;
   border-top: 1px solid var(--line);
@@ -380,10 +381,15 @@ a {
   visibility: hidden;
 }
 
-.features-section {
+.features-section,
+.likes-section {
+  padding: clamp(5.5rem, 8vw, 7rem) clamp(1.5rem, 7vw, 7rem) clamp(6rem, 10vw, 8rem);
+}
+
+.likes-section {
+  min-height: clamp(28rem, 70svh, 44rem);
   border-bottom: 1px solid var(--line);
   margin-bottom: clamp(6rem, 16vh, 10rem);
-  padding: clamp(5.5rem, 8vw, 7rem) clamp(1.5rem, 7vw, 7rem) clamp(6rem, 10vw, 8rem);
 }
 
 .section-label,
@@ -400,7 +406,8 @@ a {
 }
 
 .history-section > h2,
-.features-section > h2 {
+.features-section > h2,
+.likes-section > h2 {
   max-width: 16ch;
   margin: 0;
   font-weight: 650;
@@ -412,7 +419,8 @@ a {
   font-size: clamp(1.8rem, 3.5vw, 3.25rem);
 }
 
-.features-section > h2 {
+.features-section > h2,
+.likes-section > h2 {
   font-size: clamp(1.8rem, 3.5vw, 3.25rem);
 }
 
@@ -611,7 +619,8 @@ noscript {
   }
 
   .history-section,
-  .features-section {
+  .features-section,
+  .likes-section {
     padding-top: 15rem;
   }
 
