@@ -15,6 +15,7 @@ class Settings:
     output_path: Path
     note_feed_path: Path
     youtube_feed_path: Path
+    web_search_feed_path: Path
     api_key: str
     model: str
     github_username: str
@@ -42,6 +43,7 @@ class Settings:
             output_path=project_root / "data" / "concepts.json",
             note_feed_path=project_root / "data" / "note-feed.json",
             youtube_feed_path=project_root / "data" / "youtube-feed.json",
+            web_search_feed_path=project_root / "data" / "web-search-feed.json",
             api_key=api_key,
             model=values.get("OPENAI_MODEL", "gpt-5.4-mini"),
             github_username=values.get("GITHUB_USERNAME", "sumichann"),
