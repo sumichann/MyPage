@@ -337,12 +337,11 @@ a {
 
 .section-concept-stack {
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: clamp(1.5rem, 7vw, 7rem);
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-start;
-  transform: translateY(-100%);
 }
 
 .section-concept {
