@@ -375,7 +375,7 @@ a {
 }
 
 .about-copy {
-  max-width: 42rem;
+  max-width: 58rem;
   margin-top: clamp(2.5rem, 5vw, 4rem);
 }
 
