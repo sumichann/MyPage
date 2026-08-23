@@ -101,9 +101,9 @@ a {
   padding: 0.85rem 1rem 1rem;
   border: 1px solid var(--line);
   border-radius: 0.8rem;
-  background: rgb(241 239 231 / 58%);
+  background: rgb(241 239 231 / 50%);
   box-shadow: 0 1rem 3rem rgb(23 34 26 / 7%);
-  backdrop-filter: blur(0.8rem);
+  backdrop-filter: blur(0.2rem);
 }
 
 .mixer-heading,
