@@ -4,6 +4,8 @@ const layoutToggle = document.querySelector("#layout-toggle");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
 const sectionConceptTargets = [...document.querySelectorAll("[data-concept-categories]")];
+const latestNoteLink = document.querySelector("#latest-note-link");
+const latestNoteDate = document.querySelector("#latest-note-date");
 
 const mixAxes = ["research", "create", "play", "explore", "reflect"];
 
@@ -476,6 +478,42 @@ async function loadConcepts() {
   }
 }
 
+async function loadLatestNote() {
+  if (!latestNoteLink || !latestNoteDate) return;
+
+  try {
+    const response = await fetch(new URL("../data/note-feed.json", import.meta.url));
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const payload = await response.json();
+    const articles = Array.isArray(payload.articles) ? payload.articles : [];
+    const latest = articles
+      .filter((article) => article.title && article.url)
+      .sort((first, second) => Date.parse(second.publishedAt) - Date.parse(first.publishedAt))[0];
+    if (!latest) throw new Error("No note articles found");
+
+    const articleUrl = new URL(latest.url);
+    if (articleUrl.protocol !== "https:" || articleUrl.hostname !== "note.com") {
+      throw new Error("Unexpected note article URL");
+    }
+
+    latestNoteLink.href = articleUrl.href;
+    latestNoteLink.textContent = `${latest.title} ↗`;
+
+    const publishedAt = new Date(latest.publishedAt);
+    if (!Number.isNaN(publishedAt.getTime())) {
+      latestNoteDate.dateTime = publishedAt.toISOString();
+      latestNoteDate.textContent = new Intl.DateTimeFormat("en", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      }).format(publishedAt);
+    }
+  } catch (error) {
+    console.error("Could not load latest note article", error);
+  }
+}
+
 layoutToggle.addEventListener("click", () => {
   layoutMode = layoutMode === "scatter" ? "cluster" : "scatter";
   if (layoutMode === "scatter") scatterSeed = createSeed();
@@ -507,3 +545,4 @@ window.addEventListener("scroll", scheduleSectionConceptUpdate, { passive: true 
 
 updateToggle();
 loadConcepts();
+loadLatestNote();

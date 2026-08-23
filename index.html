@@ -195,8 +195,25 @@
         <h2 id="likes-title">What I Like</h2>
 
         <ul class="likes-list">
-          <li>Music</li>
-          <li>Trip</li>
+          <li>
+            <a class="likes-link" href="https://www.youtube.com/@sumihosdrums" rel="me">
+              <span>Music</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a class="likes-link" href="https://note.com/chenchuchu" rel="me">
+              <span>Trip</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+            <div class="latest-note" aria-live="polite">
+              <p>Latest note</p>
+              <a id="latest-note-link" href="https://note.com/chenchuchu">
+                Read the latest article on note ↗
+              </a>
+              <time id="latest-note-date"></time>
+            </div>
+          </li>
         </ul>
       </section>
     </main>
