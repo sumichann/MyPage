@@ -1,80 +1,36 @@
 {
-  "generatedAt": "2026-08-23T07:45:06.115580Z",
+  "generatedAt": "2026-08-23T11:09:20.885735Z",
   "model": "gpt-5.4-mini",
   "concepts": [
     {
       "label": "sumiaki",
-      "summary": "東京大学大学院系の研究者・学生として示される名前。",
-      "weight": 10,
+      "summary": "GitHubとnoteで発信する人物名。研究、制作、旅行記、音楽活動が重なって見える。",
+      "weight": 5,
       "category": "identity",
       "mix": {
-        "research": 1,
-        "create": 0,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
+        "research": 2,
+        "create": 2,
+        "play": 1,
+        "explore": 2,
+        "reflect": 2
       },
       "related": [
-        "草将澄秋",
-        "東京大学",
-        "河原研究室"
+        "東大大学院",
+        "中南米旅行",
+        "ギター演奏",
+        "GitHub Pages",
+        "note"
       ],
       "evidence": [
         "github.com/sumichann",
-        "https://www.akg.t.u-tokyo.ac.jp/member",
-        "https://www.bee.t.u-tokyo.ac.jp/member_e2024.html",
+        "note.com/chenchuchu",
         "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
       ]
     },
     {
-      "label": "東京大学",
-      "summary": "東京大学の研究室・大学院・学内発表に関わる所属。",
-      "weight": 9,
-      "category": "identity",
-      "mix": {
-        "research": 3,
-        "create": 0,
-        "play": 0,
-        "explore": 0,
-        "reflect": 1
-      },
-      "related": [
-        "河原研究室",
-        "関野研究室",
-        "LCA"
-      ],
-      "evidence": [
-        "https://www.akg.t.u-tokyo.ac.jp/member",
-        "https://www.bee.t.u-tokyo.ac.jp/member_e2024.html",
-        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
-        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
-      ]
-    },
-    {
-      "label": "草将澄秋",
-      "summary": "関野研究室メンバーとして記載された名前。",
-      "weight": 7,
-      "category": "identity",
-      "mix": {
-        "research": 2,
-        "create": 0,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "東京大学",
-        "関野研究室",
-        "LCA"
-      ],
-      "evidence": [
-        "https://www.bee.t.u-tokyo.ac.jp/member_e2024.html"
-      ]
-    },
-    {
-      "label": "河原研究室",
-      "summary": "AIと環境評価の研究に関わる研究室。",
-      "weight": 8,
+      "label": "東京大学大学院工学系研究科",
+      "summary": "東京大学の大学院で研究活動をしている所属先。",
+      "weight": 5,
       "category": "identity",
       "mix": {
         "research": 3,
@@ -84,40 +40,19 @@
         "reflect": 1
       },
       "related": [
-        "LCA",
-        "第二次使用衣類",
-        "GPT-4o"
+        "環境影響評価",
+        "関口研究室",
+        "Mercari R4D"
       ],
       "evidence": [
-        "https://www.akg.t.u-tokyo.ac.jp/member",
         "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
         "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
       ]
     },
     {
-      "label": "関野研究室",
-      "summary": "東京大学の電気・バイオ系の研究室メンバー一覧に登場する所属先。",
-      "weight": 6,
-      "category": "identity",
-      "mix": {
-        "research": 2,
-        "create": 0,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "東京大学",
-        "草将澄秋"
-      ],
-      "evidence": [
-        "https://www.bee.t.u-tokyo.ac.jp/member_e2024.html"
-      ]
-    },
-    {
-      "label": "LCA",
-      "summary": "製品のライフサイクル全体の環境影響を評価する研究テーマ。",
-      "weight": 9,
+      "label": "環境影響評価",
+      "summary": "衣類の環境負荷をLCAで見える化する研究テーマ。",
+      "weight": 5,
       "category": "research",
       "mix": {
         "research": 3,
@@ -127,9 +62,10 @@
         "reflect": 2
       },
       "related": [
-        "第二次使用衣類",
+        "LCA",
+        "循環経済",
         "Scope 3",
-        "環境影響"
+        "中古衣料"
       ],
       "evidence": [
         "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
@@ -137,73 +73,31 @@
       ]
     },
     {
-      "label": "第二次使用衣類",
-      "summary": "中古衣料の環境影響をAIで推定する対象領域。",
-      "weight": 8,
-      "category": "research",
+      "label": "中古衣料",
+      "summary": "フリマアプリ上の中古衣類を対象にした分析対象。",
+      "weight": 4,
+      "category": "interest",
       "mix": {
-        "research": 3,
-        "create": 2,
+        "research": 2,
+        "create": 1,
         "play": 0,
         "explore": 0,
         "reflect": 1
       },
       "related": [
-        "LCA",
-        "Mercari",
-        "環境影響"
+        "メルカリ",
+        "衣類タグ",
+        "使用頻度推定"
       ],
       "evidence": [
         "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
-        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
-      ]
-    },
-    {
-      "label": "環境影響",
-      "summary": "衣類や商品がもたらす環境負荷の定量評価。",
-      "weight": 8,
-      "category": "thought",
-      "mix": {
-        "research": 3,
-        "create": 1,
-        "play": 0,
-        "explore": 0,
-        "reflect": 3
-      },
-      "related": [
-        "LCA",
-        "循環経済",
-        "Scope 3"
-      ],
-      "evidence": [
-        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
-        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
-      ]
-    },
-    {
-      "label": "循環経済",
-      "summary": "再利用市場と環境配慮型消費を結ぶ発想。",
-      "weight": 7,
-      "category": "thought",
-      "mix": {
-        "research": 1,
-        "create": 1,
-        "play": 0,
-        "explore": 0,
-        "reflect": 3
-      },
-      "related": [
-        "Secondhand clothing",
-        "環境影響"
-      ],
-      "evidence": [
         "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
       ]
     },
     {
       "label": "GPT-4o",
-      "summary": "衣類情報の自動抽出に使われたOpenAIのモデル。",
-      "weight": 7,
+      "summary": "画像とテキストから衣類情報を抽出するために使ったAIモデル。",
+      "weight": 4,
       "category": "tool",
       "mix": {
         "research": 2,
@@ -213,8 +107,9 @@
         "reflect": 0
       },
       "related": [
-        "vision-language model",
-        "OpenAI"
+        "VLM",
+        "衣類情報抽出",
+        "LCA"
       ],
       "evidence": [
         "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
@@ -222,8 +117,8 @@
     },
     {
       "label": "vision-language model",
-      "summary": "画像とテキストを同時に扱うAIモデル。",
-      "weight": 6,
+      "summary": "画像と言語を同時に扱うAIとして研究に使われた。",
+      "weight": 4,
       "category": "tool",
       "mix": {
         "research": 3,
@@ -241,63 +136,21 @@
       ]
     },
     {
-      "label": "衣類情報抽出",
-      "summary": "素材・サイズ・洗濯方法・使用頻度を自動で取り出す仕組み。",
-      "weight": 8,
-      "category": "project",
-      "mix": {
-        "research": 3,
-        "create": 3,
-        "play": 0,
-        "explore": 0,
-        "reflect": 1
-      },
-      "related": [
-        "GPT-4o",
-        "メルカリ",
-        "環境影響"
-      ],
-      "evidence": [
-        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
-        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
-      ]
-    },
-    {
-      "label": "メルカリ",
-      "summary": "中古衣類データの実証先として登場するマーケットプレイス。",
-      "weight": 7,
-      "category": "identity",
-      "mix": {
-        "research": 2,
-        "create": 0,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "衣類情報抽出",
-        "第二次使用衣類"
-      ],
-      "evidence": [
-        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
-        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
-      ]
-    },
-    {
       "label": "GitHub Pagesの個人サイト",
-      "summary": "Pythonで公開した個人ウェブサイトの制作。",
-      "weight": 6,
+      "summary": "Pythonで公開した個人ウェブサイト。",
+      "weight": 4,
       "category": "project",
       "mix": {
         "research": 0,
         "create": 3,
         "play": 0,
         "explore": 0,
-        "reflect": 0
+        "reflect": 1
       },
       "related": [
         "MyPage",
-        "Python"
+        "Python",
+        "GitHub"
       ],
       "evidence": [
         "github.com/sumichann"
@@ -305,8 +158,8 @@
     },
     {
       "label": "annotation-app",
-      "summary": "Pythonで作られた注釈アプリのリポジトリ。",
-      "weight": 6,
+      "summary": "Pythonで作られた注釈用アプリ。",
+      "weight": 4,
       "category": "project",
       "mix": {
         "research": 1,
@@ -316,85 +169,8 @@
         "reflect": 0
       },
       "related": [
-        "Python"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "master_experience",
-      "summary": "音声修士実験のコードを置いたNotebookリポジトリ。",
-      "weight": 7,
-      "category": "project",
-      "mix": {
-        "research": 3,
-        "create": 2,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "音声修士実験",
-        "Jupyter Notebook"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "riise_webapp_checking",
-      "summary": "Pythonで管理されたWebアプリ確認用のリポジトリ。",
-      "weight": 5,
-      "category": "project",
-      "mix": {
-        "research": 1,
-        "create": 2,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "Python"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "Python",
-      "summary": "GitHub上の複数リポジトリで使われている実装言語。",
-      "weight": 5,
-      "category": "tool",
-      "mix": {
-        "research": 1,
-        "create": 2,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "GitHub Pagesの個人サイト",
-        "annotation-app"
-      ],
-      "evidence": [
-        "github.com/sumichann"
-      ]
-    },
-    {
-      "label": "Jupyter Notebook",
-      "summary": "修士実験コードの記述に使われたノートブック環境。",
-      "weight": 4,
-      "category": "tool",
-      "mix": {
-        "research": 2,
-        "create": 1,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "master_experience"
+        "Python",
+        "riise_webapp_checking"
       ],
       "evidence": [
         "github.com/sumichann"
@@ -402,27 +178,88 @@
     },
     {
       "label": "音声修士実験",
-      "summary": "音声分野の修士実験に取り組んだ痕跡。",
-      "weight": 7,
+      "summary": "音声に関する修士実験のコードが公開されている。",
+      "weight": 4,
       "category": "research",
       "mix": {
         "research": 3,
-        "create": 1,
+        "create": 2,
         "play": 0,
         "explore": 0,
         "reflect": 0
       },
       "related": [
-        "master_experience"
+        "Jupyter Notebook",
+        "研究コード"
       ],
       "evidence": [
         "github.com/sumichann"
       ]
     },
     {
-      "label": "sumiho's drums",
-      "summary": "ドラム演奏と記録を共有するYouTube共同チャンネル。",
-      "weight": 8,
+      "label": "riise_webapp_checking",
+      "summary": "PythonでのWebアプリ確認用と思われるリポジトリ。",
+      "weight": 3,
+      "category": "project",
+      "mix": {
+        "research": 1,
+        "create": 2,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "Python",
+        "annotation-app"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "Python",
+      "summary": "個人サイトや各種アプリで使われている主要言語。",
+      "weight": 4,
+      "category": "tool",
+      "mix": {
+        "research": 1,
+        "create": 3,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "GitHub Pages",
+        "annotation-app",
+        "riise_webapp_checking"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "Jupyter Notebook",
+      "summary": "修士実験のコードで使われているノートブック環境。",
+      "weight": 3,
+      "category": "tool",
+      "mix": {
+        "research": 3,
+        "create": 2,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "音声修士実験"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "drums",
+      "summary": "YouTubeチャンネル名にも出る、ドラム演奏を軸にした活動。",
+      "weight": 5,
       "category": "music",
       "mix": {
         "research": 0,
@@ -432,48 +269,31 @@
         "reflect": 1
       },
       "related": [
-        "ドラム",
-        "RADWIMPS"
+        "band cover",
+        "RADWIMPS",
+        "QOOPIE",
+        "cetow"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
       ]
     },
     {
-      "label": "ドラム",
-      "summary": "YouTube動画で繰り返し示される演奏パート。",
-      "weight": 8,
+      "label": "ギター演奏",
+      "summary": "ギター購入を記念した弾いてみたやライブ演奏の記録がある。",
+      "weight": 5,
       "category": "music",
       "mix": {
         "research": 0,
-        "create": 1,
+        "create": 2,
         "play": 3,
         "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "sumiho's drums",
-        "バンド"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "ギター",
-      "summary": "RADWIMPSや他曲のカバー演奏で中心となる楽器。",
-      "weight": 8,
-      "category": "music",
-      "mix": {
-        "research": 0,
-        "create": 1,
-        "play": 3,
-        "explore": 0,
-        "reflect": 0
+        "reflect": 1
       },
       "related": [
         "RADWIMPS",
-        "バンド"
+        "五月祭",
+        "コピー/カバー"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -481,8 +301,8 @@
     },
     {
       "label": "RADWIMPS",
-      "summary": "繰り返し演奏・カバーしているバンド。",
-      "weight": 8,
+      "summary": "コピーやカバーで繰り返し演奏しているバンド。",
+      "weight": 5,
       "category": "music",
       "mix": {
         "research": 0,
@@ -492,8 +312,10 @@
         "reflect": 1
       },
       "related": [
-        "ギター",
-        "五月祭"
+        "君と羊と青",
+        "ハイパーベンチレイション",
+        "トレモロ",
+        "光"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -501,18 +323,19 @@
     },
     {
       "label": "五月祭ステージ",
-      "summary": "東京大学五月祭でのバンド演奏の場。",
-      "weight": 7,
+      "summary": "東京大学の学園祭でバンド演奏を行った場。",
+      "weight": 4,
       "category": "music",
       "mix": {
         "research": 0,
-        "create": 1,
+        "create": 2,
         "play": 3,
-        "explore": 0,
-        "reflect": 0
+        "explore": 1,
+        "reflect": 1
       },
       "related": [
-        "RADWIMPS",
+        "RADWIMPSコピー",
+        "ライブ",
         "コピーバンド"
       ],
       "evidence": [
@@ -521,19 +344,20 @@
     },
     {
       "label": "コピーバンド",
-      "summary": "原曲再現を軸にした演奏活動。",
-      "weight": 7,
+      "summary": "既存曲を演奏するバンド活動。",
+      "weight": 4,
       "category": "music",
       "mix": {
         "research": 0,
-        "create": 1,
+        "create": 2,
         "play": 3,
         "explore": 0,
         "reflect": 0
       },
       "related": [
-        "RADWIMPS",
-        "ライブ"
+        "cover",
+        "band",
+        "RADWIMPS"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -541,20 +365,21 @@
     },
     {
       "label": "中南米旅行",
-      "summary": "連載形式で記録された海外旅行の体験。",
-      "weight": 8,
+      "summary": "メキシコやペルーを含む長めの旅の記録。",
+      "weight": 5,
       "category": "interest",
       "mix": {
         "research": 0,
-        "create": 1,
+        "create": 2,
         "play": 0,
         "explore": 3,
         "reflect": 3
       },
       "related": [
         "メキシコシティ",
-        "ペルー",
-        "バンクーバー"
+        "バンクーバー",
+        "図書館",
+        "タコス"
       ],
       "evidence": [
         "note.com/chenchuchu"
@@ -562,38 +387,20 @@
     },
     {
       "label": "メキシコシティ",
-      "summary": "中南米旅行で訪れた都市。",
-      "weight": 6,
+      "summary": "中南米旅行で歩いた都市。屋台や革命記念塔の描写がある。",
+      "weight": 4,
       "category": "interest",
       "mix": {
         "research": 0,
-        "create": 0,
+        "create": 1,
         "play": 0,
         "explore": 3,
-        "reflect": 1
+        "reflect": 2
       },
       "related": [
-        "中南米旅行",
-        "革命記念塔"
-      ],
-      "evidence": [
-        "note.com/chenchuchu"
-      ]
-    },
-    {
-      "label": "革命記念塔",
-      "summary": "メキシコシティで見学した記念建造物。",
-      "weight": 5,
-      "category": "interest",
-      "mix": {
-        "research": 1,
-        "create": 0,
-        "play": 0,
-        "explore": 2,
-        "reflect": 1
-      },
-      "related": [
-        "メキシコシティ"
+        "革命記念塔",
+        "屋台",
+        "oxxo"
       ],
       "evidence": [
         "note.com/chenchuchu"
@@ -601,18 +408,36 @@
     },
     {
       "label": "バンクーバー",
-      "summary": "旅行記で経由地として描かれる都市。",
-      "weight": 5,
+      "summary": "旅行の出発点として描かれる都市。近代化や空気感への観察がある。",
+      "weight": 3,
       "category": "interest",
       "mix": {
         "research": 0,
         "create": 0,
         "play": 0,
         "explore": 3,
+        "reflect": 2
+      },
+      "related": [
+        "中南米旅行"
+      ],
+      "evidence": [
+        "note.com/chenchuchu"
+      ]
+    },
+    {
+      "label": "タコス",
+      "summary": "旅の途中で強く意識される食べ物。",
+      "weight": 3,
+      "category": "interest",
+      "mix": {
+        "research": 0,
+        "create": 0,
+        "play": 0,
+        "explore": 1,
         "reflect": 1
       },
       "related": [
-        "中南米旅行",
         "メキシコシティ"
       ],
       "evidence": [
@@ -621,8 +446,8 @@
     },
     {
       "label": "好奇心",
-      "summary": "旅先の小さな発見を楽しみ、疑問にする姿勢。",
-      "weight": 6,
+      "summary": "旅先の小さな発見を楽しみ、疑問を持ち続けたいという姿勢。",
+      "weight": 4,
       "category": "thought",
       "mix": {
         "research": 1,
@@ -632,10 +457,54 @@
         "reflect": 3
       },
       "related": [
-        "中南米旅行"
+        "中南米旅行",
+        "観察",
+        "想像力"
       ],
       "evidence": [
         "note.com/chenchuchu"
+      ]
+    },
+    {
+      "label": "循環経済",
+      "summary": "中古品の利用価値を高める研究文脈。",
+      "weight": 4,
+      "category": "thought",
+      "mix": {
+        "research": 2,
+        "create": 1,
+        "play": 0,
+        "explore": 0,
+        "reflect": 2
+      },
+      "related": [
+        "環境影響評価",
+        "Scope 3",
+        "中古衣料"
+      ],
+      "evidence": [
+        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
+        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
+      ]
+    },
+    {
+      "label": "Scope 3",
+      "summary": "サプライチェーン全体の排出量算定に関わる概念。",
+      "weight": 3,
+      "category": "thought",
+      "mix": {
+        "research": 2,
+        "create": 0,
+        "play": 0,
+        "explore": 0,
+        "reflect": 1
+      },
+      "related": [
+        "循環経済",
+        "環境影響評価"
+      ],
+      "evidence": [
+        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
       ]
     }
   ]
