@@ -47,7 +47,7 @@ jobs:
         run: python scripts/sync_web_search_feed.py
         env:
           BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
-          WEB_SEARCH_QUERY: '"Sumiaki Kusahata" OR "Kusahata Sumiaki" OR "草将 澄秋"'
+          WEB_SEARCH_QUERY: "sumiaki kusahata"
 
       - name: Commit changed source data
         id: commit

@@ -19,7 +19,7 @@ from .http_client import request_json
 JsonRequester = Callable[..., Any]
 PageFetcher = Callable[[str], tuple[str, str]]
 BRAVE_SEARCH_URL = "https://api.search.brave.com/res/v1/web/search"
-DEFAULT_QUERY = '"Sumiaki Kusahata" OR "Kusahata Sumiaki" OR "草将 澄秋"'
+DEFAULT_QUERY = "sumiaki kusahata"
 MAX_RESULTS = 10
 MAX_PAGES = 30
 MAX_HTML_BYTES = 2_000_000
