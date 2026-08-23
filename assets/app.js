@@ -1,7 +1,6 @@
 const field = document.querySelector("#concept-field");
 const count = document.querySelector("#concept-count");
 const layoutToggle = document.querySelector("#layout-toggle");
-const mixerToggle = document.querySelector("#mixer-toggle");
 const mixerPanel = document.querySelector("#human-mixer");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
@@ -136,11 +135,14 @@ function applyMixer({ relayout = true } = {}) {
 
 function layoutBounds() {
   const mobile = field.clientWidth <= 704;
+  const compactMixer = field.clientWidth <= 900;
   const side = mobile ? 14 : 36;
+  const mixerWidth = compactMixer ? 0 : mixerPanel.offsetWidth + 24;
+  const mixerBottom = mixerPanel.offsetTop + mixerPanel.offsetHeight + 18;
   return {
     left: side,
-    right: field.clientWidth - side,
-    top: mobile ? 82 : 72,
+    right: field.clientWidth - side - mixerWidth,
+    top: compactMixer ? Math.max(mobile ? 82 : 72, mixerBottom) : 72,
     bottom: field.clientHeight - (mobile ? 132 : 92),
   };
 }
@@ -154,7 +156,11 @@ function measureWords(words) {
 }
 
 function sizeField(measurements) {
-  const width = Math.max(280, field.clientWidth - (field.clientWidth <= 704 ? 28 : 72));
+  const mixerWidth = field.clientWidth > 900 ? mixerPanel.offsetWidth + 24 : 0;
+  const width = Math.max(
+    280,
+    field.clientWidth - (field.clientWidth <= 704 ? 28 : 72) - mixerWidth,
+  );
   const density = field.clientWidth <= 704 ? 0.3 : 0.44;
   const totalArea = measurements.reduce((area, item) => {
     return area + (item.width + 24) * (item.height + 20);
@@ -369,14 +375,6 @@ layoutToggle.addEventListener("click", () => {
   layoutWords();
 });
 
-mixerToggle.addEventListener("click", () => {
-  const open = mixerPanel.dataset.open !== "true";
-  mixerPanel.dataset.open = String(open);
-  mixerPanel.setAttribute("aria-hidden", String(!open));
-  mixerPanel.inert = !open;
-  mixerToggle.setAttribute("aria-expanded", String(open));
-});
-
 mixerInputs.forEach((input) => {
   input.addEventListener("input", () => applyMixer());
 });
@@ -386,15 +384,6 @@ mixerReset.addEventListener("click", () => {
     input.value = "100";
   });
   applyMixer();
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key !== "Escape" || mixerPanel.dataset.open !== "true") return;
-  mixerPanel.dataset.open = "false";
-  mixerPanel.setAttribute("aria-hidden", "true");
-  mixerPanel.inert = true;
-  mixerToggle.setAttribute("aria-expanded", "false");
-  mixerToggle.focus();
 });
 
 window.addEventListener("resize", () => {
