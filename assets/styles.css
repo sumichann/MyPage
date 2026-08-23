@@ -382,6 +382,7 @@ a {
 
 .features-section {
   border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(6rem, 16vh, 10rem);
   padding: clamp(5.5rem, 8vw, 7rem) clamp(1.5rem, 7vw, 7rem) clamp(6rem, 10vw, 8rem);
 }
 
