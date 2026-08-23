@@ -392,6 +392,23 @@ a {
   margin-bottom: clamp(6rem, 16vh, 10rem);
 }
 
+.likes-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 4rem);
+  margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.likes-list li {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  font-size: clamp(1rem, 1.5vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
 .section-label,
 .history-group h3,
 .history-date {
@@ -625,6 +642,10 @@ noscript {
   }
 
   .history-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .likes-list {
     grid-template-columns: 1fr;
   }
 
