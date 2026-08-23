@@ -14,22 +14,173 @@
     <header class="site-header">
       <p class="site-name">kusahata.com</p>
       <p class="site-note">words in progress</p>
-      <button
-        id="layout-toggle"
-        class="layout-toggle"
-        type="button"
-        aria-pressed="false"
-        disabled
-      >group by genre</button>
+      <div class="header-actions">
+        <button
+          id="layout-toggle"
+          class="control-button"
+          type="button"
+          aria-pressed="false"
+          disabled
+        >group by genre</button>
+      </div>
     </header>
 
-    <main
-      id="concept-field"
-      class="concept-field"
-      aria-label="kusahataを構成する言葉"
-      aria-busy="true"
+    <section
+      id="human-mixer"
+      class="mixer-panel"
+      aria-label="human mixer"
     >
-      <p class="loading">collecting traces...</p>
+      <div class="mixer-heading">
+        <p>human mixer</p>
+        <button id="mixer-reset" class="mixer-reset" type="button">reset mix</button>
+      </div>
+      <div class="mixer-channels">
+        <label class="mixer-channel">
+          <span>research</span>
+          <input data-mix-axis="research" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>create</span>
+          <input data-mix-axis="create" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>play</span>
+          <input data-mix-axis="play" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>explore</span>
+          <input data-mix-axis="explore" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>reflect</span>
+          <input data-mix-axis="reflect" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+      </div>
+    </section>
+
+    <main>
+      <section
+        id="concept-field"
+        class="concept-field"
+        aria-label="kusahataを構成する言葉"
+        aria-busy="true"
+      >
+        <p class="loading">collecting traces...</p>
+      </section>
+
+      <section class="history-section" aria-labelledby="history-title">
+        <div class="section-concept-stack" aria-hidden="true">
+          <span
+            class="section-concept-target"
+            data-concept-categories="identity"
+            data-concept-exclude="sumiaki|草将澄秋"
+          >identity</span>
+        </div>
+        <p class="section-label">background</p>
+        <h2 id="history-title">Education &amp; Experience</h2>
+
+        <div class="history-groups">
+          <section class="history-group" aria-labelledby="education-title">
+            <h3 id="education-title">Education</h3>
+            <ol class="history-list">
+              <li>
+                <p class="history-date">2021.04–2025.03</p>
+                <p class="history-role">B.S.</p>
+                <p class="history-place">The University of Tokyo</p>
+              </li>
+              <li>
+                <p class="history-date">2025.04–2027.03</p>
+                <p class="history-role">M.S.</p>
+                <p class="history-place">The University of Tokyo</p>
+              </li>
+            </ol>
+          </section>
+
+          <section class="history-group" aria-labelledby="experience-title">
+            <h3 id="experience-title">Experience</h3>
+            <ol class="history-list">
+              <li>
+                <p class="history-date">2024.07–2026.02</p>
+                <p class="history-role">Software Engineer Intern</p>
+                <p class="history-place">WOGO, Inc.</p>
+              </li>
+              <li>
+                <p class="history-date">2026.02–2026.09</p>
+                <p class="history-role">Full-Stack Engineer Intern</p>
+                <p class="history-place">Apple</p>
+              </li>
+            </ol>
+          </section>
+        </div>
+      </section>
+
+      <section class="features-section" aria-labelledby="features-title">
+        <div class="section-concept-stack" aria-hidden="true">
+          <span
+            class="section-concept-target"
+            data-concept-categories="research project"
+          >research and project</span>
+        </div>
+        <p class="section-label">selected work</p>
+        <h2 id="features-title">Research &amp; Features</h2>
+
+        <ol class="feature-list">
+          <li class="feature-item">
+            <div class="feature-meta">
+              <p class="feature-type">Presentation</p>
+              <p>2025.09</p>
+            </div>
+            <article>
+              <h3>Automated Estimation of Clothing Information for Evaluating Environmental Impact</h3>
+              <p class="feature-byline">Sumiaki Kusahata, Dami Moon, Yoshihiro Kawahara</p>
+              <p class="feature-context">LCM 2025 · Palermo, Italy</p>
+              <a href="https://www.lcm2025.org/">Conference ↗</a>
+            </article>
+          </li>
+
+          <li class="feature-item">
+            <div class="feature-meta">
+              <p class="feature-type">Press</p>
+              <p>2025.09.12</p>
+            </div>
+            <article>
+              <h3>AI “Visualizes” the Environmental Impact of Single Second-hand Items</h3>
+              <p class="feature-context">The University of Tokyo</p>
+              <a href="https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001">Press Release ↗</a>
+            </article>
+          </li>
+
+          <li class="feature-item">
+            <div class="feature-meta">
+              <p class="feature-type">Media</p>
+              <p>2026.02.09</p>
+            </div>
+            <article lang="ja">
+              <h3>メルカリ・東大、古着のCFP自動算出　AIで一点物の壁打破</h3>
+              <p class="feature-context">NIKKEI GX</p>
+              <a href="https://www.nikkei.com/prime/gx/article/DGXZQOUC10BUS0Q5A211C2000000">Article ↗</a>
+            </article>
+          </li>
+
+          <li class="feature-item">
+            <div class="feature-meta">
+              <p class="feature-type">Interview</p>
+              <p>2026.05.21</p>
+            </div>
+            <article>
+              <h3>Making “Never Waste” the New Normal: Visualizing the Carbon Footprint of a Single Garment</h3>
+              <p class="feature-byline">with Moon Dami</p>
+              <p class="feature-context">The Big Picture, vol. 6 · RIISE, The University of Tokyo</p>
+              <a href="https://www.riise.u-tokyo.ac.jp/news/bigpicture_moon_kusahata_en">Read Interview ↗</a>
+            </article>
+          </li>
+        </ol>
+      </section>
     </main>
 
     <footer class="site-footer">
