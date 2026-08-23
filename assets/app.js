@@ -132,6 +132,35 @@ function collectSectionConceptAssignments() {
   });
 }
 
+function assignLandingRows(assignments) {
+  const horizontalGap = 12;
+  const targetFontSize = Number.parseFloat(getComputedStyle(assignments[0].target).fontSize);
+  const measured = assignments.map((assignment) => {
+    const { word } = assignment;
+    const currentSize = Number.parseFloat(getComputedStyle(word).fontSize);
+    const landingSize = targetFontSize * displayedConceptScale(word);
+    const currentWidth = word.getBoundingClientRect().width;
+    const landingWidth = currentSize > 0 ? currentWidth * landingSize / currentSize : 0;
+    return {
+      assignment,
+      centerX: Number.parseFloat(word.style.left),
+      landingSize,
+      landingWidth,
+    };
+  }).sort((a, b) => a.centerX - b.centerX);
+  const rowHeight = Math.max(18, ...measured.map(({ landingSize }) => landingSize + 6));
+  const rowRightEdges = [];
+
+  measured.forEach(({ assignment, centerX, landingWidth }) => {
+    const left = centerX - landingWidth / 2;
+    const right = centerX + landingWidth / 2;
+    let row = rowRightEdges.findIndex((rightEdge) => left >= rightEdge + horizontalGap);
+    if (row === -1) row = rowRightEdges.length;
+    rowRightEdges[row] = right;
+    assignment.landingOffsetY = row * rowHeight;
+  });
+}
+
 function updateSectionConcepts() {
   sectionConceptFrame = undefined;
   if (sectionConceptTargets.length === 0) return;
@@ -142,6 +171,16 @@ function updateSectionConcepts() {
   }
 
   const fieldRect = field.getBoundingClientRect();
+  sectionConceptTargets.forEach((target) => {
+    const assignments = sectionConceptAssignments.filter((assignment) => {
+      return assignment.target === target && assignment.word.dataset.positioned;
+    });
+    if (assignments.length > 0
+        && assignments.some(({ landingOffsetY }) => landingOffsetY === undefined)) {
+      assignLandingRows(assignments);
+    }
+  });
+
   sectionConceptAssignments.forEach((assignment) => {
     const { word, target, index } = assignment;
     if (!word.dataset.positioned) return;
@@ -166,7 +205,10 @@ function updateSectionConcepts() {
     word.classList.add("concept--section-bound");
     word.classList.toggle("concept--section-landed", assignment.dropped);
     word.style.setProperty("--travel-x", "0px");
-    word.style.setProperty("--travel-y", `${(targetY - sourceY).toFixed(2)}px`);
+    word.style.setProperty(
+      "--travel-y",
+      `${(targetY - sourceY - assignment.landingOffsetY).toFixed(2)}px`,
+    );
     word.style.setProperty("--travel-size", `${targetSize.toFixed(2)}px`);
     word.style.setProperty("--drop-delay", `${index * 55}ms`);
   });
@@ -371,6 +413,9 @@ function layoutWords() {
     word.style.left = `${position.x.toFixed(1)}px`;
     word.style.top = `${position.y.toFixed(1)}px`;
     word.dataset.positioned = "true";
+  });
+  sectionConceptAssignments.forEach((assignment) => {
+    assignment.landingOffsetY = undefined;
   });
   scheduleSectionConceptUpdate();
 }
