@@ -323,7 +323,8 @@ a {
   --concept-color: #8b3f72;
 }
 
-.history-section {
+.history-section,
+.features-section {
   position: relative;
   z-index: 1;
   min-height: 100vh;
@@ -346,7 +347,8 @@ a {
   margin: 0 0 1.25rem;
 }
 
-.history-section > h2 {
+.history-section > h2,
+.features-section > h2 {
   max-width: 12ch;
   margin: 0;
   font-size: clamp(2.8rem, 7vw, 7rem);
@@ -394,6 +396,72 @@ a {
   margin-top: 0.4rem !important;
   color: var(--muted);
   font-size: clamp(0.9rem, 1.2vw, 1.15rem);
+}
+
+.features-section {
+  background: rgb(232 232 220 / 94%);
+}
+
+.feature-list {
+  margin: clamp(4rem, 9vw, 8rem) 0 0;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+  list-style: none;
+}
+
+.feature-item {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.3fr) minmax(0, 1fr);
+  gap: clamp(2rem, 7vw, 7rem);
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
+  border-top: 1px solid var(--line);
+}
+
+.feature-meta p,
+.feature-item article > p {
+  margin: 0;
+}
+
+.feature-meta {
+  display: flex;
+  gap: 0.8rem;
+  align-items: baseline;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.feature-type {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.feature-item h3 {
+  max-width: 28ch;
+  margin: 0 0 1rem;
+  font-size: clamp(1.5rem, 3vw, 3rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.feature-byline,
+.feature-context {
+  color: var(--muted);
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  line-height: 1.5;
+}
+
+.feature-context {
+  margin-bottom: 1rem !important;
+}
+
+.feature-item a {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .category-legend {
@@ -487,12 +555,22 @@ noscript {
     font-size: 0.54rem;
   }
 
-  .history-section {
+  .history-section,
+  .features-section {
     padding-top: 15rem;
   }
 
   .history-groups {
     grid-template-columns: 1fr;
+  }
+
+  .feature-item {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .feature-meta {
+    justify-content: flex-start;
   }
 
   .site-footer {
