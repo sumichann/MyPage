@@ -52,7 +52,7 @@ jobs:
       - name: Commit changed source data
         id: commit
         run: |
-          if git diff --quiet -- data/note-feed.json data/youtube-feed.json data/web-search-feed.json; then
+          if [ -z "$(git status --porcelain -- data/note-feed.json data/youtube-feed.json data/web-search-feed.json)" ]; then
             echo "No external source changes to commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
