@@ -43,23 +43,29 @@ jobs:
           YOUTUBE_HANDLE: "@sumihosdrums"
           YOUTUBE_MAX_VIDEOS: "30"
 
+      - name: Discover and fetch public web pages
+        run: python scripts/sync_web_search_feed.py
+        env:
+          BRAVE_SEARCH_API_KEY: ${{ secrets.BRAVE_SEARCH_API_KEY }}
+          WEB_SEARCH_QUERY: '"Sumiaki Kusahata" OR "Kusahata Sumiaki" OR "草将 澄秋"'
+
       - name: Commit changed source data
         id: commit
         run: |
-          if git diff --quiet -- data/note-feed.json data/youtube-feed.json; then
+          if git diff --quiet -- data/note-feed.json data/youtube-feed.json data/web-search-feed.json; then
             echo "No external source changes to commit."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- data/note-feed.json data/youtube-feed.json
+          git add -- data/note-feed.json data/youtube-feed.json data/web-search-feed.json
           git commit -m "Update external source data"
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: Generate concepts from updated sources
-        if: steps.commit.outputs.changed == 'true'
+        if: steps.commit.outputs.changed == 'true' && github.ref == 'refs/heads/main'
         run: gh workflow run generate-concepts.yml --ref main
         env:
           GH_TOKEN: ${{ github.token }}

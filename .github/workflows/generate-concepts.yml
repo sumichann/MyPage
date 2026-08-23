@@ -9,6 +9,7 @@ on:
       - "content/**"
       - "data/note-feed.json"
       - "data/youtube-feed.json"
+      - "data/web-search-feed.json"
       - "scripts/generate_concepts.py"
       - "scripts/concept_generator/**"
       - "tests/**"
