@@ -335,6 +335,26 @@ a {
   padding: clamp(5.5rem, 8vw, 7rem) clamp(1.5rem, 7vw, 7rem) clamp(6rem, 10vw, 8rem);
 }
 
+.section-concept-stack {
+  position: absolute;
+  top: 0;
+  left: clamp(1.5rem, 7vw, 7rem);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  transform: translateY(-100%);
+}
+
+.section-concept {
+  padding-right: 0.45rem;
+  background: var(--paper);
+  font-size: clamp(1.5rem, 2.8vw, 2.8rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  transform: rotate(-1.5deg);
+}
+
 .features-section {
   padding: clamp(5.5rem, 8vw, 7rem) clamp(1.5rem, 7vw, 7rem) clamp(6rem, 10vw, 8rem);
 }
