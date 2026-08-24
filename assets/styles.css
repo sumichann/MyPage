@@ -213,6 +213,13 @@ a {
   color: var(--muted);
 }
 
+.footer-meta {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  white-space: nowrap;
+}
+
 .social-links {
   display: flex;
   gap: 0.9rem;
@@ -733,6 +740,17 @@ noscript {
   .site-footer {
     grid-template-columns: 1fr auto;
     row-gap: 0.8rem;
+  }
+
+  .footer-meta,
+  .social-links {
+    gap: 0.5rem;
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+  }
+
+  .footer-meta #concept-count {
+    display: none;
   }
 
   .category-legend {
