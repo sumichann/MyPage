@@ -2,7 +2,7 @@
   color-scheme: light;
   font-family: "Helvetica Neue", "Hiragino Sans", "Yu Gothic", sans-serif;
   font-synthesis: none;
-  --paper: #f1efe7;
+  --paper: #e8e5dc;
   --ink: #17221a;
   --muted: #697069;
   --line: rgb(23 34 26 / 18%);
@@ -64,7 +64,7 @@ a {
   padding: 0.42rem 0.68rem;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgb(241 239 231 / 82%);
+  background: rgb(232 229 220 / 82%);
   color: var(--ink);
   font: inherit;
   letter-spacing: inherit;
@@ -101,7 +101,7 @@ a {
   padding: 0.85rem 1rem 1rem;
   border: 1px solid var(--line);
   border-radius: 0.8rem;
-  background: rgb(241 239 231 / 50%);
+  background: rgb(232 229 220 / 50%);
   box-shadow: 0 1rem 3rem rgb(23 34 26 / 7%);
   backdrop-filter: blur(0.2rem);
 }
