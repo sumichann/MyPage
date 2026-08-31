@@ -729,6 +729,11 @@ noscript {
     line-height: 1.02;
   }
 
+  .section-concept-word {
+    font-size: var(--section-concept-size-mobile, 0.7rem);
+    line-height: 1.02;
+  }
+
   .site-header {
     align-items: flex-start;
   }

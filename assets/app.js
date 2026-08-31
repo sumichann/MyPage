@@ -73,6 +73,10 @@ function visualSize(concept, minWeight, maxWeight) {
   return (1.25 + normalized * 3.4) * lengthAdjustment;
 }
 
+function mobileVisualSize(size) {
+  return Math.min(1.38, Math.max(0.48, size * 0.34));
+}
+
 function createSeed() {
   if (globalThis.crypto?.getRandomValues) {
     return globalThis.crypto.getRandomValues(new Uint32Array(1))[0];
@@ -335,6 +339,7 @@ function renderSectionConcepts(concepts, minWeight, maxWeight) {
         word.dataset.category = concept.category;
         word.textContent = concept.label;
         word.style.setProperty("--section-concept-size", `${(size * 0.68).toFixed(2)}rem`);
+        word.style.setProperty("--section-concept-size-mobile", `${mobileVisualSize(size).toFixed(2)}rem`);
         word.style.setProperty("--concept-weight", categoryWeight[concept.category] || 600);
         fragment.append(word);
       });
@@ -360,7 +365,7 @@ function renderConcepts(concepts) {
     word.dataset.category = concept.category;
     word.textContent = concept.label;
     const size = visualSize(concept, minWeight, maxWeight);
-    const mobileSize = Math.min(1.38, Math.max(0.48, size * 0.34));
+    const mobileSize = mobileVisualSize(size);
     word.dataset.mix = JSON.stringify(normalizeMix(concept));
     word.dataset.baseSize = size.toFixed(3);
     word.dataset.baseMobileSize = mobileSize.toFixed(3);
