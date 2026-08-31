@@ -1,6 +1,9 @@
 const field = document.querySelector("#concept-field");
 const count = document.querySelector("#concept-count");
 const layoutToggle = document.querySelector("#layout-toggle");
+const mixerPanel = document.querySelector("#human-mixer");
+const mixerToggle = document.querySelector("#mixer-toggle");
+const mixerToggleIcon = document.querySelector("#mixer-toggle-icon");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
 const sectionConceptGroups = [...document.querySelectorAll(".section-concept-words")];
@@ -111,6 +114,13 @@ function mixedProminence(mix, levels) {
   const totalScore = mixAxes.reduce((total, axis) => total + mix[axis], 0);
   if (totalScore === 0) return 1;
   return mixAxes.reduce((total, axis) => total + mix[axis] * levels[axis], 0) / totalScore;
+}
+
+function setMixerDrawerOpen(open) {
+  if (!mixerPanel || !mixerToggle) return;
+  mixerPanel.dataset.open = String(open);
+  mixerToggle.setAttribute("aria-expanded", String(open));
+  if (mixerToggleIcon) mixerToggleIcon.textContent = open ? "↓" : "↑";
 }
 
 function applyMixer() {
@@ -488,6 +498,17 @@ layoutToggle?.addEventListener("click", () => {
   layoutWords();
 });
 
+mixerToggle?.addEventListener("click", () => {
+  setMixerDrawerOpen(mixerToggle.getAttribute("aria-expanded") !== "true");
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && mixerToggle?.getAttribute("aria-expanded") === "true") {
+    setMixerDrawerOpen(false);
+    mixerToggle.focus();
+  }
+});
+
 mixerInputs.forEach((input) => {
   input.addEventListener("input", () => applyMixer());
 });
@@ -510,6 +531,7 @@ window.addEventListener("resize", () => {
 });
 
 updateToggle();
+setMixerDrawerOpen(false);
 loadConcepts();
 loadLatestVideo();
 loadLatestNote();
