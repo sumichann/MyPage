@@ -1,6 +1,9 @@
 const field = document.querySelector("#concept-field");
 const count = document.querySelector("#concept-count");
 const layoutToggle = document.querySelector("#layout-toggle");
+const mixerPanel = document.querySelector("#human-mixer");
+const mixerToggle = document.querySelector("#mixer-toggle");
+const mixerToggleIcon = document.querySelector("#mixer-toggle-icon");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
 const sectionConceptGroups = [...document.querySelectorAll(".section-concept-words")];
@@ -70,6 +73,10 @@ function visualSize(concept, minWeight, maxWeight) {
   return (1.25 + normalized * 3.4) * lengthAdjustment;
 }
 
+function mobileVisualSize(size) {
+  return Math.min(1.38, Math.max(0.48, size * 0.34));
+}
+
 function createSeed() {
   if (globalThis.crypto?.getRandomValues) {
     return globalThis.crypto.getRandomValues(new Uint32Array(1))[0];
@@ -111,6 +118,13 @@ function mixedProminence(mix, levels) {
   const totalScore = mixAxes.reduce((total, axis) => total + mix[axis], 0);
   if (totalScore === 0) return 1;
   return mixAxes.reduce((total, axis) => total + mix[axis] * levels[axis], 0) / totalScore;
+}
+
+function setMixerDrawerOpen(open) {
+  if (!mixerPanel || !mixerToggle) return;
+  mixerPanel.dataset.open = String(open);
+  mixerToggle.setAttribute("aria-expanded", String(open));
+  if (mixerToggleIcon) mixerToggleIcon.textContent = open ? "↓" : "↑";
 }
 
 function applyMixer() {
@@ -325,6 +339,7 @@ function renderSectionConcepts(concepts, minWeight, maxWeight) {
         word.dataset.category = concept.category;
         word.textContent = concept.label;
         word.style.setProperty("--section-concept-size", `${(size * 0.68).toFixed(2)}rem`);
+        word.style.setProperty("--section-concept-size-mobile", `${mobileVisualSize(size).toFixed(2)}rem`);
         word.style.setProperty("--concept-weight", categoryWeight[concept.category] || 600);
         fragment.append(word);
       });
@@ -350,7 +365,7 @@ function renderConcepts(concepts) {
     word.dataset.category = concept.category;
     word.textContent = concept.label;
     const size = visualSize(concept, minWeight, maxWeight);
-    const mobileSize = Math.min(1.38, Math.max(0.48, size * 0.34));
+    const mobileSize = mobileVisualSize(size);
     word.dataset.mix = JSON.stringify(normalizeMix(concept));
     word.dataset.baseSize = size.toFixed(3);
     word.dataset.baseMobileSize = mobileSize.toFixed(3);
@@ -488,6 +503,17 @@ layoutToggle?.addEventListener("click", () => {
   layoutWords();
 });
 
+mixerToggle?.addEventListener("click", () => {
+  setMixerDrawerOpen(mixerToggle.getAttribute("aria-expanded") !== "true");
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && mixerToggle?.getAttribute("aria-expanded") === "true") {
+    setMixerDrawerOpen(false);
+    mixerToggle.focus();
+  }
+});
+
 mixerInputs.forEach((input) => {
   input.addEventListener("input", () => applyMixer());
 });
@@ -510,6 +536,7 @@ window.addEventListener("resize", () => {
 });
 
 updateToggle();
+setMixerDrawerOpen(false);
 loadConcepts();
 loadLatestVideo();
 loadLatestNote();

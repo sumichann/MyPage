@@ -32,7 +32,17 @@
       aria-label="human mixer"
     >
       <div class="mixer-heading">
-        <p>human mixer</p>
+        <p class="mixer-label">human mixer</p>
+        <button
+          id="mixer-toggle"
+          class="mixer-drawer-toggle"
+          type="button"
+          aria-controls="human-mixer"
+          aria-expanded="false"
+        >
+          <span>human mixer</span>
+          <span id="mixer-toggle-icon" aria-hidden="true">↑</span>
+        </button>
         <button id="mixer-reset" class="mixer-reset" type="button">reset mix</button>
       </div>
       <div class="mixer-channels">
