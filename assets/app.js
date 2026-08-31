@@ -4,7 +4,11 @@ const layoutToggle = document.querySelector("#layout-toggle");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
 const sectionConceptGroups = [...document.querySelectorAll(".section-concept-words")];
+const latestVideoPlayer = document.querySelector("#latest-video-player");
+const latestVideoLink = document.querySelector("#latest-video-link");
+const latestVideoDate = document.querySelector("#latest-video-date");
 const latestNoteLink = document.querySelector("#latest-note-link");
+const latestNoteExcerpt = document.querySelector("#latest-note-excerpt");
 const latestNoteDate = document.querySelector("#latest-note-date");
 
 const mixAxes = ["research", "create", "play", "explore", "reflect"];
@@ -389,7 +393,7 @@ async function loadConcepts() {
 }
 
 async function loadLatestNote() {
-  if (!latestNoteLink || !latestNoteDate) return;
+  if (!latestNoteLink || !latestNoteExcerpt || !latestNoteDate) return;
 
   try {
     const response = await fetch(new URL("../data/note-feed.json", import.meta.url));
@@ -410,6 +414,18 @@ async function loadLatestNote() {
     latestNoteLink.href = articleUrl.href;
     latestNoteLink.textContent = `${latest.title} ↗`;
 
+    const description = String(latest.description || "")
+      .replace(/続きをみる\s*$/, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (description) {
+      const maximumLength = 140;
+      latestNoteExcerpt.textContent = description.length > maximumLength
+        ? `${description.slice(0, maximumLength).trimEnd()}…`
+        : description;
+      latestNoteExcerpt.hidden = false;
+    }
+
     const publishedAt = new Date(latest.publishedAt);
     if (!Number.isNaN(publishedAt.getTime())) {
       latestNoteDate.dateTime = publishedAt.toISOString();
@@ -421,6 +437,47 @@ async function loadLatestNote() {
     }
   } catch (error) {
     console.error("Could not load latest note article", error);
+  }
+}
+
+async function loadLatestVideo() {
+  if (!latestVideoPlayer || !latestVideoLink || !latestVideoDate) return;
+
+  try {
+    const response = await fetch(new URL("../data/youtube-feed.json", import.meta.url));
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const payload = await response.json();
+    const videos = Array.isArray(payload.videos) ? payload.videos : [];
+    const latest = videos
+      .filter((video) => /^[A-Za-z0-9_-]{11}$/.test(video.id) && video.title)
+      .sort((first, second) => Date.parse(second.publishedAt) - Date.parse(first.publishedAt))[0];
+    if (!latest) throw new Error("No YouTube videos found");
+
+    const watchUrl = `https://www.youtube.com/watch?v=${latest.id}`;
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube-nocookie.com/embed/${latest.id}`;
+    iframe.title = `YouTube: ${latest.title}`;
+    iframe.loading = "lazy";
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+    latestVideoPlayer.replaceChildren(iframe);
+
+    latestVideoLink.href = watchUrl;
+    latestVideoLink.textContent = `${latest.title} ↗`;
+
+    const publishedAt = new Date(latest.publishedAt);
+    if (!Number.isNaN(publishedAt.getTime())) {
+      latestVideoDate.dateTime = publishedAt.toISOString();
+      latestVideoDate.textContent = new Intl.DateTimeFormat("en", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      }).format(publishedAt);
+    }
+  } catch (error) {
+    console.error("Could not load latest YouTube video", error);
   }
 }
 
@@ -454,4 +511,5 @@ window.addEventListener("resize", () => {
 
 updateToggle();
 loadConcepts();
+loadLatestVideo();
 loadLatestNote();
