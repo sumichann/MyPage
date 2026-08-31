@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="公開された痕跡からAIが抽出した、kusahataを構成する言葉。"
+    >
+    <title>concept map — kusahata</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body class="concepts-page">
+    <header class="site-header">
+      <a class="site-name" href="/" aria-label="kusahata.com home">kusahata.com</a>
+      <p class="site-note">words in progress</p>
+      <div class="header-actions">
+        <a class="control-button" href="/">about</a>
+        <button
+          id="layout-toggle"
+          class="control-button"
+          type="button"
+          aria-pressed="false"
+          disabled
+        >group by genre</button>
+      </div>
+    </header>
+
+    <section
+      id="human-mixer"
+      class="mixer-panel"
+      aria-label="human mixer"
+    >
+      <div class="mixer-heading">
+        <p>human mixer</p>
+        <button id="mixer-reset" class="mixer-reset" type="button">reset mix</button>
+      </div>
+      <div class="mixer-channels">
+        <label class="mixer-channel">
+          <span>research</span>
+          <input data-mix-axis="research" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>create</span>
+          <input data-mix-axis="create" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>play</span>
+          <input data-mix-axis="play" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>explore</span>
+          <input data-mix-axis="explore" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+        <label class="mixer-channel">
+          <span>reflect</span>
+          <input data-mix-axis="reflect" type="range" min="0" max="200" value="100">
+          <output>100</output>
+        </label>
+      </div>
+    </section>
+
+    <main>
+      <section
+        id="concept-field"
+        class="concept-field"
+        aria-label="kusahataを構成する言葉"
+        aria-busy="true"
+      >
+        <p class="loading">collecting traces...</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-meta">
+        <p>© 2026 <span class="copyright-name">Sumiaki Kusahata</span></p>
+        <p id="concept-count">AI-generated concept map</p>
+      </div>
+      <ul class="category-legend" aria-label="色とジャンルの対応">
+        <li class="legend-item" data-category="identity">identity</li>
+        <li class="legend-item" data-category="background">background</li>
+        <li class="legend-item" data-category="interest">interest</li>
+        <li class="legend-item" data-category="project">project</li>
+        <li class="legend-item" data-category="research">research</li>
+        <li class="legend-item" data-category="tech-skill">tech skill</li>
+        <li class="legend-item" data-category="tool">tool</li>
+        <li class="legend-item" data-category="music">music</li>
+        <li class="legend-item" data-category="books">books</li>
+        <li class="legend-item" data-category="thought">thought</li>
+      </ul>
+      <nav class="social-links" aria-label="外部リンク">
+        <a href="https://www.linkedin.com/in/sumiaki-kusahata-b43729381" rel="me">LinkedIn ↗</a>
+        <a href="https://note.com/chenchuchu" rel="me">note ↗</a>
+        <a href="https://www.youtube.com/@sumihosdrums" rel="me">YouTube ↗</a>
+        <a href="https://github.com/sumichann" rel="me">GitHub ↗</a>
+      </nav>
+    </footer>
+
+    <noscript>このページの表示にはJavaScriptが必要です。</noscript>
+    <script type="module" src="assets/app.js"></script>
+  </body>
+</html>

@@ -3,7 +3,7 @@ const count = document.querySelector("#concept-count");
 const layoutToggle = document.querySelector("#layout-toggle");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
-const sectionConceptTargets = [...document.querySelectorAll("[data-concept-categories]")];
+const sectionConceptGroups = [...document.querySelectorAll(".section-concept-words")];
 const latestNoteLink = document.querySelector("#latest-note-link");
 const latestNoteDate = document.querySelector("#latest-note-date");
 
@@ -38,8 +38,6 @@ const categoryWeight = {
 let layoutMode = "scatter";
 let scatterSeed = createSeed();
 let resizeTimer;
-let sectionConceptFrame;
-let sectionConceptAssignments = [];
 let lastLayoutWidth = window.innerWidth;
 
 const fallbackMixByCategory = {
@@ -111,120 +109,8 @@ function mixedProminence(mix, levels) {
   return mixAxes.reduce((total, axis) => total + mix[axis] * levels[axis], 0) / totalScore;
 }
 
-function displayedConceptScale(word) {
-  const baseSize = window.innerWidth <= 704
-    ? Number(word.dataset.baseMobileSize)
-    : Number(word.dataset.baseSize);
-  if (baseSize === 0) return 0;
-  const property = window.innerWidth <= 704 ? "--concept-size-mobile" : "--concept-size";
-  return Number.parseFloat(word.style.getPropertyValue(property)) / baseSize;
-}
-
-function collectSectionConceptAssignments() {
-  const words = [...field.querySelectorAll(".concept")];
-  const claimed = new Set();
-
-  return sectionConceptTargets.flatMap((target) => {
-    const categories = new Set(target.dataset.conceptCategories.split(/\s+/));
-    const excluded = new Set((target.dataset.conceptExclude || "").split("|").filter(Boolean));
-    const matches = words.filter((word) => {
-      const label = word.textContent.trim();
-      return !claimed.has(word) && categories.has(word.dataset.category) && !excluded.has(label);
-    });
-
-    matches.forEach((word) => claimed.add(word));
-    return matches.map((word, index) => ({ word, target, index, dropped: false }));
-  });
-}
-
-function assignLandingRows(assignments) {
-  const horizontalGap = 12;
-  const targetFontSize = Number.parseFloat(getComputedStyle(assignments[0].target).fontSize);
-  const measured = assignments.map((assignment) => {
-    const { word } = assignment;
-    const currentSize = Number.parseFloat(getComputedStyle(word).fontSize);
-    const landingSize = targetFontSize * displayedConceptScale(word);
-    const currentWidth = word.getBoundingClientRect().width;
-    const landingWidth = currentSize > 0 ? currentWidth * landingSize / currentSize : 0;
-    return {
-      assignment,
-      centerX: Number.parseFloat(word.style.left),
-      landingSize,
-      landingWidth,
-    };
-  }).sort((a, b) => a.centerX - b.centerX);
-  const rowHeight = Math.max(18, ...measured.map(({ landingSize }) => landingSize + 6));
-  const rowRightEdges = [];
-
-  measured.forEach(({ assignment, centerX, landingWidth }) => {
-    const left = centerX - landingWidth / 2;
-    const right = centerX + landingWidth / 2;
-    let row = rowRightEdges.findIndex((rightEdge) => left >= rightEdge + horizontalGap);
-    if (row === -1) row = rowRightEdges.length;
-    rowRightEdges[row] = right;
-    assignment.landingOffsetY = row * rowHeight;
-  });
-}
-
-function updateSectionConcepts() {
-  sectionConceptFrame = undefined;
-  if (sectionConceptTargets.length === 0) return;
-
-  if (sectionConceptAssignments.length === 0
-      || sectionConceptAssignments.some(({ word }) => !word.isConnected)) {
-    sectionConceptAssignments = collectSectionConceptAssignments();
-  }
-
-  const fieldRect = field.getBoundingClientRect();
-  sectionConceptTargets.forEach((target) => {
-    const assignments = sectionConceptAssignments.filter((assignment) => {
-      return assignment.target === target && assignment.word.dataset.positioned;
-    });
-    if (assignments.length > 0
-        && assignments.some(({ landingOffsetY }) => landingOffsetY === undefined)) {
-      assignLandingRows(assignments);
-    }
-  });
-
-  sectionConceptAssignments.forEach((assignment) => {
-    const { word, target, index } = assignment;
-    if (!word.dataset.positioned) return;
-
-    const targetRect = target.getBoundingClientRect();
-    const sourceY = fieldRect.top + window.scrollY + Number.parseFloat(word.style.top);
-    const targetY = targetRect.top + window.scrollY + targetRect.height / 2;
-    const maximumScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    const preferredTrigger = Math.max(48, targetY - window.innerHeight * 0.82);
-    const triggerScroll = Math.min(preferredTrigger, Math.max(0, maximumScroll - 1));
-    const resetScroll = Math.max(0, triggerScroll - 120);
-
-    if (!assignment.dropped && window.scrollY >= triggerScroll) {
-      assignment.dropped = true;
-    } else if (assignment.dropped && window.scrollY <= resetScroll) {
-      assignment.dropped = false;
-    }
-
-    const targetSize = Number.parseFloat(getComputedStyle(target).fontSize)
-      * displayedConceptScale(word);
-
-    word.classList.add("concept--section-bound");
-    word.classList.toggle("concept--section-landed", assignment.dropped);
-    word.style.setProperty("--travel-x", "0px");
-    word.style.setProperty(
-      "--travel-y",
-      `${(targetY - sourceY - assignment.landingOffsetY).toFixed(2)}px`,
-    );
-    word.style.setProperty("--travel-size", `${targetSize.toFixed(2)}px`);
-    word.style.setProperty("--drop-delay", `${index * 55}ms`);
-  });
-}
-
-function scheduleSectionConceptUpdate() {
-  if (sectionConceptFrame !== undefined) return;
-  sectionConceptFrame = requestAnimationFrame(updateSectionConcepts);
-}
-
 function applyMixer() {
+  if (!field) return;
   const levels = currentMixLevels();
   const words = [...field.querySelectorAll(".concept")];
 
@@ -245,8 +131,6 @@ function applyMixer() {
     word.style.zIndex = String(Math.round(prominence * 100));
     word.style.setProperty("--concept-delay", "0ms");
   });
-
-  scheduleSectionConceptUpdate();
 }
 
 function layoutBounds() {
@@ -396,12 +280,14 @@ function clusterPositions(measurements, bounds) {
 }
 
 function updateToggle() {
+  if (!layoutToggle) return;
   const clustered = layoutMode === "cluster";
   layoutToggle.setAttribute("aria-pressed", String(clustered));
   layoutToggle.textContent = clustered ? "scatter words" : "group by genre";
 }
 
 function layoutWords() {
+  if (!field) return;
   const words = [...field.querySelectorAll(".concept")];
   if (words.length === 0) return;
 
@@ -419,16 +305,36 @@ function layoutWords() {
     word.style.top = `${position.y.toFixed(1)}px`;
     word.dataset.positioned = "true";
   });
-  sectionConceptAssignments.forEach((assignment) => {
-    assignment.landingOffsetY = undefined;
+}
+
+function renderSectionConcepts(concepts, minWeight, maxWeight) {
+  sectionConceptGroups.forEach((group) => {
+    const categories = new Set(group.dataset.conceptCategories.split(/\s+/));
+    const fragment = document.createDocumentFragment();
+
+    concepts
+      .filter((concept) => categories.has(concept.category))
+      .forEach((concept) => {
+        const word = document.createElement("span");
+        const size = visualSize(concept, minWeight, maxWeight);
+        word.className = "section-concept-word";
+        word.dataset.category = concept.category;
+        word.textContent = concept.label;
+        word.style.setProperty("--section-concept-size", `${(size * 0.68).toFixed(2)}rem`);
+        word.style.setProperty("--concept-weight", categoryWeight[concept.category] || 600);
+        fragment.append(word);
+      });
+
+    group.replaceChildren(fragment);
   });
-  scheduleSectionConceptUpdate();
 }
 
 function renderConcepts(concepts) {
   const weights = concepts.map(({ weight }) => weight);
   const minWeight = Math.min(...weights);
   const maxWeight = Math.max(...weights);
+  renderSectionConcepts(concepts, minWeight, maxWeight);
+  if (!field) return;
   const fragment = document.createDocumentFragment();
 
   concepts.forEach((concept, index) => {
@@ -454,8 +360,8 @@ function renderConcepts(concepts) {
 
   field.replaceChildren(fragment);
   field.setAttribute("aria-busy", "false");
-  count.textContent = `${concepts.length} words / AI-generated`;
-  layoutToggle.disabled = false;
+  if (count) count.textContent = `${concepts.length} words / AI-generated`;
+  if (layoutToggle) layoutToggle.disabled = false;
   applyMixer();
   requestAnimationFrame(layoutWords);
 }
@@ -473,6 +379,7 @@ async function loadConcepts() {
     renderConcepts(payload.concepts);
   } catch (error) {
     console.error("Could not load concept map", error);
+    if (!field) return;
     const message = document.createElement("p");
     message.className = "loading error";
     message.textContent = "words could not be loaded.";
@@ -517,7 +424,7 @@ async function loadLatestNote() {
   }
 }
 
-layoutToggle.addEventListener("click", () => {
+layoutToggle?.addEventListener("click", () => {
   layoutMode = layoutMode === "scatter" ? "cluster" : "scatter";
   if (layoutMode === "scatter") scatterSeed = createSeed();
   updateToggle();
@@ -528,7 +435,7 @@ mixerInputs.forEach((input) => {
   input.addEventListener("input", () => applyMixer());
 });
 
-mixerReset.addEventListener("click", () => {
+mixerReset?.addEventListener("click", () => {
   mixerInputs.forEach((input) => {
     input.value = "100";
   });
@@ -536,6 +443,7 @@ mixerReset.addEventListener("click", () => {
 });
 
 window.addEventListener("resize", () => {
+  if (!field) return;
   const nextWidth = window.innerWidth;
   if (Math.abs(nextWidth - lastLayoutWidth) < 16) return;
 
@@ -543,8 +451,6 @@ window.addEventListener("resize", () => {
   window.clearTimeout(resizeTimer);
   resizeTimer = window.setTimeout(layoutWords, 160);
 });
-
-window.addEventListener("scroll", scheduleSectionConceptUpdate, { passive: true });
 
 updateToggle();
 loadConcepts();

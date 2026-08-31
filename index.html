@@ -5,82 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta
       name="description"
-      content="公開された痕跡からAIが抽出した、kusahataを構成する言葉。"
+      content="Sumiaki Kusahataのプロフィール、経歴、研究、関心を紹介するポートフォリオ。"
     >
-    <title>kusahata — words in progress</title>
+    <title>Sumiaki Kusahata — kusahata.com</title>
     <link rel="stylesheet" href="assets/styles.css">
   </head>
-  <body>
+  <body class="home-page">
     <header class="site-header">
       <a class="site-name" href="/" aria-label="kusahata.com home">kusahata.com</a>
-      <p class="site-note">words in progress</p>
+      <p class="site-note">about</p>
       <div class="header-actions">
-        <button
-          id="layout-toggle"
-          class="control-button"
-          type="button"
-          aria-pressed="false"
-          disabled
-        >group by genre</button>
+        <a class="control-button" href="concepts.html">concept map</a>
       </div>
     </header>
 
-    <section
-      id="human-mixer"
-      class="mixer-panel"
-      aria-label="human mixer"
-    >
-      <div class="mixer-heading">
-        <p>human mixer</p>
-        <button id="mixer-reset" class="mixer-reset" type="button">reset mix</button>
-      </div>
-      <div class="mixer-channels">
-        <label class="mixer-channel">
-          <span>research</span>
-          <input data-mix-axis="research" type="range" min="0" max="200" value="100">
-          <output>100</output>
-        </label>
-        <label class="mixer-channel">
-          <span>create</span>
-          <input data-mix-axis="create" type="range" min="0" max="200" value="100">
-          <output>100</output>
-        </label>
-        <label class="mixer-channel">
-          <span>play</span>
-          <input data-mix-axis="play" type="range" min="0" max="200" value="100">
-          <output>100</output>
-        </label>
-        <label class="mixer-channel">
-          <span>explore</span>
-          <input data-mix-axis="explore" type="range" min="0" max="200" value="100">
-          <output>100</output>
-        </label>
-        <label class="mixer-channel">
-          <span>reflect</span>
-          <input data-mix-axis="reflect" type="range" min="0" max="200" value="100">
-          <output>100</output>
-        </label>
-      </div>
-    </section>
-
     <main>
-      <!-- 単語が表示される領域 -->
-      <section
-        id="concept-field"
-        class="concept-field"
-        aria-label="kusahataを構成する言葉"
-        aria-busy="true"
-      >
-      <!-- ここが単語で置き換わる -->
-        <p class="loading">collecting traces...</p>
-      </section>
-
       <section class="about-section" aria-labelledby="about-title">
         <div class="section-concept-stack" aria-hidden="true">
-          <span
-            class="section-concept-target"
-            data-concept-categories="identity"
-          >identity</span>
+          <div class="section-concept-words" data-concept-categories="identity"></div>
         </div>
         <p class="section-label">introduction</p>
         <h2 id="about-title">About</h2>
@@ -98,10 +40,7 @@
 
       <section class="history-section" aria-labelledby="history-title">
         <div class="section-concept-stack" aria-hidden="true">
-          <span
-            class="section-concept-target"
-            data-concept-categories="background"
-          >background</span>
+          <div class="section-concept-words" data-concept-categories="background"></div>
         </div>
         <p class="section-label">background</p>
         <h2 id="history-title">Education &amp; Experience</h2>
@@ -114,11 +53,13 @@
                 <p class="history-date">2021.04–2025.03</p>
                 <p class="history-role">B.S.</p>
                 <p class="history-place">The University of Tokyo</p>
+                <p class="history-lab">Sekino Lab</p>
               </li>
               <li>
                 <p class="history-date">2025.04–2027.03</p>
                 <p class="history-role">M.S.</p>
                 <p class="history-place">The University of Tokyo</p>
+                <p class="history-lab">Kawahara Lab</p>
               </li>
             </ol>
           </section>
@@ -143,10 +84,7 @@
 
       <section class="features-section" aria-labelledby="features-title">
         <div class="section-concept-stack" aria-hidden="true">
-          <span
-            class="section-concept-target"
-            data-concept-categories="research project"
-          >research and project</span>
+          <div class="section-concept-words" data-concept-categories="research project"></div>
         </div>
         <p class="section-label">selected work</p>
         <h2 id="features-title">Research &amp; Features</h2>
@@ -206,10 +144,7 @@
 
       <section class="likes-section" aria-labelledby="likes-title">
         <div class="section-concept-stack" aria-hidden="true">
-          <span
-            class="section-concept-target"
-            data-concept-categories="music books interest"
-          >music, books, and interests</span>
+          <div class="section-concept-words" data-concept-categories="music books interest"></div>
         </div>
         <p class="section-label">personal</p>
         <h2 id="likes-title">What I Like</h2>
@@ -241,7 +176,7 @@
     <footer class="site-footer">
       <div class="footer-meta">
         <p>© 2026 <span class="copyright-name">Sumiaki Kusahata</span></p>
-        <p id="concept-count">AI-generated concept map</p>
+        <p id="concept-count"><a href="concepts.html">AI-generated concept map</a></p>
       </div>
       <ul class="category-legend" aria-label="色とジャンルの対応">
         <li class="legend-item" data-category="identity">identity</li>
