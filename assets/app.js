@@ -328,6 +328,7 @@ function layoutWords() {
   });
 }
 
+// LPのsectionごとのconcept wordをレンダリングする
 function renderSectionConcepts(concepts, minWeight, maxWeight) {
   sectionConceptGroups.forEach((group) => {
     const categories = new Set(group.dataset.conceptCategories.split(/\s+/));
