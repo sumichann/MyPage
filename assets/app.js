@@ -299,6 +299,7 @@ function clusterPositions(measurements, bounds) {
 
 function updateToggle() {
   if (!layoutToggle) return;
+  // "cluster"の時はtrue、"scatter"の時はfalse
   const clustered = layoutMode === "cluster";
   layoutToggle.setAttribute("aria-pressed", String(clustered));
   layoutToggle.textContent = clustered ? "scatter words" : "group by genre";
@@ -306,6 +307,7 @@ function updateToggle() {
 
 function layoutWords() {
   if (!field) return;
+  // field内の.concept要素を取得
   const words = [...field.querySelectorAll(".concept")];
   if (words.length === 0) return;
 
@@ -318,6 +320,7 @@ function layoutWords() {
     : scatterPositions(measurements, bounds);
 
   field.dataset.layout = layoutMode;
+  // 実際に配置
   positions.forEach((position, word) => {
     word.style.left = `${position.x.toFixed(1)}px`;
     word.style.top = `${position.y.toFixed(1)}px`;
@@ -348,6 +351,7 @@ function renderSectionConcepts(concepts, minWeight, maxWeight) {
   });
 }
 
+// concepts.jsonの内容をもとに、conceptsをレンダリングする
 function renderConcepts(concepts) {
   const weights = concepts.map(({ weight }) => weight);
   const minWeight = Math.min(...weights);
@@ -385,6 +389,7 @@ function renderConcepts(concepts) {
   requestAnimationFrame(layoutWords);
 }
 
+// concepts.jsonを読み込んで、conceptsをレンダリングする
 async function loadConcepts() {
   try {
     const response = await fetch(new URL("../data/concepts.json", import.meta.url));
@@ -408,6 +413,7 @@ async function loadConcepts() {
 }
 
 async function loadLatestNote() {
+  // 必要な3要素がすべて存在する場合のみ続行
   if (!latestNoteLink || !latestNoteExcerpt || !latestNoteDate) return;
 
   try {
@@ -416,17 +422,20 @@ async function loadLatestNote() {
 
     const payload = await response.json();
     const articles = Array.isArray(payload.articles) ? payload.articles : [];
+    // 最新記事を取得
     const latest = articles
       .filter((article) => article.title && article.url)
       .sort((first, second) => Date.parse(second.publishedAt) - Date.parse(first.publishedAt))[0];
     if (!latest) throw new Error("No note articles found");
-
+    // URLの検証
     const articleUrl = new URL(latest.url);
     if (articleUrl.protocol !== "https:" || articleUrl.hostname !== "note.com") {
       throw new Error("Unexpected note article URL");
     }
-
+    // latestNoteLink: htmlからa要素を取得したもの
+    // リンクを置き換える
     latestNoteLink.href = articleUrl.href;
+    // querySelectorで取得した要素のtextContentを置き換える
     latestNoteLink.textContent = `${latest.title} ↗`;
 
     const description = String(latest.description || "")
@@ -477,6 +486,7 @@ async function loadLatestVideo() {
     iframe.referrerPolicy = "strict-origin-when-cross-origin";
     iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
     iframe.allowFullscreen = true;
+    // 空のプレイヤー領域にiframeを追加する
     latestVideoPlayer.replaceChildren(iframe);
 
     latestVideoLink.href = watchUrl;
@@ -496,10 +506,13 @@ async function loadLatestVideo() {
   }
 }
 
+// concepts.htmlの切り替えボタンの処理
 layoutToggle?.addEventListener("click", () => {
   layoutMode = layoutMode === "scatter" ? "cluster" : "scatter";
   if (layoutMode === "scatter") scatterSeed = createSeed();
+  // 名前変える
   updateToggle();
+  // 再配置
   layoutWords();
 });
 
@@ -535,8 +548,12 @@ window.addEventListener("resize", () => {
   resizeTimer = window.setTimeout(layoutWords, 160);
 });
 
+// 初期状態
 updateToggle();
 setMixerDrawerOpen(false);
+// concepts.jsonを読み込む
 loadConcepts();
+
+// 最新の動画と記事を読み込む
 loadLatestVideo();
 loadLatestNote();
