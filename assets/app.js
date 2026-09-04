@@ -6,6 +6,7 @@ const mixerToggle = document.querySelector("#mixer-toggle");
 const mixerToggleIcon = document.querySelector("#mixer-toggle-icon");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
+const researchMixerInput = document.querySelector("[data-mix-axis='research']");
 const sectionConceptGroups = [...document.querySelectorAll(".section-concept-words")];
 const latestVideoPlayer = document.querySelector("#latest-video-player");
 const latestVideoLink = document.querySelector("#latest-video-link");
@@ -46,6 +47,14 @@ let layoutMode = "scatter";
 let scatterSeed = createSeed();
 let resizeTimer;
 let lastLayoutWidth = window.innerWidth;
+let researchSound;
+let activeResearchWord;
+
+const researchSoundUrls = {
+  1: new URL("./audio/research-drum-1.mp3", import.meta.url),
+  2: new URL("./audio/research-drum-2.mp3", import.meta.url),
+  3: new URL("./audio/research-drum-3.mp3", import.meta.url),
+};
 
 const fallbackMixByCategory = {
   identity: { research: 1, create: 1, play: 1, explore: 1, reflect: 1 },
@@ -106,6 +115,60 @@ function normalizeMix(concept) {
     const score = Number(concept.mix?.[axis]);
     return [axis, Number.isFinite(score) ? clamp(score, 0, 3) : fallback[axis]];
   }));
+}
+
+function setResearchWordPlaying(word, playing) {
+  if (!word) return;
+  word.dataset.playing = String(playing);
+  word.setAttribute("aria-pressed", String(playing));
+  word.setAttribute(
+    "aria-label",
+    `${playing ? "Stop" : "Play"} research level ${word.dataset.soundLevel} sound for ${word.textContent}`,
+  );
+}
+
+function updateResearchSoundVolume() {
+  if (!researchSound) return;
+  const mixerValue = Number(researchMixerInput?.value ?? 100);
+  researchSound.volume = clamp(mixerValue / 200, 0, 1);
+}
+
+function stopResearchSound() {
+  if (researchSound) {
+    researchSound.pause();
+    researchSound.currentTime = 0;
+  }
+  setResearchWordPlaying(activeResearchWord, false);
+  activeResearchWord = undefined;
+}
+
+// research要素を持つ単語から、共通のドラム1小節を再生する
+function toggleResearchSound(word) {
+  if (activeResearchWord === word) {
+    stopResearchSound();
+    return;
+  }
+
+  stopResearchSound();
+
+  const level = clamp(Math.round(Number(word.dataset.soundLevel)), 1, 3);
+  const soundUrl = researchSoundUrls[level];
+
+  if (!researchSound) {
+    researchSound = new Audio();
+    researchSound.preload = "none";
+    researchSound.addEventListener("ended", stopResearchSound);
+  }
+
+  researchSound.src = soundUrl.href;
+  updateResearchSoundVolume();
+  activeResearchWord = word;
+  setResearchWordPlaying(word, true);
+  researchSound.currentTime = 0;
+  researchSound.play().catch((error) => {
+    console.info("Research sound is not available yet", error);
+    if (activeResearchWord === word) stopResearchSound();
+  });
 }
 
 function currentMixLevels() {
@@ -362,16 +425,29 @@ function renderConcepts(concepts) {
   const fragment = document.createDocumentFragment();
 
   concepts.forEach((concept, index) => {
-    const word = document.createElement("p");
+    const mix = normalizeMix(concept);
+    const hasResearchSound = mix.research > 0;
+    const word = document.createElement(hasResearchSound ? "button" : "p");
     const hash = labelHash(concept.label);
     const tilt = ((hash % 9) - 4) * 0.35;
 
     word.className = "concept";
+    if (hasResearchSound) {
+      word.type = "button";
+      word.dataset.sound = "research";
+      word.dataset.soundLevel = String(mix.research);
+      word.dataset.playing = "false";
+      word.setAttribute("aria-pressed", "false");
+      word.setAttribute(
+        "aria-label",
+        `Play research level ${mix.research} sound for ${concept.label}`,
+      );
+    }
     word.dataset.category = concept.category;
     word.textContent = concept.label;
     const size = visualSize(concept, minWeight, maxWeight);
     const mobileSize = mobileVisualSize(size);
-    word.dataset.mix = JSON.stringify(normalizeMix(concept));
+    word.dataset.mix = JSON.stringify(mix);
     word.dataset.baseSize = size.toFixed(3);
     word.dataset.baseMobileSize = mobileSize.toFixed(3);
     word.style.setProperty("--concept-size", `${size.toFixed(2)}rem`);
@@ -529,7 +605,10 @@ document.addEventListener("keydown", (event) => {
 });
 
 mixerInputs.forEach((input) => {
-  input.addEventListener("input", () => applyMixer());
+  input.addEventListener("input", () => {
+    applyMixer();
+    if (input === researchMixerInput) updateResearchSoundVolume();
+  });
 });
 
 mixerReset?.addEventListener("click", () => {
@@ -537,6 +616,13 @@ mixerReset?.addEventListener("click", () => {
     input.value = "100";
   });
   applyMixer();
+  updateResearchSoundVolume();
+});
+
+field?.addEventListener("click", (event) => {
+  const word = event.target.closest(".concept[data-sound='research']");
+  if (!word || !field.contains(word)) return;
+  toggleResearchSound(word);
 });
 
 window.addEventListener("resize", () => {

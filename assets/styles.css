@@ -292,6 +292,27 @@ a {
   opacity: var(--concept-opacity, 1);
 }
 
+.concept[data-sound="research"] {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.concept[data-sound="research"]:focus-visible {
+  border-radius: 0.15em;
+  outline: 2px solid currentColor;
+  outline-offset: 0.12em;
+}
+
+.concept[data-sound="research"][data-playing="true"] {
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.12em;
+}
+
 .concept-field[data-layout="cluster"] .concept {
   transform: translate(-50%, -50%) rotate(0deg);
 }
