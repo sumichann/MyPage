@@ -78,11 +78,17 @@ a {
   backdrop-filter: blur(0.5rem);
 }
 
-.control-button:hover:not(:disabled),
 .control-button[aria-pressed="true"],
 .control-button[aria-expanded="true"] {
   background: var(--ink);
   color: var(--paper);
+}
+
+@media (hover: hover) {
+  .control-button:hover:not(:disabled) {
+    background: var(--ink);
+    color: var(--paper);
+  }
 }
 
 .control-button:focus-visible,
