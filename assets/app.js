@@ -63,8 +63,12 @@ const researchMaterialUrls = {
   keyboard: new URL("./audio/research-keyboard.mp3", import.meta.url),
   charge: new URL("./audio/research-charge.mp3", import.meta.url),
 };
+const createMaterialUrls = {
+  page: new URL("./audio/turning_page.mp3", import.meta.url),
+};
 const mapStemUrls = {
   research: new URL("./audio/map-research.mp3", import.meta.url),
+  create: new URL("./audio/map-create.mp3", import.meta.url),
 };
 const soundAxes = Object.keys(mapStemUrls);
 
@@ -177,6 +181,9 @@ function prepareAudioBuffers() {
   Object.entries(researchMaterialUrls).forEach(([name, url]) => {
     urls.push([`research:${name}`, url]);
   });
+  Object.entries(createMaterialUrls).forEach(([name, url]) => {
+    urls.push([`create:${name}`, url]);
+  });
   Object.entries(mapStemUrls).forEach(([axis, url]) => {
     urls.push([`map:${axis}`, url]);
   });
@@ -203,6 +210,20 @@ function researchPattern(label, level, phraseDuration, writingDuration) {
     .sort((first, second) => first - second);
   const chargeTime = level < 3 ? undefined : 0;
   return { writingStart, keyboardTimes, chargeTime };
+}
+
+function createPattern(label, phraseDuration) {
+  const random = seededRandom(labelHash(label));
+  const slots = Array.from({ length: 3 }, (_, index) => index + 1);
+  for (let index = slots.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(random() * (index + 1));
+    [slots[index], slots[swapIndex]] = [slots[swapIndex], slots[index]];
+  }
+
+  return slots
+    .slice(0, 1)
+    .map((slot) => slot * phraseDuration / 4)
+    .sort((first, second) => first - second);
 }
 
 function stopSources(sources) {
@@ -258,56 +279,76 @@ async function playConceptSound(word) {
     const startTime = context.currentTime + 0.03;
     const conceptCount = field.querySelectorAll(".concept").length;
     const phraseDuration = buffers["map:research"].duration / conceptCount;
-    const level = clamp(Math.round(Number(mix.research)), 0, 3);
-    if (level === 0) {
-      finishConceptPlayback(playbackId);
-      return;
+    const researchLevel = clamp(Math.round(Number(mix.research)), 0, 3);
+    if (researchLevel > 0) {
+      const researchGain = context.createGain();
+      researchGain.gain.value = mixerVolume("research");
+      researchGain.connect(context.destination);
+      conceptGainNodes.research = researchGain;
+
+      const writingBuffer = buffers["research:writing"];
+      const keyboardBuffer = buffers["research:keyboard"];
+      const chargeBuffer = buffers["research:charge"];
+      const pattern = researchPattern(
+        word.textContent,
+        researchLevel,
+        phraseDuration,
+        writingBuffer.duration,
+      );
+
+      const writingSource = context.createBufferSource();
+      writingSource.buffer = writingBuffer;
+      connectWithGain(context, writingSource, researchGain, 0.42);
+      writingSource.start(startTime, pattern.writingStart, phraseDuration);
+      conceptSources.push(writingSource);
+
+      pattern.keyboardTimes.forEach((keyTime) => {
+        const keyboardSource = context.createBufferSource();
+        keyboardSource.buffer = keyboardBuffer;
+        connectWithGain(context, keyboardSource, researchGain, 0.72);
+        keyboardSource.start(startTime + keyTime);
+        keyboardSource.stop(startTime + phraseDuration);
+        conceptSources.push(keyboardSource);
+      });
+
+      if (pattern.chargeTime !== undefined) {
+        const chargeSource = context.createBufferSource();
+        chargeSource.buffer = chargeBuffer;
+        connectWithGain(context, chargeSource, researchGain, 0.8);
+        chargeSource.start(startTime + pattern.chargeTime);
+        chargeSource.stop(startTime + phraseDuration);
+        conceptSources.push(chargeSource);
+      }
     }
 
-    const gainNode = context.createGain();
-    gainNode.gain.value = mixerVolume("research");
-    gainNode.connect(context.destination);
-    conceptGainNodes.research = gainNode;
+    const createLevel = clamp(Math.round(Number(mix.create)), 0, 3);
+    if (createLevel > 0) {
+      const createGain = context.createGain();
+      createGain.gain.value = mixerVolume("create");
+      createGain.connect(context.destination);
+      conceptGainNodes.create = createGain;
 
-    const writingBuffer = buffers["research:writing"];
-    const keyboardBuffer = buffers["research:keyboard"];
-    const chargeBuffer = buffers["research:charge"];
-    const pattern = researchPattern(
-      word.textContent,
-      level,
-      phraseDuration,
-      writingBuffer.duration,
-    );
-
-    const writingSource = context.createBufferSource();
-    writingSource.buffer = writingBuffer;
-    connectWithGain(context, writingSource, gainNode, 0.42);
-    writingSource.start(startTime, pattern.writingStart, phraseDuration);
-    conceptSources.push(writingSource);
-
-    pattern.keyboardTimes.forEach((keyTime) => {
-      const keyboardSource = context.createBufferSource();
-      keyboardSource.buffer = keyboardBuffer;
-      connectWithGain(context, keyboardSource, gainNode, 0.72);
-      keyboardSource.start(startTime + keyTime);
-      keyboardSource.stop(startTime + phraseDuration);
-      conceptSources.push(keyboardSource);
-    });
-
-    if (pattern.chargeTime !== undefined) {
-      const chargeSource = context.createBufferSource();
-      chargeSource.buffer = chargeBuffer;
-      connectWithGain(context, chargeSource, gainNode, 0.8);
-      chargeSource.start(startTime + pattern.chargeTime);
-      chargeSource.stop(startTime + phraseDuration);
-      conceptSources.push(chargeSource);
+      const pageBuffer = buffers["create:page"];
+      createPattern(word.textContent, phraseDuration).forEach((pageTime) => {
+        const pageSource = context.createBufferSource();
+        pageSource.buffer = pageBuffer;
+        connectWithGain(context, pageSource, createGain, 0.62);
+        pageSource.start(startTime + pageTime);
+        pageSource.stop(startTime + phraseDuration);
+        conceptSources.push(pageSource);
+      });
     }
 
     if (conceptSources.length === 0) {
       finishConceptPlayback(playbackId);
       return;
     }
-    conceptSources[0].addEventListener("ended", () => finishConceptPlayback(playbackId));
+    const endMarker = context.createBufferSource();
+    endMarker.buffer = context.createBuffer(1, 1, context.sampleRate);
+    endMarker.connect(context.destination);
+    endMarker.start(startTime + phraseDuration);
+    endMarker.addEventListener("ended", () => finishConceptPlayback(playbackId));
+    conceptSources.push(endMarker);
   } catch (error) {
     console.error("Could not play concept sound", error);
     finishConceptPlayback(playbackId);

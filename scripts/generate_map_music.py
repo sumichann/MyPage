@@ -22,6 +22,7 @@ RESEARCH_SOUNDS = {
     "keyboard": AUDIO_DIR / "research-keyboard.mp3",
     "charge": AUDIO_DIR / "research-charge.mp3",
 }
+CREATE_SOUND = AUDIO_DIR / "turning_page.mp3"
 
 
 def concepts() -> list[dict]:
@@ -72,6 +73,16 @@ def research_pattern(
     keyboard_times = sorted(slot * phrase_duration / 16 for slot in slots[:hit_count])
     charge_time = None if level < 3 else 0
     return writing_start, keyboard_times, charge_time
+
+
+def create_pattern(label: str, phrase_duration: float) -> list[float]:
+    random_value = seeded_random(label_hash(label))
+    slots = list(range(1, 4))
+    for index in range(len(slots) - 1, 0, -1):
+        swap_index = int(random_value() * (index + 1))
+        slots[index], slots[swap_index] = slots[swap_index], slots[index]
+
+    return [slots[0] * phrase_duration / 4]
 
 
 def media_metadata(ffprobe: str, source: Path) -> dict:
@@ -174,6 +185,50 @@ def render_research_phrase(
     run_ffmpeg(ffmpeg, arguments)
 
 
+def render_create_phrase(
+    ffmpeg: str,
+    output_path: Path,
+    silence_path: Path,
+    label: str,
+    phrase_duration: float,
+) -> None:
+    page_times = create_pattern(label, phrase_duration)
+    arguments = ["-i", str(silence_path)]
+    for _ in page_times:
+        arguments.extend(["-i", str(CREATE_SOUND)])
+
+    filters = []
+    inputs = ["[0:a]"]
+    for input_index, page_time in enumerate(page_times):
+        delay = round(page_time * 1000)
+        filters.append(
+            f"[{input_index + 1}:a]volume=0.62,adelay={delay}|{delay}[page{input_index}]"
+        )
+        inputs.append(f"[page{input_index}]")
+    filters.append(
+        f"{''.join(inputs)}amix=inputs={len(inputs)}:duration=longest:normalize=0,"
+        "alimiter=limit=0.95[out]"
+    )
+    arguments.extend(
+        [
+            "-filter_complex",
+            ";".join(filters),
+            "-map",
+            "[out]",
+            "-t",
+            f"{phrase_duration:.9f}",
+            "-ar",
+            "44100",
+            "-ac",
+            "2",
+            "-codec:a",
+            "pcm_s16le",
+            str(output_path),
+        ]
+    )
+    run_ffmpeg(ffmpeg, arguments)
+
+
 def render_stem(ffmpeg: str, playlist_path: Path, output_path: Path) -> None:
     rendered_path = playlist_path.with_suffix(".mp3")
     run_ffmpeg(
@@ -205,7 +260,7 @@ def main() -> None:
     if not concept_items:
         raise SystemExit("No concepts were found")
 
-    missing = [source for source in RESEARCH_SOUNDS.values() if not source.is_file()]
+    missing = [source for source in [*RESEARCH_SOUNDS.values(), CREATE_SOUND] if not source.is_file()]
     if missing:
         raise SystemExit(f"Missing sound: {missing[0]}")
 
@@ -231,8 +286,10 @@ def main() -> None:
         )
 
         research_playlist = []
+        create_playlist = []
         for index, concept in enumerate(concept_items):
             research_level = mix_level(concept, "research")
+            create_level = mix_level(concept, "create")
             if research_level:
                 phrase_path = temporary_path / f"research-{index}.wav"
                 render_research_phrase(
@@ -246,15 +303,31 @@ def main() -> None:
                 research_playlist.append(phrase_path)
             else:
                 research_playlist.append(silence_path)
+            if create_level:
+                phrase_path = temporary_path / f"create-{index}.wav"
+                render_create_phrase(
+                    ffmpeg,
+                    phrase_path,
+                    silence_path,
+                    concept["label"],
+                    phrase_duration,
+                )
+                create_playlist.append(phrase_path)
+            else:
+                create_playlist.append(silence_path)
 
-        playlist_path = temporary_path / "map-research.txt"
-        playlist_path.write_text(
-            "".join(f"file '{source.as_posix()}'\n" for source in research_playlist),
-            encoding="utf-8",
-        )
-        output_path = AUDIO_DIR / "map-research.mp3"
-        render_stem(ffmpeg, playlist_path, output_path)
-        print(f"Generated {output_path.relative_to(ROOT)} from {len(research_playlist)} phrases")
+        for axis, playlist in {
+            "research": research_playlist,
+            "create": create_playlist,
+        }.items():
+            playlist_path = temporary_path / f"map-{axis}.txt"
+            playlist_path.write_text(
+                "".join(f"file '{source.as_posix()}'\n" for source in playlist),
+                encoding="utf-8",
+            )
+            output_path = AUDIO_DIR / f"map-{axis}.mp3"
+            render_stem(ffmpeg, playlist_path, output_path)
+            print(f"Generated {output_path.relative_to(ROOT)} from {len(playlist)} phrases")
 
 
 if __name__ == "__main__":

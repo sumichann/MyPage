@@ -11,6 +11,7 @@ on:
       - "data/youtube-feed.json"
       - "data/web-search-feed.json"
       - "assets/audio/research-*.mp3"
+      - "assets/audio/turning_page.mp3"
       - "scripts/generate_concepts.py"
       - "scripts/generate_map_music.py"
       - "scripts/concept_generator/**"
@@ -53,12 +54,12 @@ jobs:
 
       - name: Commit generated data
         run: |
-          if git diff --quiet -- data/concepts.json assets/audio/map-research.mp3; then
+          if git diff --quiet -- data/concepts.json assets/audio/map-research.mp3 assets/audio/map-create.mp3; then
             echo "No concept changes to commit."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- data/concepts.json assets/audio/map-research.mp3
+          git add -- data/concepts.json assets/audio/map-research.mp3 assets/audio/map-create.mp3
           git commit -m "Update AI-generated concept map"
           git push
