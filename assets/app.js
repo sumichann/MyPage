@@ -1,12 +1,12 @@
 const field = document.querySelector("#concept-field");
 const count = document.querySelector("#concept-count");
 const layoutToggle = document.querySelector("#layout-toggle");
+const mapPlaybackToggle = document.querySelector("#map-playback-toggle");
 const mixerPanel = document.querySelector("#human-mixer");
 const mixerToggle = document.querySelector("#mixer-toggle");
 const mixerToggleIcon = document.querySelector("#mixer-toggle-icon");
 const mixerReset = document.querySelector("#mixer-reset");
 const mixerInputs = [...document.querySelectorAll("[data-mix-axis]")];
-const researchMixerInput = document.querySelector("[data-mix-axis='research']");
 const sectionConceptGroups = [...document.querySelectorAll(".section-concept-words")];
 const latestVideoPlayer = document.querySelector("#latest-video-player");
 const latestVideoLink = document.querySelector("#latest-video-link");
@@ -47,14 +47,26 @@ let layoutMode = "scatter";
 let scatterSeed = createSeed();
 let resizeTimer;
 let lastLayoutWidth = window.innerWidth;
-let researchSound;
-let activeResearchWord;
+let audioContext;
+let audioBuffersPromise;
+let activeConceptWord;
+let conceptPlaybackId = 0;
+let conceptSources = [];
+let conceptGainNodes = {};
+let mapPlaybackId = 0;
+let mapPlaybackActive = false;
+let mapSources = [];
+let mapGainNodes = {};
 
-const researchSoundUrls = {
-  1: new URL("./audio/research-drum-1.mp3", import.meta.url),
-  2: new URL("./audio/research-drum-2.mp3", import.meta.url),
-  3: new URL("./audio/research-drum-3.mp3", import.meta.url),
+const researchMaterialUrls = {
+  writing: new URL("./audio/research-writing.mp3", import.meta.url),
+  keyboard: new URL("./audio/research-keyboard.mp3", import.meta.url),
+  charge: new URL("./audio/research-charge.mp3", import.meta.url),
 };
+const mapStemUrls = {
+  research: new URL("./audio/map-research.mp3", import.meta.url),
+};
+const soundAxes = Object.keys(mapStemUrls);
 
 const fallbackMixByCategory = {
   identity: { research: 1, create: 1, play: 1, explore: 1, reflect: 1 },
@@ -117,58 +129,257 @@ function normalizeMix(concept) {
   }));
 }
 
-function setResearchWordPlaying(word, playing) {
+function setConceptWordPlaying(word, playing) {
   if (!word) return;
   word.dataset.playing = String(playing);
   word.setAttribute("aria-pressed", String(playing));
-  word.setAttribute(
-    "aria-label",
-    `${playing ? "Stop" : "Play"} research level ${word.dataset.soundLevel} sound for ${word.textContent}`,
-  );
+  word.setAttribute("aria-label", `${playing ? "Stop" : "Play"} sound for ${word.textContent}`);
 }
 
-function updateResearchSoundVolume() {
-  if (!researchSound) return;
-  const mixerValue = Number(researchMixerInput?.value ?? 100);
-  researchSound.volume = clamp(mixerValue / 200, 0, 1);
+function mixerVolume(axis) {
+  const input = mixerInputs.find((item) => item.dataset.mixAxis === axis);
+  return clamp(Number(input?.value ?? 100) / 200, 0, 1);
 }
 
-function stopResearchSound() {
-  if (researchSound) {
-    researchSound.pause();
-    researchSound.currentTime = 0;
+function updateSoundVolume(axis) {
+  const volume = mixerVolume(axis);
+  const gainNodes = [conceptGainNodes[axis], mapGainNodes[axis]].filter(Boolean);
+  gainNodes.forEach((gainNode) => {
+    gainNode.gain.setTargetAtTime(volume, audioContext.currentTime, 0.015);
+  });
+}
+
+function updateMapPlaybackToggle() {
+  if (!mapPlaybackToggle) return;
+  mapPlaybackToggle.setAttribute("aria-pressed", String(mapPlaybackActive));
+  mapPlaybackToggle.textContent = mapPlaybackActive ? "stop this map" : "play this map";
+}
+
+function getAudioContext() {
+  if (!audioContext) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) throw new Error("Web Audio API is not supported");
+    audioContext = new AudioContextClass();
   }
-  setResearchWordPlaying(activeResearchWord, false);
-  activeResearchWord = undefined;
+  return audioContext;
 }
 
-// research要素を持つ単語から、共通のドラム1小節を再生する
-function toggleResearchSound(word) {
-  if (activeResearchWord === word) {
-    stopResearchSound();
+async function loadAudioBuffer(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Could not load ${url.pathname}: HTTP ${response.status}`);
+  return getAudioContext().decodeAudioData(await response.arrayBuffer());
+}
+
+function prepareAudioBuffers() {
+  if (audioBuffersPromise) return audioBuffersPromise;
+
+  const urls = [];
+  Object.entries(researchMaterialUrls).forEach(([name, url]) => {
+    urls.push([`research:${name}`, url]);
+  });
+  Object.entries(mapStemUrls).forEach(([axis, url]) => {
+    urls.push([`map:${axis}`, url]);
+  });
+
+  audioBuffersPromise = Promise.all(urls.map(async ([key, url]) => {
+    return [key, await loadAudioBuffer(url)];
+  })).then((entries) => Object.fromEntries(entries));
+  return audioBuffersPromise;
+}
+
+function researchPattern(label, level, phraseDuration, writingDuration, chargeDuration) {
+  const random = seededRandom(labelHash(label));
+  const writingStart = random() * Math.max(0, writingDuration - phraseDuration);
+  const slots = Array.from({ length: 14 }, (_, index) => index + 1);
+  for (let index = slots.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(random() * (index + 1));
+    [slots[index], slots[swapIndex]] = [slots[swapIndex], slots[index]];
+  }
+
+  const hitCount = { 1: 0, 2: 4, 3: 8 }[level];
+  const keyboardTimes = slots
+    .slice(0, hitCount)
+    .map((slot) => slot * phraseDuration / 16)
+    .sort((first, second) => first - second);
+  const chargeTime = level < 3
+    ? undefined
+    : random() < 0.5
+      ? 0
+      : Math.max(0, phraseDuration - chargeDuration);
+  return { writingStart, keyboardTimes, chargeTime };
+}
+
+function stopSources(sources) {
+  sources.forEach((source) => {
+    try {
+      source.stop();
+    } catch {
+      // The source may already have ended.
+    }
+    source.disconnect();
+  });
+}
+
+function connectWithGain(context, source, destination, volume) {
+  const gainNode = context.createGain();
+  gainNode.gain.value = volume;
+  source.connect(gainNode).connect(destination);
+}
+
+function finishConceptPlayback(playbackId) {
+  if (playbackId !== conceptPlaybackId) return;
+  conceptPlaybackId += 1;
+  setConceptWordPlaying(activeConceptWord, false);
+  activeConceptWord = undefined;
+  conceptSources = [];
+  conceptGainNodes = {};
+}
+
+function stopConceptSound() {
+  conceptPlaybackId += 1;
+  stopSources(conceptSources);
+  conceptSources = [];
+  conceptGainNodes = {};
+  setConceptWordPlaying(activeConceptWord, false);
+  activeConceptWord = undefined;
+}
+
+async function playConceptSound(word) {
+  stopConceptSound();
+  const playbackId = conceptPlaybackId;
+  const context = getAudioContext();
+  const resumePromise = context.resume();
+  const buffersPromise = prepareAudioBuffers();
+  const mix = JSON.parse(word.dataset.mix);
+
+  activeConceptWord = word;
+  setConceptWordPlaying(word, true);
+
+  try {
+    const [, buffers] = await Promise.all([resumePromise, buffersPromise]);
+    if (playbackId !== conceptPlaybackId) return;
+
+    const startTime = context.currentTime + 0.03;
+    const conceptCount = field.querySelectorAll(".concept").length;
+    const phraseDuration = buffers["map:research"].duration / conceptCount;
+    const level = clamp(Math.round(Number(mix.research)), 0, 3);
+    if (level === 0) {
+      finishConceptPlayback(playbackId);
+      return;
+    }
+
+    const gainNode = context.createGain();
+    gainNode.gain.value = mixerVolume("research");
+    gainNode.connect(context.destination);
+    conceptGainNodes.research = gainNode;
+
+    const writingBuffer = buffers["research:writing"];
+    const keyboardBuffer = buffers["research:keyboard"];
+    const chargeBuffer = buffers["research:charge"];
+    const pattern = researchPattern(
+      word.textContent,
+      level,
+      phraseDuration,
+      writingBuffer.duration,
+      chargeBuffer.duration,
+    );
+
+    const writingSource = context.createBufferSource();
+    writingSource.buffer = writingBuffer;
+    connectWithGain(context, writingSource, gainNode, 0.42);
+    writingSource.start(startTime, pattern.writingStart, phraseDuration);
+    conceptSources.push(writingSource);
+
+    pattern.keyboardTimes.forEach((keyTime) => {
+      const keyboardSource = context.createBufferSource();
+      keyboardSource.buffer = keyboardBuffer;
+      connectWithGain(context, keyboardSource, gainNode, 0.72);
+      keyboardSource.start(startTime + keyTime);
+      keyboardSource.stop(startTime + phraseDuration);
+      conceptSources.push(keyboardSource);
+    });
+
+    if (pattern.chargeTime !== undefined) {
+      const chargeSource = context.createBufferSource();
+      chargeSource.buffer = chargeBuffer;
+      connectWithGain(context, chargeSource, gainNode, 0.8);
+      chargeSource.start(startTime + pattern.chargeTime);
+      chargeSource.stop(startTime + phraseDuration);
+      conceptSources.push(chargeSource);
+    }
+
+    if (conceptSources.length === 0) {
+      finishConceptPlayback(playbackId);
+      return;
+    }
+    conceptSources[0].addEventListener("ended", () => finishConceptPlayback(playbackId));
+  } catch (error) {
+    console.error("Could not play concept sound", error);
+    finishConceptPlayback(playbackId);
+  }
+}
+
+function finishMapPlayback(playbackId) {
+  if (playbackId !== mapPlaybackId) return;
+  mapPlaybackId += 1;
+  mapPlaybackActive = false;
+  mapSources = [];
+  mapGainNodes = {};
+  updateMapPlaybackToggle();
+}
+
+function stopMapPlayback() {
+  mapPlaybackId += 1;
+  stopSources(mapSources);
+  mapSources = [];
+  mapGainNodes = {};
+  mapPlaybackActive = false;
+  updateMapPlaybackToggle();
+}
+
+async function startMapPlayback() {
+  if (!field) return;
+
+  stopConceptSound();
+  const playbackId = mapPlaybackId;
+  const context = getAudioContext();
+  const resumePromise = context.resume();
+  const buffersPromise = prepareAudioBuffers();
+  mapPlaybackActive = true;
+  updateMapPlaybackToggle();
+
+  try {
+    const [, buffers] = await Promise.all([resumePromise, buffersPromise]);
+    if (playbackId !== mapPlaybackId) return;
+
+    const startTime = context.currentTime + 0.05;
+    soundAxes.forEach((axis) => {
+      const source = context.createBufferSource();
+      const gainNode = context.createGain();
+      source.buffer = buffers[`map:${axis}`];
+      gainNode.gain.value = mixerVolume(axis);
+      source.connect(gainNode).connect(context.destination);
+      source.start(startTime);
+      mapSources.push(source);
+      mapGainNodes[axis] = gainNode;
+    });
+    mapSources[0].addEventListener("ended", () => finishMapPlayback(playbackId));
+  } catch (error) {
+    console.error("Could not play map music", error);
+    finishMapPlayback(playbackId);
+  }
+}
+
+function toggleConceptSound(word) {
+  const wasPlaying = activeConceptWord === word;
+  if (mapPlaybackActive) stopMapPlayback();
+
+  if (wasPlaying) {
+    stopConceptSound();
     return;
   }
 
-  stopResearchSound();
-
-  const level = clamp(Math.round(Number(word.dataset.soundLevel)), 1, 3);
-  const soundUrl = researchSoundUrls[level];
-
-  if (!researchSound) {
-    researchSound = new Audio();
-    researchSound.preload = "none";
-    researchSound.addEventListener("ended", stopResearchSound);
-  }
-
-  researchSound.src = soundUrl.href;
-  updateResearchSoundVolume();
-  activeResearchWord = word;
-  setResearchWordPlaying(word, true);
-  researchSound.currentTime = 0;
-  researchSound.play().catch((error) => {
-    console.info("Research sound is not available yet", error);
-    if (activeResearchWord === word) stopResearchSound();
-  });
+  playConceptSound(word);
 }
 
 function currentMixLevels() {
@@ -426,22 +637,19 @@ function renderConcepts(concepts) {
 
   concepts.forEach((concept, index) => {
     const mix = normalizeMix(concept);
-    const hasResearchSound = mix.research > 0;
-    const word = document.createElement(hasResearchSound ? "button" : "p");
+    const wordSoundAxes = soundAxes.filter((axis) => mix[axis] > 0);
+    const hasSound = wordSoundAxes.length > 0;
+    const word = document.createElement(hasSound ? "button" : "p");
     const hash = labelHash(concept.label);
     const tilt = ((hash % 9) - 4) * 0.35;
 
     word.className = "concept";
-    if (hasResearchSound) {
+    if (hasSound) {
       word.type = "button";
-      word.dataset.sound = "research";
-      word.dataset.soundLevel = String(mix.research);
+      word.dataset.sound = wordSoundAxes.join(" ");
       word.dataset.playing = "false";
       word.setAttribute("aria-pressed", "false");
-      word.setAttribute(
-        "aria-label",
-        `Play research level ${mix.research} sound for ${concept.label}`,
-      );
+      word.setAttribute("aria-label", `Play sound for ${concept.label}`);
     }
     word.dataset.category = concept.category;
     word.textContent = concept.label;
@@ -462,6 +670,12 @@ function renderConcepts(concepts) {
   field.setAttribute("aria-busy", "false");
   if (count) count.textContent = `${concepts.length} words / AI-generated`;
   if (layoutToggle) layoutToggle.disabled = false;
+  if (mapPlaybackToggle) {
+    mapPlaybackToggle.disabled = false;
+    prepareAudioBuffers().catch((error) => {
+      console.error("Could not prepare map music", error);
+    });
+  }
   applyMixer();
   requestAnimationFrame(layoutWords);
 }
@@ -593,6 +807,14 @@ layoutToggle?.addEventListener("click", () => {
   layoutWords();
 });
 
+mapPlaybackToggle?.addEventListener("click", () => {
+  if (mapPlaybackActive) {
+    stopMapPlayback();
+  } else {
+    startMapPlayback();
+  }
+});
+
 mixerToggle?.addEventListener("click", () => {
   setMixerDrawerOpen(mixerToggle.getAttribute("aria-expanded") !== "true");
 });
@@ -607,7 +829,7 @@ document.addEventListener("keydown", (event) => {
 mixerInputs.forEach((input) => {
   input.addEventListener("input", () => {
     applyMixer();
-    if (input === researchMixerInput) updateResearchSoundVolume();
+    if (soundAxes.includes(input.dataset.mixAxis)) updateSoundVolume(input.dataset.mixAxis);
   });
 });
 
@@ -616,13 +838,13 @@ mixerReset?.addEventListener("click", () => {
     input.value = "100";
   });
   applyMixer();
-  updateResearchSoundVolume();
+  soundAxes.forEach(updateSoundVolume);
 });
 
 field?.addEventListener("click", (event) => {
-  const word = event.target.closest(".concept[data-sound='research']");
+  const word = event.target.closest(".concept[data-sound]");
   if (!word || !field.contains(word)) return;
-  toggleResearchSound(word);
+  toggleConceptSound(word);
 });
 
 window.addEventListener("resize", () => {
@@ -637,6 +859,7 @@ window.addEventListener("resize", () => {
 
 // 初期状態
 updateToggle();
+updateMapPlaybackToggle();
 setMixerDrawerOpen(false);
 // concepts.jsonを読み込む
 loadConcepts();

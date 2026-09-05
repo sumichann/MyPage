@@ -292,7 +292,7 @@ a {
   opacity: var(--concept-opacity, 1);
 }
 
-.concept[data-sound="research"] {
+.concept[data-sound] {
   appearance: none;
   padding: 0;
   border: 0;
@@ -301,13 +301,13 @@ a {
   cursor: pointer;
 }
 
-.concept[data-sound="research"]:focus-visible {
+.concept[data-sound]:focus-visible {
   border-radius: 0.15em;
   outline: 2px solid currentColor;
   outline-offset: 0.12em;
 }
 
-.concept[data-sound="research"][data-playing="true"] {
+.concept[data-sound][data-playing="true"] {
   text-decoration: underline;
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.12em;
