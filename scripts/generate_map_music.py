@@ -60,7 +60,6 @@ def research_pattern(
     level: int,
     phrase_duration: float,
     writing_duration: float,
-    charge_duration: float,
 ) -> tuple[float, list[float], float | None]:
     random_value = seeded_random(label_hash(label))
     writing_start = random_value() * max(0, writing_duration - phrase_duration)
@@ -71,10 +70,7 @@ def research_pattern(
 
     hit_count = {1: 0, 2: 4, 3: 8}[level]
     keyboard_times = sorted(slot * phrase_duration / 16 for slot in slots[:hit_count])
-    if level < 3:
-        charge_time = None
-    else:
-        charge_time = 0 if random_value() < 0.5 else max(0, phrase_duration - charge_duration)
+    charge_time = None if level < 3 else 0
     return writing_start, keyboard_times, charge_time
 
 
@@ -117,14 +113,12 @@ def render_research_phrase(
     level: int,
     phrase_duration: float,
     writing_duration: float,
-    charge_duration: float,
 ) -> None:
     writing_start, keyboard_times, charge_time = research_pattern(
         label,
         level,
         phrase_duration,
         writing_duration,
-        charge_duration,
     )
     arguments = [
         "-ss",
@@ -217,7 +211,6 @@ def main() -> None:
 
     phrase_duration = PHRASE_DURATION
     writing_duration = media_duration(ffprobe, RESEARCH_SOUNDS["writing"])
-    charge_duration = media_duration(ffprobe, RESEARCH_SOUNDS["charge"])
 
     with tempfile.TemporaryDirectory() as temporary_directory:
         temporary_path = Path(temporary_directory)
@@ -249,7 +242,6 @@ def main() -> None:
                     research_level,
                     phrase_duration,
                     writing_duration,
-                    charge_duration,
                 )
                 research_playlist.append(phrase_path)
             else:

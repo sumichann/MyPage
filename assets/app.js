@@ -187,7 +187,7 @@ function prepareAudioBuffers() {
   return audioBuffersPromise;
 }
 
-function researchPattern(label, level, phraseDuration, writingDuration, chargeDuration) {
+function researchPattern(label, level, phraseDuration, writingDuration) {
   const random = seededRandom(labelHash(label));
   const writingStart = random() * Math.max(0, writingDuration - phraseDuration);
   const slots = Array.from({ length: 14 }, (_, index) => index + 1);
@@ -201,11 +201,7 @@ function researchPattern(label, level, phraseDuration, writingDuration, chargeDu
     .slice(0, hitCount)
     .map((slot) => slot * phraseDuration / 16)
     .sort((first, second) => first - second);
-  const chargeTime = level < 3
-    ? undefined
-    : random() < 0.5
-      ? 0
-      : Math.max(0, phraseDuration - chargeDuration);
+  const chargeTime = level < 3 ? undefined : 0;
   return { writingStart, keyboardTimes, chargeTime };
 }
 
@@ -281,7 +277,6 @@ async function playConceptSound(word) {
       level,
       phraseDuration,
       writingBuffer.duration,
-      chargeBuffer.duration,
     );
 
     const writingSource = context.createBufferSource();
