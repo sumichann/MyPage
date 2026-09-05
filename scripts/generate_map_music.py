@@ -17,6 +17,7 @@ AUDIO_DIR = ROOT / "assets" / "audio"
 BEATS_PER_MINUTE = 65
 BEATS_PER_PHRASE = 4
 PHRASE_DURATION = BEATS_PER_PHRASE * 60 / BEATS_PER_MINUTE
+REFLECT_GAINS = {1: 0.32, 2: 0.5, 3: 0.72}
 RESEARCH_SOUNDS = {
     "writing": AUDIO_DIR / "research-writing.mp3",
     "keyboard": AUDIO_DIR / "research-keyboard.mp3",
@@ -26,6 +27,10 @@ CREATE_SOUND = AUDIO_DIR / "turning_page.mp3"
 PLAY_SOUNDS = {
     level: AUDIO_DIR / f"play-drum-{level}.mp3"
     for level in range(1, 4)
+}
+EXPLORE_SOUNDS = {
+    0: AUDIO_DIR / "explore-0-2.mp3",
+    1: AUDIO_DIR / "explore-1.mp3",
 }
 WALK_SOUND = AUDIO_DIR / "walk.mp3"
 
@@ -265,6 +270,68 @@ def render_source_phrase(
     )
 
 
+def render_reflect_phrase(
+    ffmpeg: str,
+    output_path: Path,
+    silence_path: Path,
+    previous_research: Path,
+    previous_create: Path,
+    previous_play: Path,
+    level: int,
+    phrase_duration: float,
+) -> None:
+    sixteenth_ms = round(phrase_duration * 1000 / 16)
+    echo_delays = {
+        1: [sixteenth_ms],
+        2: [sixteenth_ms, sixteenth_ms * 2],
+        3: [sixteenth_ms, sixteenth_ms * 2, sixteenth_ms * 4],
+    }[level]
+    echo_decays = {
+        1: [0.2],
+        2: [0.28, 0.16],
+        3: [0.36, 0.22, 0.12],
+    }[level]
+    delay_list = "|".join(str(delay) for delay in echo_delays)
+    decay_list = "|".join(str(decay) for decay in echo_decays)
+    initial_delay = f"{sixteenth_ms}|{sixteenth_ms}"
+    filters = [
+        "[1:a]volume=1[research]",
+        "[2:a]volume=1[create]",
+        "[3:a]volume=0.5[play]",
+        "[research][create][play]amix=inputs=3:duration=longest:normalize=0,"
+        "alimiter=limit=0.95,highpass=f=120,lowpass=f=4200,"
+        f"adelay={initial_delay},aecho=0.8:0.7:{delay_list}:{decay_list},"
+        f"volume={REFLECT_GAINS[level]}[memory]",
+        "[0:a][memory]amix=inputs=2:duration=longest:normalize=0[out]",
+    ]
+    run_ffmpeg(
+        ffmpeg,
+        [
+            "-i",
+            str(silence_path),
+            "-i",
+            str(previous_research),
+            "-i",
+            str(previous_create),
+            "-i",
+            str(previous_play),
+            "-filter_complex",
+            ";".join(filters),
+            "-map",
+            "[out]",
+            "-t",
+            f"{phrase_duration:.9f}",
+            "-ar",
+            "44100",
+            "-ac",
+            "2",
+            "-codec:a",
+            "pcm_s16le",
+            str(output_path),
+        ],
+    )
+
+
 def render_stem(ffmpeg: str, playlist_path: Path, output_path: Path) -> None:
     rendered_path = playlist_path.with_suffix(".mp3")
     run_ffmpeg(
@@ -295,11 +362,16 @@ def main() -> None:
     concept_items = concepts()
     if not concept_items:
         raise SystemExit("No concepts were found")
+    concept_items.sort(key=lambda concept: (
+        mix_level(concept, "play"),
+        mix_level(concept, "research"),
+    ))
 
     required_sources = [
         *RESEARCH_SOUNDS.values(),
         CREATE_SOUND,
         *PLAY_SOUNDS.values(),
+        *EXPLORE_SOUNDS.values(),
         WALK_SOUND,
     ]
     missing = [source for source in required_sources if not source.is_file()]
@@ -348,9 +420,22 @@ def main() -> None:
             phrase_duration,
         )
 
+        explore_phrases = {}
+        for level, source in EXPLORE_SOUNDS.items():
+            phrase_path = temporary_path / f"explore-level-{level}.wav"
+            render_source_phrase(
+                ffmpeg,
+                phrase_path,
+                silence_path,
+                source,
+                phrase_duration,
+            )
+            explore_phrases[level] = phrase_path
+
         research_playlist = []
         create_playlist = []
         play_playlist = []
+        explore_playlist = []
         for index, concept in enumerate(concept_items):
             research_level = mix_level(concept, "research")
             create_level = mix_level(concept, "create")
@@ -381,11 +466,35 @@ def main() -> None:
             else:
                 create_playlist.append(silence_path)
             play_playlist.append(play_phrases.get(play_level, silence_path))
+            explore_level = mix_level(concept, "explore")
+            explore_playlist.append(explore_phrases.get(explore_level, silence_path))
+
+        reflect_playlist = []
+        for index, concept in enumerate(concept_items):
+            reflect_level = mix_level(concept, "reflect")
+            if index == 0 or reflect_level == 0:
+                reflect_playlist.append(silence_path)
+                continue
+
+            phrase_path = temporary_path / f"reflect-{index}.wav"
+            render_reflect_phrase(
+                ffmpeg,
+                phrase_path,
+                silence_path,
+                research_playlist[index - 1],
+                create_playlist[index - 1],
+                play_playlist[index - 1],
+                reflect_level,
+                phrase_duration,
+            )
+            reflect_playlist.append(phrase_path)
 
         for axis, playlist in {
             "research": research_playlist,
             "create": create_playlist,
             "play": play_playlist,
+            "explore": explore_playlist,
+            "reflect": reflect_playlist,
             "walk": [walk_phrase] * len(concept_items),
         }.items():
             playlist_path = temporary_path / f"map-{axis}.txt"

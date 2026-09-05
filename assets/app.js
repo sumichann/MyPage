@@ -71,10 +71,16 @@ const playSoundUrls = {
   2: new URL("./audio/play-drum-2.mp3", import.meta.url),
   3: new URL("./audio/play-drum-3.mp3", import.meta.url),
 };
+const exploreSoundUrls = {
+  0: new URL("./audio/explore-0-2.mp3", import.meta.url),
+  1: new URL("./audio/explore-1.mp3", import.meta.url),
+};
 const mapStemUrls = {
   research: new URL("./audio/map-research.mp3", import.meta.url),
   create: new URL("./audio/map-create.mp3", import.meta.url),
   play: new URL("./audio/map-play.mp3", import.meta.url),
+  explore: new URL("./audio/map-explore.mp3", import.meta.url),
+  reflect: new URL("./audio/map-reflect.mp3", import.meta.url),
 };
 const mapBedUrls = {
   walk: new URL("./audio/map-walk.mp3", import.meta.url),
@@ -83,10 +89,13 @@ const mapBedVolumes = {
   walk: 2,
 };
 const soundAxes = Object.keys(mapStemUrls);
+const individualSoundAxes = ["research", "create", "play"];
 const soundVolumeScales = {
   research: 2,
   create: 2,
   play: 1,
+  explore: 0.6,
+  reflect: 4,
 };
 
 const fallbackMixByCategory = {
@@ -204,6 +213,9 @@ function prepareAudioBuffers() {
   });
   Object.entries(playSoundUrls).forEach(([level, url]) => {
     urls.push([`play:${level}`, url]);
+  });
+  Object.entries(exploreSoundUrls).forEach(([level, url]) => {
+    urls.push([`explore:${level}`, url]);
   });
   Object.entries(mapStemUrls).forEach(([axis, url]) => {
     urls.push([`map:${axis}`, url]);
@@ -375,6 +387,20 @@ async function playConceptSound(word) {
       playSource.connect(playGain);
       playSource.start(startTime, 0, phraseDuration);
       conceptSources.push(playSource);
+    }
+
+    const exploreLevel = clamp(Math.round(Number(mix.explore)), 0, 3);
+    if (exploreSoundUrls[exploreLevel]) {
+      const exploreGain = context.createGain();
+      exploreGain.gain.value = mixerVolume("explore");
+      exploreGain.connect(context.destination);
+      conceptGainNodes.explore = exploreGain;
+
+      const exploreSource = context.createBufferSource();
+      exploreSource.buffer = buffers[`explore:${exploreLevel}`];
+      exploreSource.connect(exploreGain);
+      exploreSource.start(startTime, 0, phraseDuration);
+      conceptSources.push(exploreSource);
     }
 
     if (conceptSources.length === 0) {
@@ -720,7 +746,9 @@ function renderConcepts(concepts) {
 
   concepts.forEach((concept, index) => {
     const mix = normalizeMix(concept);
-    const wordSoundAxes = soundAxes.filter((axis) => mix[axis] > 0);
+    const wordSoundAxes = individualSoundAxes.filter((axis) => mix[axis] > 0);
+    const exploreLevel = clamp(Math.round(Number(mix.explore)), 0, 3);
+    if (exploreSoundUrls[exploreLevel]) wordSoundAxes.push("explore");
     const hasSound = wordSoundAxes.length > 0;
     const word = document.createElement(hasSound ? "button" : "p");
     const hash = labelHash(concept.label);
