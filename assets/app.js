@@ -76,6 +76,12 @@ const mapStemUrls = {
   create: new URL("./audio/map-create.mp3", import.meta.url),
   play: new URL("./audio/map-play.mp3", import.meta.url),
 };
+const mapBedUrls = {
+  walk: new URL("./audio/map-walk.mp3", import.meta.url),
+};
+const mapBedVolumes = {
+  walk: 2,
+};
 const soundAxes = Object.keys(mapStemUrls);
 const soundVolumeScales = {
   research: 2,
@@ -201,6 +207,9 @@ function prepareAudioBuffers() {
   });
   Object.entries(mapStemUrls).forEach(([axis, url]) => {
     urls.push([`map:${axis}`, url]);
+  });
+  Object.entries(mapBedUrls).forEach(([name, url]) => {
+    urls.push([`map-bed:${name}`, url]);
   });
 
   audioBuffersPromise = Promise.all(urls.map(async ([key, url]) => {
@@ -428,6 +437,15 @@ async function startMapPlayback() {
       mapSources.push(source);
       mapGainNodes[axis] = gainNode;
     });
+    Object.keys(mapBedUrls).forEach((name) => {
+      const source = context.createBufferSource();
+      const gainNode = context.createGain();
+      source.buffer = buffers[`map-bed:${name}`];
+      gainNode.gain.value = mapBedVolumes[name] ?? 1;
+      source.connect(gainNode).connect(context.destination);
+      source.start(startTime);
+      mapSources.push(source);
+    });
     mapSources[0].addEventListener("ended", () => finishMapPlayback(playbackId));
   } catch (error) {
     console.error("Could not play map music", error);
@@ -496,7 +514,7 @@ function layoutBounds() {
   return {
     left: side,
     right: field.clientWidth - side,
-    top: mobile ? 82 : 72,
+    top: mobile ? 205 : 72,
     bottom: field.clientHeight - (mobile ? 132 : 92),
   };
 }

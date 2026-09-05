@@ -6,6 +6,7 @@
   --ink: #17221a;
   --muted: #697069;
   --line: rgb(23 34 26 / 18%);
+  --panel: rgb(232 229 220 / 82%);
 }
 
 * {
@@ -67,7 +68,7 @@ a {
   padding: 0.42rem 0.68rem;
   border: 1px solid var(--line);
   border-radius: 999px;
-  background: rgb(232 229 220 / 82%);
+  background: var(--panel);
   color: var(--ink);
   font: inherit;
   letter-spacing: inherit;
@@ -97,16 +98,47 @@ a {
   opacity: 0.45;
 }
 
-.mixer-panel {
+.concept-guide {
   position: fixed;
   z-index: 4;
   top: 3.8rem;
+  right: clamp(1rem, 2.5vw, 2.5rem);
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  width: min(22rem, calc(100vw - 2rem));
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 0.72rem;
+  line-height: 1.35;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  backdrop-filter: blur(0.5rem);
+  pointer-events: none;
+}
+
+.concept-guide p {
+  margin: 0;
+}
+
+.concept-guide strong {
+  font-weight: 700;
+}
+
+.mixer-panel {
+  position: fixed;
+  z-index: 4;
+  top: 8rem;
   right: clamp(1rem, 2.5vw, 2.5rem);
   width: min(22rem, calc(100vw - 2rem));
   padding: 0.85rem 1rem 1rem;
   border: 1px solid var(--line);
   border-radius: 0.8rem;
-  background: rgb(232 229 220 / 50%);
+  background: var(--panel);
   box-shadow: 0 1rem 3rem rgb(23 34 26 / 7%);
   backdrop-filter: blur(0.2rem);
 }
@@ -776,6 +808,14 @@ noscript {
 
   .control-button {
     padding-block: 0.35rem;
+  }
+
+  .concept-guide {
+    top: 8rem;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    max-width: none;
   }
 
   .mixer-panel {

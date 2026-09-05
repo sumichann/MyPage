@@ -27,6 +27,7 @@ PLAY_SOUNDS = {
     level: AUDIO_DIR / f"play-drum-{level}.mp3"
     for level in range(1, 4)
 }
+WALK_SOUND = AUDIO_DIR / "walk.mp3"
 
 
 def concepts() -> list[dict]:
@@ -233,7 +234,7 @@ def render_create_phrase(
     run_ffmpeg(ffmpeg, arguments)
 
 
-def render_play_phrase(
+def render_source_phrase(
     ffmpeg: str,
     output_path: Path,
     silence_path: Path,
@@ -295,7 +296,12 @@ def main() -> None:
     if not concept_items:
         raise SystemExit("No concepts were found")
 
-    required_sources = [*RESEARCH_SOUNDS.values(), CREATE_SOUND, *PLAY_SOUNDS.values()]
+    required_sources = [
+        *RESEARCH_SOUNDS.values(),
+        CREATE_SOUND,
+        *PLAY_SOUNDS.values(),
+        WALK_SOUND,
+    ]
     missing = [source for source in required_sources if not source.is_file()]
     if missing:
         raise SystemExit(f"Missing sound: {missing[0]}")
@@ -324,7 +330,7 @@ def main() -> None:
         play_phrases = {}
         for level, source in PLAY_SOUNDS.items():
             phrase_path = temporary_path / f"play-level-{level}.wav"
-            render_play_phrase(
+            render_source_phrase(
                 ffmpeg,
                 phrase_path,
                 silence_path,
@@ -332,6 +338,15 @@ def main() -> None:
                 phrase_duration,
             )
             play_phrases[level] = phrase_path
+
+        walk_phrase = temporary_path / "walk.wav"
+        render_source_phrase(
+            ffmpeg,
+            walk_phrase,
+            silence_path,
+            WALK_SOUND,
+            phrase_duration,
+        )
 
         research_playlist = []
         create_playlist = []
@@ -371,6 +386,7 @@ def main() -> None:
             "research": research_playlist,
             "create": create_playlist,
             "play": play_playlist,
+            "walk": [walk_phrase] * len(concept_items),
         }.items():
             playlist_path = temporary_path / f"map-{axis}.txt"
             playlist_path.write_text(
