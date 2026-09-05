@@ -66,11 +66,22 @@ const researchMaterialUrls = {
 const createMaterialUrls = {
   page: new URL("./audio/turning_page.mp3", import.meta.url),
 };
+const playSoundUrls = {
+  1: new URL("./audio/play-drum-1.mp3", import.meta.url),
+  2: new URL("./audio/play-drum-2.mp3", import.meta.url),
+  3: new URL("./audio/play-drum-3.mp3", import.meta.url),
+};
 const mapStemUrls = {
   research: new URL("./audio/map-research.mp3", import.meta.url),
   create: new URL("./audio/map-create.mp3", import.meta.url),
+  play: new URL("./audio/map-play.mp3", import.meta.url),
 };
 const soundAxes = Object.keys(mapStemUrls);
+const soundVolumeScales = {
+  research: 2,
+  create: 2,
+  play: 1,
+};
 
 const fallbackMixByCategory = {
   identity: { research: 1, create: 1, play: 1, explore: 1, reflect: 1 },
@@ -142,7 +153,8 @@ function setConceptWordPlaying(word, playing) {
 
 function mixerVolume(axis) {
   const input = mixerInputs.find((item) => item.dataset.mixAxis === axis);
-  return clamp(Number(input?.value ?? 100) / 200, 0, 1);
+  const mixerLevel = clamp(Number(input?.value ?? 100) / 200, 0, 1);
+  return mixerLevel * (soundVolumeScales[axis] ?? 1);
 }
 
 function updateSoundVolume(axis) {
@@ -183,6 +195,9 @@ function prepareAudioBuffers() {
   });
   Object.entries(createMaterialUrls).forEach(([name, url]) => {
     urls.push([`create:${name}`, url]);
+  });
+  Object.entries(playSoundUrls).forEach(([level, url]) => {
+    urls.push([`play:${level}`, url]);
   });
   Object.entries(mapStemUrls).forEach(([axis, url]) => {
     urls.push([`map:${axis}`, url]);
@@ -337,6 +352,20 @@ async function playConceptSound(word) {
         pageSource.stop(startTime + phraseDuration);
         conceptSources.push(pageSource);
       });
+    }
+
+    const playLevel = clamp(Math.round(Number(mix.play)), 0, 3);
+    if (playLevel > 0) {
+      const playGain = context.createGain();
+      playGain.gain.value = mixerVolume("play");
+      playGain.connect(context.destination);
+      conceptGainNodes.play = playGain;
+
+      const playSource = context.createBufferSource();
+      playSource.buffer = buffers[`play:${playLevel}`];
+      playSource.connect(playGain);
+      playSource.start(startTime, 0, phraseDuration);
+      conceptSources.push(playSource);
     }
 
     if (conceptSources.length === 0) {

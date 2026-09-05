@@ -23,6 +23,10 @@ RESEARCH_SOUNDS = {
     "charge": AUDIO_DIR / "research-charge.mp3",
 }
 CREATE_SOUND = AUDIO_DIR / "turning_page.mp3"
+PLAY_SOUNDS = {
+    level: AUDIO_DIR / f"play-drum-{level}.mp3"
+    for level in range(1, 4)
+}
 
 
 def concepts() -> list[dict]:
@@ -229,6 +233,37 @@ def render_create_phrase(
     run_ffmpeg(ffmpeg, arguments)
 
 
+def render_play_phrase(
+    ffmpeg: str,
+    output_path: Path,
+    silence_path: Path,
+    source_path: Path,
+    phrase_duration: float,
+) -> None:
+    run_ffmpeg(
+        ffmpeg,
+        [
+            "-i",
+            str(silence_path),
+            "-i",
+            str(source_path),
+            "-filter_complex",
+            "[0:a][1:a]amix=inputs=2:duration=longest:normalize=0[out]",
+            "-map",
+            "[out]",
+            "-t",
+            f"{phrase_duration:.9f}",
+            "-ar",
+            "44100",
+            "-ac",
+            "2",
+            "-codec:a",
+            "pcm_s16le",
+            str(output_path),
+        ],
+    )
+
+
 def render_stem(ffmpeg: str, playlist_path: Path, output_path: Path) -> None:
     rendered_path = playlist_path.with_suffix(".mp3")
     run_ffmpeg(
@@ -260,7 +295,8 @@ def main() -> None:
     if not concept_items:
         raise SystemExit("No concepts were found")
 
-    missing = [source for source in [*RESEARCH_SOUNDS.values(), CREATE_SOUND] if not source.is_file()]
+    required_sources = [*RESEARCH_SOUNDS.values(), CREATE_SOUND, *PLAY_SOUNDS.values()]
+    missing = [source for source in required_sources if not source.is_file()]
     if missing:
         raise SystemExit(f"Missing sound: {missing[0]}")
 
@@ -285,11 +321,25 @@ def main() -> None:
             ],
         )
 
+        play_phrases = {}
+        for level, source in PLAY_SOUNDS.items():
+            phrase_path = temporary_path / f"play-level-{level}.wav"
+            render_play_phrase(
+                ffmpeg,
+                phrase_path,
+                silence_path,
+                source,
+                phrase_duration,
+            )
+            play_phrases[level] = phrase_path
+
         research_playlist = []
         create_playlist = []
+        play_playlist = []
         for index, concept in enumerate(concept_items):
             research_level = mix_level(concept, "research")
             create_level = mix_level(concept, "create")
+            play_level = mix_level(concept, "play")
             if research_level:
                 phrase_path = temporary_path / f"research-{index}.wav"
                 render_research_phrase(
@@ -315,10 +365,12 @@ def main() -> None:
                 create_playlist.append(phrase_path)
             else:
                 create_playlist.append(silence_path)
+            play_playlist.append(play_phrases.get(play_level, silence_path))
 
         for axis, playlist in {
             "research": research_playlist,
             "create": create_playlist,
+            "play": play_playlist,
         }.items():
             playlist_path = temporary_path / f"map-{axis}.txt"
             playlist_path.write_text(
