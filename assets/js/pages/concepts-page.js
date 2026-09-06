@@ -46,9 +46,15 @@ function updateMapPlaybackState(active) {
   mapPlaybackToggle.textContent = active ? "stop this map" : "play this map";
 }
 
+function updateConceptPlaybackState(active) {
+  document.documentElement.classList.toggle("concept-playing", active);
+  document.body.classList.toggle("concept-playing", active);
+}
+
 const audio = createAudioController({
   field,
   getMixerVolume: mixerVolume,
+  onConceptPlaybackChange: updateConceptPlaybackState,
   onMapPlaybackChange: updateMapPlaybackState,
 });
 

@@ -32,6 +32,7 @@ EXPLORE_SOUNDS = {
     0: AUDIO_DIR / "explore-0-2.mp3",
     1: AUDIO_DIR / "explore-1.mp3",
     2: AUDIO_DIR / "explore-2.mp3",
+    3: AUDIO_DIR / "explore-3.mp3",
 }
 WALK_SOUND = AUDIO_DIR / "walk.mp3"
 

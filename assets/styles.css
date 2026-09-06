@@ -31,26 +31,32 @@ body {
 }
 
 html.map-playing,
-.concepts-page.map-playing {
+html.concept-playing,
+.concepts-page.map-playing,
+.concepts-page.concept-playing {
   background: #000;
 }
 
-.concepts-page.map-playing {
+.concepts-page.map-playing,
+.concepts-page.concept-playing {
   color: var(--paper);
 }
 
-.concepts-page.map-playing .site-note {
+.concepts-page.map-playing .site-note,
+.concepts-page.concept-playing .site-note {
   color: currentColor;
   opacity: 0.65;
 }
 
-.concepts-page.map-playing .concept {
+.concepts-page.map-playing .concept,
+.concepts-page.concept-playing .concept {
   opacity: 0.18;
   filter: saturate(0.65);
   transition-delay: 0ms;
 }
 
-.concepts-page.map-playing .concept[data-map-playing="true"] {
+.concepts-page.map-playing .concept[data-map-playing="true"],
+.concepts-page.concept-playing .concept[data-playing="true"] {
   opacity: 1;
   filter: brightness(1.65) saturate(1.2);
 }
@@ -422,12 +428,6 @@ a {
   border-radius: 0.15em;
   outline: 2px solid currentColor;
   outline-offset: 0.12em;
-}
-
-.concept[data-sound][data-playing="true"] {
-  text-decoration: underline;
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.12em;
 }
 
 .concept-field[data-layout="cluster"] .concept {

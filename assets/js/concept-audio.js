@@ -5,6 +5,10 @@ import {
   seededRandom,
 } from "./concept-data.js";
 
+const BEATS_PER_MINUTE = 65;
+const BEATS_PER_PHRASE = 4;
+const PHRASE_DURATION = BEATS_PER_PHRASE * 60 / BEATS_PER_MINUTE;
+
 const researchMaterialUrls = {
   writing: new URL("../audio/research-writing.mp3", import.meta.url),
   keyboard: new URL("../audio/research-keyboard.mp3", import.meta.url),
@@ -25,6 +29,7 @@ const exploreSoundUrls = {
   0: new URL("../audio/explore-0-2.mp3", import.meta.url),
   1: new URL("../audio/explore-1.mp3", import.meta.url),
   2: new URL("../audio/explore-2.mp3", import.meta.url),
+  3: new URL("../audio/explore-3.mp3", import.meta.url),
 };
 
 const mapStemUrls = {
@@ -111,7 +116,12 @@ function connectWithGain(context, source, destination, volume) {
   source.connect(gainNode).connect(destination);
 }
 
-export function createAudioController({ field, getMixerVolume, onMapPlaybackChange }) {
+export function createAudioController({
+  field,
+  getMixerVolume,
+  onConceptPlaybackChange,
+  onMapPlaybackChange,
+}) {
   let audioContext;
   let audioBuffersPromise;
   let activeConceptWord;
@@ -215,6 +225,7 @@ export function createAudioController({ field, getMixerVolume, onMapPlaybackChan
     activeConceptWord = undefined;
     conceptSources = [];
     conceptGainNodes = {};
+    onConceptPlaybackChange(false);
   }
 
   function stopConceptSound() {
@@ -224,6 +235,7 @@ export function createAudioController({ field, getMixerVolume, onMapPlaybackChan
     conceptGainNodes = {};
     setConceptWordPlaying(activeConceptWord, false);
     activeConceptWord = undefined;
+    onConceptPlaybackChange(false);
   }
 
   async function playConceptSound(word) {
@@ -236,14 +248,14 @@ export function createAudioController({ field, getMixerVolume, onMapPlaybackChan
 
     activeConceptWord = word;
     setConceptWordPlaying(word, true);
+    onConceptPlaybackChange(true);
 
     try {
       const [, buffers] = await Promise.all([resumePromise, buffersPromise]);
       if (playbackId !== conceptPlaybackId) return;
 
       const startTime = context.currentTime + 0.03;
-      const conceptCount = field.querySelectorAll(".concept").length;
-      const phraseDuration = buffers["map:research"].duration / conceptCount;
+      const phraseDuration = PHRASE_DURATION;
       const researchLevel = clamp(Math.round(Number(mix.research)), 0, 3);
       if (researchLevel > 0) {
         const researchGain = context.createGain();
@@ -384,7 +396,7 @@ export function createAudioController({ field, getMixerVolume, onMapPlaybackChan
       const words = mapPlaybackWords();
       if (words.length === 0) throw new Error("No concept words found");
       const startTime = context.currentTime + 0.05;
-      const phraseDuration = buffers["map:research"].duration / words.length;
+      const phraseDuration = PHRASE_DURATION;
       scheduleMapWordHighlights(playbackId, startTime, phraseDuration);
 
       soundAxes.forEach((axis) => {
