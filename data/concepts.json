@@ -1,37 +1,40 @@
 {
-  "generatedAt": "2026-08-30T05:28:32.165355Z",
+  "generatedAt": "2026-09-06T06:34:29.593802Z",
   "model": "gpt-5.4-mini",
   "concepts": [
     {
       "label": "sumiaki",
-      "summary": "本人の名前として確認できる識別子。",
-      "weight": 10,
+      "summary": "GitHub上の名前で、複数の創作・研究活動の起点になっている。",
+      "weight": 5,
       "category": "identity",
       "mix": {
         "research": 0,
-        "create": 0,
+        "create": 1,
         "play": 0,
         "explore": 0,
         "reflect": 0
       },
       "related": [
-        "草将澄秋",
-        "sumiaki@"
+        "MyPage",
+        "annotation-app",
+        "中南米旅行",
+        "RADWIMPSコピー"
       ],
       "evidence": [
         "github.com/sumichann",
+        "youtube.com/@sumihosdrums",
         "note.com/chenchuchu",
         "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
       ]
     },
     {
       "label": "東京大学・関野研究室",
-      "summary": "東京大学の関野研究室に所属し、電気・バイオ系の研究環境にいる。",
-      "weight": 9,
+      "summary": "東京大学での所属先で、脳磁図や磁気刺激の研究活動が集まっている。",
+      "weight": 5,
       "category": "background",
       "mix": {
         "research": 3,
-        "create": 1,
+        "create": 2,
         "play": 0,
         "explore": 0,
         "reflect": 1
@@ -39,19 +42,43 @@
       "related": [
         "脳磁図",
         "MRI",
-        "ウェアラブル磁気シールド"
+        "経頭蓋磁気刺激",
+        "草将澄秋"
       ],
       "evidence": [
         "https://www.bee.t.u-tokyo.ac.jp/member_e2024.html",
+        "https://researchmap.jp/motofumi-fushimi",
+        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
+      ]
+    },
+    {
+      "label": "Kawahara Laboratory",
+      "summary": "東京大学での研究・教育の拠点として、LCAやAI応用の活動が見える。",
+      "weight": 4,
+      "category": "background",
+      "mix": {
+        "research": 3,
+        "create": 2,
+        "play": 0,
+        "explore": 0,
+        "reflect": 1
+      },
+      "related": [
+        "Life Cycle Assessment",
+        "GPT-4o",
+        "Mercari",
+        "Sumiaki Kusahata"
+      ],
+      "evidence": [
         "https://www.akg.t.u-tokyo.ac.jp/member",
         "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
-        "researchmap.jp/motofumi-fushimi"
+        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
       ]
     },
     {
       "label": "脳磁図（MEG）",
-      "summary": "脳磁図の計測、逆問題、源推定、干渉信号分離に関わる研究テーマ。",
-      "weight": 9,
+      "summary": "磁場計測と逆問題解析を軸にした主要な研究テーマ。",
+      "weight": 5,
       "category": "research",
       "mix": {
         "research": 3,
@@ -62,18 +89,19 @@
       },
       "related": [
         "多重極モデル",
+        "電流源推定",
         "ウェアラブル磁気シールド",
         "MNE-Python"
       ],
       "evidence": [
-        "researchmap.jp/motofumi-fushimi",
-        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
+        "https://researchmap.jp/motofumi-fushimi",
+        "https://www.bee.t.u-tokyo.ac.jp/member_e2024.html"
       ]
     },
     {
-      "label": "MRIと電気特性イメージング",
-      "summary": "MRIを用いて人体・生体組織の電気特性やプロトン密度を定量化する研究。",
-      "weight": 8,
+      "label": "MRI・電磁気特性画像化",
+      "summary": "MRIを用いた人体・生体組織の電気特性やプロトン密度の定量画像化に取り組んでいる。",
+      "weight": 4,
       "category": "research",
       "mix": {
         "research": 3,
@@ -83,80 +111,39 @@
         "reflect": 1
       },
       "related": [
-        "Bloch-Siegert shift",
-        "電磁気特性分布",
-        "定量画像化"
+        "Bloch–Siegert shift",
+        "複素B1マッピング",
+        "定量的再構成"
       ],
       "evidence": [
-        "researchmap.jp/motofumi-fushimi"
+        "https://researchmap.jp/motofumi-fushimi"
       ]
     },
     {
-      "label": "経頭蓋磁気刺激（TMS）",
-      "summary": "脳内へ深く電場を届けるコイル設計と、その検証に関わる研究。",
-      "weight": 8,
+      "label": "経頭蓋磁気刺激コイル",
+      "summary": "深く電場を入れるためのTMSコイル設計・試作が見える。",
+      "weight": 4,
       "category": "research",
       "mix": {
-        "research": 3,
-        "create": 2,
-        "play": 0,
-        "explore": 0,
-        "reflect": 1
-      },
-      "related": [
-        "TMSコイル",
-        "液冷",
-        "磁気測定"
-      ],
-      "evidence": [
-        "researchmap.jp/motofumi-fushimi"
-      ]
-    },
-    {
-      "label": "ウェアラブル磁気シールド",
-      "summary": "実験室外でも脳磁図計測を可能にする携帯型の磁気シールド。",
-      "weight": 7,
-      "category": "project",
-      "mix": {
         "research": 2,
-        "create": 2,
+        "create": 3,
         "play": 0,
         "explore": 0,
         "reflect": 0
       },
       "related": [
-        "脳磁図",
-        "ポータブル磁気シールド",
-        "アクティブシールド"
+        "液冷",
+        "磁場測定",
+        "深部電場"
       ],
       "evidence": [
-        "researchmap.jp/motofumi-fushimi"
+        "https://researchmap.jp/motofumi-fushimi"
       ]
     },
     {
       "label": "MNE-Python",
-      "summary": "人間の神経生理データを探索・可視化・解析するPythonパッケージへの貢献。",
-      "weight": 7,
-      "category": "tool",
-      "mix": {
-        "research": 2,
-        "create": 1,
-        "play": 0,
-        "explore": 1,
-        "reflect": 1
-      },
-      "related": [
-        "Python",
-        "脳磁図"
-      ],
-      "evidence": [
-        "researchmap.jp/motofumi-fushimi"
-      ]
-    },
-    {
-      "label": "Python",
-      "summary": "GitHub上の複数リポジトリで使われている主要言語。",
-      "weight": 6,
+      "summary": "MEG/EEGなどの神経生理データ解析に関わるオープンソースPythonパッケージへの貢献。",
+      "weight": 3,
       "category": "tool",
       "mix": {
         "research": 1,
@@ -166,17 +153,82 @@
         "reflect": 0
       },
       "related": [
-        "Jupyter Notebook",
-        "GitHub Pages"
+        "MEG",
+        "EEG",
+        "Python"
       ],
       "evidence": [
-        "github.com/sumichann"
+        "https://researchmap.jp/motofumi-fushimi"
+      ]
+    },
+    {
+      "label": "GPT-4o",
+      "summary": "画像とテキストを使って衣類情報を自動抽出する仕組みに利用されている。",
+      "weight": 3,
+      "category": "tool",
+      "mix": {
+        "research": 2,
+        "create": 2,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "Life Cycle Assessment",
+        "Mercari",
+        "vision-language model"
+      ],
+      "evidence": [
+        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
+      ]
+    },
+    {
+      "label": "Life Cycle Assessment",
+      "summary": "中古衣類の環境負荷を定量化する研究の中心概念。",
+      "weight": 4,
+      "category": "research",
+      "mix": {
+        "research": 3,
+        "create": 1,
+        "play": 0,
+        "explore": 0,
+        "reflect": 2
+      },
+      "related": [
+        "循環型経済",
+        "Scope 3",
+        "環境負荷"
+      ],
+      "evidence": [
+        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
+        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
+      ]
+    },
+    {
+      "label": "Mercari R4D",
+      "summary": "中古衣類の環境影響推定に関する共同研究の接点。",
+      "weight": 3,
+      "category": "background",
+      "mix": {
+        "research": 2,
+        "create": 1,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "AI",
+        "Circular Economy",
+        "Dami Moon"
+      ],
+      "evidence": [
+        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
       ]
     },
     {
       "label": "MyPage",
-      "summary": "GitHub Pagesで公開された個人サイト。",
-      "weight": 6,
+      "summary": "GitHub Pagesで公開した個人ウェブサイト。",
+      "weight": 3,
       "category": "project",
       "mix": {
         "research": 0,
@@ -186,8 +238,8 @@
         "reflect": 1
       },
       "related": [
-        "Python",
-        "annotation-app"
+        "annotation-app",
+        "riise_webapp_checking"
       ],
       "evidence": [
         "github.com/sumichann"
@@ -196,7 +248,7 @@
     {
       "label": "annotation-app",
       "summary": "GitHub上のPython製アプリケーション。",
-      "weight": 5,
+      "weight": 2,
       "category": "project",
       "mix": {
         "research": 0,
@@ -206,6 +258,7 @@
         "reflect": 0
       },
       "related": [
+        "MyPage",
         "Python"
       ],
       "evidence": [
@@ -213,9 +266,29 @@
       ]
     },
     {
-      "label": "riise_webapp_checking",
-      "summary": "Pythonで書かれたWebアプリ関連のリポジトリ。",
+      "label": "master_experience",
+      "summary": "音声修士実験のコードとして公開された研究コード。",
       "weight": 4,
+      "category": "project",
+      "mix": {
+        "research": 3,
+        "create": 2,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "音声修士実験",
+        "Jupyter Notebook"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "riise_webapp_checking",
+      "summary": "GitHub上のPythonプロジェクト名。",
+      "weight": 2,
       "category": "project",
       "mix": {
         "research": 0,
@@ -225,6 +298,45 @@
         "reflect": 0
       },
       "related": [
+        "annotation-app"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "Python",
+      "summary": "複数のGitHubリポジトリで使われている主要な実装言語。",
+      "weight": 3,
+      "category": "tool",
+      "mix": {
+        "research": 0,
+        "create": 2,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "Jupyter Notebook"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "Jupyter Notebook",
+      "summary": "研究実験コードの記録・実行に使われている。",
+      "weight": 2,
+      "category": "tool",
+      "mix": {
+        "research": 1,
+        "create": 2,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "master_experience",
         "Python"
       ],
       "evidence": [
@@ -232,29 +344,28 @@
       ]
     },
     {
-      "label": "音声修士実験",
-      "summary": "音声に関する修士実験コードのリポジトリがある。",
-      "weight": 7,
-      "category": "research",
+      "label": "GitHub Pages",
+      "summary": "個人サイト公開のための配信基盤。",
+      "weight": 2,
+      "category": "tool",
       "mix": {
-        "research": 3,
+        "research": 0,
         "create": 2,
         "play": 0,
         "explore": 0,
         "reflect": 0
       },
       "related": [
-        "Jupyter Notebook",
-        "音響"
+        "MyPage"
       ],
       "evidence": [
         "github.com/sumichann"
       ]
     },
     {
-      "label": "RADWIMPSコピー",
-      "summary": "RADWIMPSの楽曲をバンドでコピーし、ライブで演奏している。",
-      "weight": 8,
+      "label": "RADWIMPS",
+      "summary": "バンドコピーやライブ演奏の中心にある楽曲・アーティスト。",
+      "weight": 5,
       "category": "music",
       "mix": {
         "research": 0,
@@ -266,7 +377,49 @@
       "related": [
         "君と羊と青",
         "ハイパーベンチレイション",
-        "トレモロ"
+        "トレモロ",
+        "光"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "8films",
+      "summary": "ギター購入1年記念の演奏対象として登場する楽曲。",
+      "weight": 2,
+      "category": "music",
+      "mix": {
+        "research": 0,
+        "create": 1,
+        "play": 3,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "Uchu Conbini",
+        "guitar"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "cetow / migrant",
+      "summary": "ドラムやバンド練習・カバー動画の演奏対象。",
+      "weight": 3,
+      "category": "music",
+      "mix": {
+        "research": 0,
+        "create": 1,
+        "play": 3,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "QOOPIE",
+        "cover",
+        "drums"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -274,8 +427,8 @@
     },
     {
       "label": "ギター",
-      "summary": "ギターを購入して1年記念の演奏動画を出すほど継続している。",
-      "weight": 7,
+      "summary": "ライブやコピー演奏の主要な演奏手段。",
+      "weight": 4,
       "category": "music",
       "mix": {
         "research": 0,
@@ -285,8 +438,9 @@
         "reflect": 0
       },
       "related": [
-        "RADWIMPSコピー",
-        "cover"
+        "RADWIMPS",
+        "8films",
+        "君と羊と青"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -294,8 +448,8 @@
     },
     {
       "label": "ドラム",
-      "summary": "共同チャンネル名や動画タグから、ドラム演奏が活動の中心にある。",
-      "weight": 8,
+      "summary": "共同チャンネル名にも現れる主要な演奏パート。",
+      "weight": 4,
       "category": "music",
       "mix": {
         "research": 0,
@@ -305,28 +459,9 @@
         "reflect": 0
       },
       "related": [
-        "ギター",
-        "バンド"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "バンド／ライブ",
-      "summary": "大学の五月祭や卒業ライブ、夏合宿などでバンド演奏を行っている。",
-      "weight": 8,
-      "category": "music",
-      "mix": {
-        "research": 0,
-        "create": 1,
-        "play": 3,
-        "explore": 1,
-        "reflect": 0
-      },
-      "related": [
-        "RADWIMPSコピー",
-        "コピーバンド"
+        "band",
+        "cover",
+        "ライブ"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -334,29 +469,29 @@
     },
     {
       "label": "中南米旅行",
-      "summary": "メキシコ、ペルー、バンクーバーを経由する長期の旅行記をnoteで連載している。",
-      "weight": 7,
+      "summary": "旅の記録として連載されている長編の移動・観察体験。",
+      "weight": 5,
       "category": "interest",
       "mix": {
         "research": 0,
-        "create": 2,
+        "create": 1,
         "play": 0,
         "explore": 3,
-        "reflect": 2
+        "reflect": 3
       },
       "related": [
         "メキシコシティ",
-        "バンクーバー",
-        "タコス"
+        "ペルー",
+        "バンクーバー"
       ],
       "evidence": [
         "note.com/chenchuchu"
       ]
     },
     {
-      "label": "旅の観察と発見",
-      "summary": "海外旅行での些細な発見を楽しみ、疑問や想像を広げる姿勢が書かれている。",
-      "weight": 6,
+      "label": "海外旅行の醍醐味",
+      "summary": "小さな発見や違和感を楽しみ、想像する姿勢。",
+      "weight": 4,
       "category": "thought",
       "mix": {
         "research": 0,
@@ -373,31 +508,9 @@
       ]
     },
     {
-      "label": "環境影響の自動推定",
-      "summary": "フリマアプリ上の衣類情報からLCA用データをAIで抽出し、環境負荷を推定する研究。",
-      "weight": 8,
-      "category": "research",
-      "mix": {
-        "research": 3,
-        "create": 2,
-        "play": 0,
-        "explore": 0,
-        "reflect": 1
-      },
-      "related": [
-        "循環経済",
-        "LCA",
-        "GPT-4o"
-      ],
-      "evidence": [
-        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
-        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
-      ]
-    },
-    {
-      "label": "循環経済",
-      "summary": "再利用市場や環境価値の可視化を通じた循環経済への関心が見える。",
-      "weight": 6,
+      "label": "循環型経済",
+      "summary": "中古品の環境価値を可視化する文脈で現れる目標概念。",
+      "weight": 3,
       "category": "thought",
       "mix": {
         "research": 1,
@@ -407,30 +520,12 @@
         "reflect": 2
       },
       "related": [
-        "環境影響の自動推定"
+        "Life Cycle Assessment",
+        "Mercari R4D"
       ],
       "evidence": [
+        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
         "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
-      ]
-    },
-    {
-      "label": "Jupyter Notebook",
-      "summary": "修士実験のコードに使われているノートブック環境。",
-      "weight": 4,
-      "category": "tool",
-      "mix": {
-        "research": 1,
-        "create": 1,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "Python",
-        "音声修士実験"
-      ],
-      "evidence": [
-        "github.com/sumichann"
       ]
     }
   ]
