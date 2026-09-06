@@ -30,6 +30,31 @@ body {
   color: var(--ink);
 }
 
+html.map-playing,
+.concepts-page.map-playing {
+  background: #000;
+}
+
+.concepts-page.map-playing {
+  color: var(--paper);
+}
+
+.concepts-page.map-playing .site-note {
+  color: currentColor;
+  opacity: 0.65;
+}
+
+.concepts-page.map-playing .concept {
+  opacity: 0.18;
+  filter: saturate(0.65);
+  transition-delay: 0ms;
+}
+
+.concepts-page.map-playing .concept[data-map-playing="true"] {
+  opacity: 1;
+  filter: brightness(1.65) saturate(1.2);
+}
+
 a {
   color: inherit;
   text-decoration-thickness: 1px;
@@ -125,6 +150,17 @@ a {
   text-transform: uppercase;
   backdrop-filter: blur(0.5rem);
   pointer-events: none;
+  transition:
+    opacity 180ms ease,
+    visibility 0s;
+}
+
+.concepts-page.map-playing .concept-guide {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 180ms ease,
+    visibility 0s 180ms;
 }
 
 .concept-guide p {
@@ -249,6 +285,49 @@ a {
   color: var(--ink);
   font-variant-numeric: tabular-nums;
   text-align: center;
+}
+
+@media (min-width: 44.01rem) {
+  .mixer-panel {
+    overflow: visible;
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .mixer-label {
+    display: block;
+  }
+
+  .mixer-drawer-toggle {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    width: 1.8rem;
+    height: 3rem;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-right: 0;
+    border-radius: 0.5rem 0 0 0.5rem;
+    background: var(--panel);
+    color: var(--ink);
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    transform: translate(-100%, -50%);
+    cursor: pointer;
+    backdrop-filter: blur(0.5rem);
+  }
+
+  .mixer-drawer-toggle span:first-child {
+    display: none;
+  }
+
+  .mixer-panel[data-open="false"] {
+    transform: translateX(calc(100% + clamp(1rem, 2.5vw, 2.5rem)));
+  }
 }
 
 .site-footer {

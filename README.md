@@ -22,6 +22,12 @@ identity weight to adjust its visual size, opacity, and stacking order without
 changing its category color. The landing page starts with About and reuses the
 matching generated words as static accents in each section.
 
+The browser code uses native JavaScript modules without a framework or build
+step. `assets/js/pages/home-page.js` starts the landing page, while
+`assets/js/pages/concepts-page.js` connects the Concept Map UI. Shared data helpers,
+layout calculations, and Web Audio behavior live in `concept-data.js`,
+`concept-layout.js`, and `concept-audio.js` respectively.
+
 Before running the workflows, add repository Actions secrets named
 `OPENAI_API_KEY`, `YOUTUBE_API_KEY`, and `BRAVE_SEARCH_API_KEY`. The YouTube key
 needs access to the YouTube Data API v3. Never commit an API key or put it in

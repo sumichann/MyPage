@@ -12,6 +12,7 @@ on:
       - "data/web-search-feed.json"
       - "assets/audio/play-drum-*.mp3"
       - "assets/audio/research-*.mp3"
+      - "assets/audio/explore-*.mp3"
       - "assets/audio/turning_page.mp3"
       - "assets/audio/walk.mp3"
       - "scripts/generate_concepts.py"
