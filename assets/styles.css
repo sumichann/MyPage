@@ -518,8 +518,15 @@ a {
   border-top: 0;
 }
 
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 24rem);
+  gap: clamp(2.5rem, 7vw, 7rem);
+  align-items: start;
+}
+
 .about-copy {
-  max-width: 58rem;
+  max-width: 46rem;
   margin-top: clamp(2.5rem, 5vw, 4rem);
 }
 
@@ -528,6 +535,19 @@ a {
   font-size: clamp(1.1rem, 2vw, 1.75rem);
   line-height: 1.4;
   letter-spacing: -0.035em;
+}
+
+.about-photo {
+  width: 100%;
+  max-width: 24rem;
+  margin: 0;
+  justify-self: end;
+}
+
+.about-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .concept-method-note {
@@ -690,7 +710,7 @@ a {
   margin: 0 0 1.25rem;
 }
 
-.about-section > h2,
+.about-text > h2,
 .history-section > h2,
 .features-section > h2,
 .likes-section > h2 {
@@ -701,7 +721,7 @@ a {
   letter-spacing: -0.05em;
 }
 
-.about-section > h2,
+.about-text > h2,
 .history-section > h2 {
   font-size: clamp(1.8rem, 3.5vw, 3.25rem);
 }
@@ -973,6 +993,15 @@ noscript {
 
   .home-page .about-section {
     padding-top: 6.5rem;
+  }
+
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .about-photo {
+    width: min(100%, 22rem);
   }
 
   .section-concept-stack {
