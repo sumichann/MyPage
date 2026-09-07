@@ -22,6 +22,7 @@ const field = document.querySelector("#concept-field");
 const count = document.querySelector("#concept-count");
 const layoutToggle = document.querySelector("#layout-toggle");
 const mapPlaybackToggle = document.querySelector("#map-playback-toggle");
+const tapHint = document.querySelector("#tap-hint");
 const mixerPanel = document.querySelector("#human-mixer");
 const mixerToggle = document.querySelector("#mixer-toggle");
 const mixerToggleIcon = document.querySelector("#mixer-toggle-icon");
@@ -32,6 +33,64 @@ let layoutMode = "scatter";
 let scatterSeed = createSeed();
 let resizeTimer;
 let lastLayoutWidth = window.innerWidth;
+let tapHintTimer;
+let tapEffectTimer;
+let tapHintTarget;
+
+function dismissTapHint() {
+  window.clearTimeout(tapHintTimer);
+  window.clearTimeout(tapEffectTimer);
+  tapHint?.removeAttribute("data-active");
+  tapHintTarget?.removeAttribute("data-tap-target");
+  tapHintTarget = undefined;
+  document.documentElement.classList.remove("tap-demonstrating");
+  document.body.classList.remove("tap-demonstrating");
+}
+
+function showTapHint() {
+  if (!tapHint || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  const viewportCenter = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  const candidates = [...field.querySelectorAll(".concept[data-sound]")]
+    .map((word) => ({ word, rect: word.getBoundingClientRect() }))
+    .filter(({ word, rect }) => {
+      const x = rect.left + rect.width / 2;
+      const y = rect.top + rect.height / 2;
+      const elementAtCenter = document.elementFromPoint(x, y);
+      return rect.top > 100
+        && rect.bottom < window.innerHeight - 70
+        && rect.left > 20
+        && rect.right < window.innerWidth - 20
+        && (elementAtCenter === word || word.contains(elementAtCenter));
+    })
+    .sort((first, second) => {
+      const firstDistance = Math.hypot(
+        first.rect.left + first.rect.width / 2 - viewportCenter.x,
+        first.rect.top + first.rect.height / 2 - viewportCenter.y,
+      );
+      const secondDistance = Math.hypot(
+        second.rect.left + second.rect.width / 2 - viewportCenter.x,
+        second.rect.top + second.rect.height / 2 - viewportCenter.y,
+      );
+      return firstDistance - secondDistance;
+    });
+
+  const target = candidates[0];
+  if (!target) return;
+
+  tapHint.style.setProperty("--tap-x", `${target.rect.left + target.rect.width / 2}px`);
+  tapHint.style.setProperty("--tap-y", `${target.rect.top + target.rect.height / 2}px`);
+  tapHintTarget = target.word;
+  tapHint.dataset.active = "true";
+  tapEffectTimer = window.setTimeout(() => {
+    document.documentElement.classList.add("tap-demonstrating");
+    document.body.classList.add("tap-demonstrating");
+    tapHintTarget?.setAttribute("data-tap-target", "true");
+  }, 2860);
+  tapHintTimer = window.setTimeout(dismissTapHint, 5600);
+}
 
 function mixerVolume(axis) {
   const input = mixerInputs.find((item) => item.dataset.mixAxis === axis);
@@ -154,7 +213,10 @@ function renderConcepts(concepts) {
     console.error("Could not prepare map music", error);
   });
   applyMixer();
-  requestAnimationFrame(() => layoutWords(field, layoutMode, scatterSeed));
+  requestAnimationFrame(() => {
+    layoutWords(field, layoutMode, scatterSeed);
+    tapHintTimer = window.setTimeout(showTapHint, 1400);
+  });
 }
 
 async function loadConceptMap() {
@@ -213,7 +275,10 @@ field.addEventListener("click", (event) => {
   audio.toggleConceptSound(word);
 });
 
+document.addEventListener("pointerdown", () => dismissTapHint(), { once: true });
+
 window.addEventListener("resize", () => {
+  dismissTapHint();
   const nextWidth = window.innerWidth;
   if (Math.abs(nextWidth - lastLayoutWidth) < 16) return;
 
