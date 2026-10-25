@@ -1,34 +1,58 @@
 {
-  "generatedAt": "2026-10-18T04:39:46.873218Z",
+  "generatedAt": "2026-10-25T04:47:54.235571Z",
   "model": "gpt-5.4-mini",
   "concepts": [
     {
       "label": "Sumiaki Kusahata",
-      "summary": "東京大学の大学院生として研究発表や作品公開を行う本人名。",
-      "weight": 100,
+      "summary": "東京大学系の研究と創作を横断する本人名。",
+      "weight": 10,
       "category": "identity",
       "mix": {
-        "research": 2,
+        "research": 1,
         "create": 1,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
+        "play": 1,
+        "explore": 1,
+        "reflect": 1
       },
       "related": [
         "東京大学",
         "関野研究室",
-        "Kawahara Laboratory"
+        "KAWAHARA LABORATORY"
       ],
       "evidence": [
         "github.com/sumichann",
+        "note.com/chenchuchu",
+        "https://researchmap.jp/motofumi-fushimi",
+        "https://www.bee.t.u-tokyo.ac.jp/member_e2024.html",
+        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
+      ]
+    },
+    {
+      "label": "東京大学大学院工学系研究科",
+      "summary": "東京大学の大学院で研究に取り組む所属。",
+      "weight": 9,
+      "category": "background",
+      "mix": {
+        "research": 3,
+        "create": 1,
+        "play": 0,
+        "explore": 0,
+        "reflect": 1
+      },
+      "related": [
+        "関野研究室",
+        "川原研究室",
+        "論文発表"
+      ],
+      "evidence": [
         "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
         "https://www.bee.t.u-tokyo.ac.jp/member_e2024.html"
       ]
     },
     {
-      "label": "東京大学・川原研究室",
-      "summary": "東京大学大学院工学系研究科での所属。研究の主な拠点として示されている。",
-      "weight": 86,
+      "label": "川原研究室",
+      "summary": "東京大学での所属研究室。",
+      "weight": 8,
       "category": "background",
       "mix": {
         "research": 3,
@@ -38,19 +62,18 @@
         "reflect": 0
       },
       "related": [
-        "Sumiaki Kusahata",
-        "研究発表",
-        "MNE-Python"
+        "AI",
+        "ライフサイクルアセスメント",
+        "Mercari R4D"
       ],
       "evidence": [
-        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
-        "https://www.akg.t.u-tokyo.ac.jp/member"
+        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
       ]
     },
     {
       "label": "関野研究室",
-      "summary": "東京大学の関野研究室に在籍していたことがメンバー一覧で確認できる。",
-      "weight": 78,
+      "summary": "生体磁気・MRI・磁気刺激の研究拠点として関わる研究室。",
+      "weight": 8,
       "category": "background",
       "mix": {
         "research": 3,
@@ -60,19 +83,19 @@
         "reflect": 0
       },
       "related": [
-        "Sumiaki Kusahata",
-        "磁気共鳴",
-        "MEG"
+        "脳磁図",
+        "MRI",
+        "経頭蓋磁気刺激"
       ],
       "evidence": [
         "https://www.bee.t.u-tokyo.ac.jp/member_e2024.html",
-        "researchmap.jp/motofumi-fushimi"
+        "https://researchmap.jp/motofumi-fushimi"
       ]
     },
     {
-      "label": "AIを用いた中古衣料の環境影響推定",
-      "summary": "フリマアプリ上の衣類情報から、環境負荷を自動推定する研究に関わった。",
-      "weight": 95,
+      "label": "脳磁図（MEG）",
+      "summary": "脳磁図計測・逆問題・磁気シールドに関わる研究。",
+      "weight": 9,
       "category": "research",
       "mix": {
         "research": 3,
@@ -82,9 +105,73 @@
         "reflect": 1
       },
       "related": [
-        "Vision-Language Model",
-        "LCA",
-        "Mercari"
+        "多重極モデル",
+        "ウェアラブル磁気シールド",
+        "電流源推定"
+      ],
+      "evidence": [
+        "https://researchmap.jp/motofumi-fushimi",
+        "https://www.bee.t.u-tokyo.ac.jp/member_e2024.html"
+      ]
+    },
+    {
+      "label": "MRI",
+      "summary": "MRIを用いた定量画像化や電気特性推定の研究経験。",
+      "weight": 8,
+      "category": "research",
+      "mix": {
+        "research": 3,
+        "create": 2,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "電磁気特性分布",
+        "B1マッピング",
+        "プロトン密度"
+      ],
+      "evidence": [
+        "https://researchmap.jp/motofumi-fushimi"
+      ]
+    },
+    {
+      "label": "経頭蓋磁気刺激コイル",
+      "summary": "深部刺激を目指すコイル設計・特許に関わる。",
+      "weight": 7,
+      "category": "project",
+      "mix": {
+        "research": 2,
+        "create": 3,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "液冷コイル",
+        "磁場測定",
+        "特許"
+      ],
+      "evidence": [
+        "https://researchmap.jp/motofumi-fushimi"
+      ]
+    },
+    {
+      "label": "AIによる衣類情報抽出と環境影響推定",
+      "summary": "中古衣類の材料・サイズ等をAIで抽出しLCAを自動化する研究。",
+      "weight": 8,
+      "category": "research",
+      "mix": {
+        "research": 3,
+        "create": 2,
+        "play": 0,
+        "explore": 0,
+        "reflect": 1
+      },
+      "related": [
+        "ライフサイクルアセスメント",
+        "Mercari R4D",
+        "Vision-Language Model"
       ],
       "evidence": [
         "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001",
@@ -92,70 +179,51 @@
       ]
     },
     {
-      "label": "Vision-Language Model (VLM)",
-      "summary": "画像と文章を同時に扱うAIモデルを研究で利用している。",
-      "weight": 74,
-      "category": "tool",
+      "label": "Mercari R4D",
+      "summary": "企業研究との共同研究に参加している。",
+      "weight": 6,
+      "category": "background",
       "mix": {
-        "research": 3,
+        "research": 2,
         "create": 1,
         "play": 0,
         "explore": 0,
         "reflect": 0
       },
       "related": [
-        "AIを用いた中古衣料の環境影響推定",
-        "GPT-4o"
+        "環境影響推定",
+        "中古衣類",
+        "共同研究"
       ],
       "evidence": [
-        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
-      ]
-    },
-    {
-      "label": "GPT-4o",
-      "summary": "衣類の素材やサイズなどを自動抽出するシステムの実装に使われた。",
-      "weight": 70,
-      "category": "tool",
-      "mix": {
-        "research": 2,
-        "create": 2,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "Vision-Language Model (VLM)",
-        "AIを用いた中古衣料の環境影響推定"
-      ],
-      "evidence": [
-        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
+        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
       ]
     },
     {
       "label": "MNE-Python",
-      "summary": "神経生理データを扱うオープンソースPythonパッケージへの貢献が示されている。",
-      "weight": 68,
+      "summary": "神経生理データ解析のオープンソースPython包に貢献している。",
+      "weight": 6,
       "category": "tool",
       "mix": {
         "research": 2,
-        "create": 2,
+        "create": 1,
         "play": 0,
         "explore": 0,
         "reflect": 0
       },
       "related": [
+        "Python",
         "MEG",
-        "EEG",
-        "Python"
+        "EEG"
       ],
       "evidence": [
-        "researchmap.jp/motofumi-fushimi"
+        "https://researchmap.jp/motofumi-fushimi"
       ]
     },
     {
       "label": "Python",
-      "summary": "GitHub上の複数リポジトリで使っている主要言語。",
-      "weight": 62,
+      "summary": "GitHubで主に使う実装言語。",
+      "weight": 6,
       "category": "tool",
       "mix": {
         "research": 1,
@@ -165,7 +233,7 @@
         "reflect": 0
       },
       "related": [
-        "MyPage",
+        "GitHub Pages",
         "annotation-app",
         "riise_webapp_checking"
       ],
@@ -175,179 +243,117 @@
     },
     {
       "label": "Jupyter Notebook",
-      "summary": "修士実験コードの記述に使われたノートブック環境。",
-      "weight": 52,
+      "summary": "修士実験コードに使っているノートブック環境。",
+      "weight": 5,
       "category": "tool",
       "mix": {
-        "research": 3,
+        "research": 2,
         "create": 1,
         "play": 0,
         "explore": 0,
         "reflect": 0
       },
       "related": [
-        "master_experience"
+        "音声修士実験",
+        "Python"
       ],
       "evidence": [
         "github.com/sumichann"
       ]
     },
     {
-      "label": "脳磁図（MEG）",
-      "summary": "脳磁図計測・逆問題・計測システム開発を軸にした研究を行っている。",
-      "weight": 88,
-      "category": "research",
+      "label": "GitHub Pagesの個人サイト",
+      "summary": "個人サイトを公開するための制作物。",
+      "weight": 5,
+      "category": "project",
       "mix": {
-        "research": 3,
-        "create": 2,
+        "research": 0,
+        "create": 3,
         "play": 0,
         "explore": 0,
-        "reflect": 0
+        "reflect": 1
       },
       "related": [
-        "磁気シールド",
-        "多重極モデル",
-        "神経活動源推定"
+        "MyPage",
+        "Python"
       ],
       "evidence": [
-        "researchmap.jp/motofumi-fushimi",
-        "https://www.t.u-tokyo.ac.jp/en/press/pr2025-09-12-001"
+        "github.com/sumichann"
       ]
     },
     {
-      "label": "MRI",
-      "summary": "MRIを用いた電磁気特性や電気特性の定量画像化に関わっている。",
-      "weight": 80,
-      "category": "research",
+      "label": "annotation-app",
+      "summary": "GitHub上の自作アプリケーション。",
+      "weight": 4,
+      "category": "project",
       "mix": {
-        "research": 3,
-        "create": 2,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "電気特性画像化",
-        "定量的再構成"
-      ],
-      "evidence": [
-        "researchmap.jp/motofumi-fushimi"
-      ]
-    },
-    {
-      "label": "磁気シールド",
-      "summary": "実験室外でもMEG計測を可能にするウェアラブル磁気シールドの開発に関わる。",
-      "weight": 76,
-      "category": "research",
-      "mix": {
-        "research": 2,
-        "create": 2,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "MEG",
-        "ウェアラブル"
-      ],
-      "evidence": [
-        "researchmap.jp/motofumi-fushimi"
-      ]
-    },
-    {
-      "label": "経頭蓋磁気刺激コイル",
-      "summary": "深く電場を届かせるTMSコイルの設計・試作に関わっている。",
-      "weight": 71,
-      "category": "research",
-      "mix": {
-        "research": 2,
+        "research": 1,
         "create": 3,
         "play": 0,
         "explore": 0,
         "reflect": 0
       },
       "related": [
-        "磁場測定",
-        "磁気特性"
+        "Python"
       ],
       "evidence": [
-        "researchmap.jp/motofumi-fushimi"
+        "github.com/sumichann"
       ]
     },
     {
-      "label": "磁場と電流源の多重極モデル",
-      "summary": "脳磁図計測システム開発の基盤となる理論的枠組みとして扱っている。",
-      "weight": 73,
+      "label": "riise_webapp_checking",
+      "summary": "GitHub上のWebアプリ関連リポジトリ。",
+      "weight": 4,
+      "category": "project",
+      "mix": {
+        "research": 1,
+        "create": 3,
+        "play": 0,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "Python"
+      ],
+      "evidence": [
+        "github.com/sumichann"
+      ]
+    },
+    {
+      "label": "音声修士実験",
+      "summary": "音声に関する修士実験のコードを書いている。",
+      "weight": 6,
       "category": "research",
       "mix": {
         "research": 3,
-        "create": 1,
+        "create": 2,
         "play": 0,
         "explore": 0,
         "reflect": 0
       },
       "related": [
-        "MEG",
-        "電流源推定"
+        "Jupyter Notebook"
       ],
       "evidence": [
-        "researchmap.jp/motofumi-fushimi"
+        "github.com/sumichann"
       ]
     },
     {
-      "label": "量子生命科学サマーセミナー2023",
-      "summary": "量子現象に基づく生体イメージングの講師として社会貢献活動に関わった。",
-      "weight": 45,
-      "category": "background",
-      "mix": {
-        "research": 1,
-        "create": 1,
-        "play": 0,
-        "explore": 0,
-        "reflect": 1
-      },
-      "related": [
-        "生体イメージング"
-      ],
-      "evidence": [
-        "researchmap.jp/motofumi-fushimi"
-      ]
-    },
-    {
-      "label": "MERCARI R4Dとの共同研究",
-      "summary": "Mercariの研究開発組織と大学の共同研究に参加している。",
-      "weight": 60,
-      "category": "background",
-      "mix": {
-        "research": 3,
-        "create": 1,
-        "play": 0,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "AIを用いた中古衣料の環境影響推定"
-      ],
-      "evidence": [
-        "https://r4d.mercari.com/en/news/250922_vxe_lcm2025_media/"
-      ]
-    },
-    {
-      "label": "YouTubeの共同チャンネル",
-      "summary": "小名木くんとの共同チャンネルで、写真や演奏記録を公開している。",
-      "weight": 58,
-      "category": "project",
+      "label": "ギター",
+      "summary": "自らギターを購入して演奏・カバー動画を投稿している。",
+      "weight": 9,
+      "category": "music",
       "mix": {
         "research": 0,
-        "create": 2,
-        "play": 2,
-        "explore": 1,
+        "create": 1,
+        "play": 3,
+        "explore": 0,
         "reflect": 1
       },
       "related": [
-        "ドラム",
-        "ギター",
-        "RADWIMPS"
+        "RADWIMPS",
+        "Uchu Conbini",
+        "五月祭"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -355,40 +361,20 @@
     },
     {
       "label": "ドラム",
-      "summary": "動画でドラム演奏やドラムカバーを継続的に公開している。",
-      "weight": 82,
+      "summary": "チャンネル名や動画タグから、ドラム演奏が中心の一つ。",
+      "weight": 8,
       "category": "music",
       "mix": {
         "research": 0,
-        "create": 2,
+        "create": 1,
         "play": 3,
         "explore": 0,
         "reflect": 0
       },
       "related": [
-        "YouTubeの共同チャンネル",
-        "QOOPIE",
-        "cetow"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "ギター",
-      "summary": "ギター購入をきっかけに、カバー演奏や学園祭ステージでの演奏をしている。",
-      "weight": 84,
-      "category": "music",
-      "mix": {
-        "research": 0,
-        "create": 2,
-        "play": 3,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
-        "RADWIMPS",
-        "Uchu Conbini"
+        "band",
+        "cover",
+        "QOOPIE"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
@@ -396,8 +382,89 @@
     },
     {
       "label": "RADWIMPS",
-      "summary": "学園祭やライブで繰り返しコピー・カバーしている中心的な楽曲アーティスト。",
-      "weight": 90,
+      "summary": "五月祭や卒業ライブでコピーしている邦ロック曲群。",
+      "weight": 8,
+      "category": "music",
+      "mix": {
+        "research": 0,
+        "create": 1,
+        "play": 3,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "君と羊と青",
+        "ハイパーベンチレイション",
+        "トレモロ",
+        "ふたりごと"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "cetow",
+      "summary": "練習やカバー動画で繰り返し演奏しているバンド。",
+      "weight": 6,
+      "category": "music",
+      "mix": {
+        "research": 0,
+        "create": 1,
+        "play": 3,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "migrant",
+        "cycle art"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "QOOPIE",
+      "summary": "ドラムカバーを上げている楽曲・アーティスト。",
+      "weight": 5,
+      "category": "music",
+      "mix": {
+        "research": 0,
+        "create": 1,
+        "play": 3,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "O.D.D",
+        "Oliver"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "Uchu Conbini",
+      "summary": "ギター購入1年記念の演奏対象として選んだバンド。",
+      "weight": 5,
+      "category": "music",
+      "mix": {
+        "research": 0,
+        "create": 1,
+        "play": 3,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "8films"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "五月祭ステージ",
+      "summary": "東京大学の学園祭でバンド演奏をしている。",
+      "weight": 7,
       "category": "music",
       "mix": {
         "research": 0,
@@ -407,28 +474,8 @@
         "reflect": 1
       },
       "related": [
-        "ギター",
-        "五月祭",
-        "コピーバンド"
-      ],
-      "evidence": [
-        "youtube.com/@sumihosdrums"
-      ]
-    },
-    {
-      "label": "五月祭ステージ",
-      "summary": "東京大学五月祭でバンド演奏を行った舞台。",
-      "weight": 83,
-      "category": "music",
-      "mix": {
-        "research": 0,
-        "create": 1,
-        "play": 3,
-        "explore": 0,
-        "reflect": 0
-      },
-      "related": [
         "RADWIMPS",
+        "ライブ",
         "コピーバンド"
       ],
       "evidence": [
@@ -437,8 +484,29 @@
     },
     {
       "label": "コピーバンド",
-      "summary": "RADWIMPSなどの楽曲をコピーして演奏する活動が目立つ。",
-      "weight": 80,
+      "summary": "既存曲を再現する演奏活動に取り組んでいる。",
+      "weight": 7,
+      "category": "music",
+      "mix": {
+        "research": 0,
+        "create": 1,
+        "play": 3,
+        "explore": 0,
+        "reflect": 0
+      },
+      "related": [
+        "cover",
+        "band",
+        "RADWIMPS"
+      ],
+      "evidence": [
+        "youtube.com/@sumihosdrums"
+      ]
+    },
+    {
+      "label": "東京大学五月祭2025",
+      "summary": "RADWIMPSコピーを披露した学園祭出演。",
+      "weight": 7,
       "category": "music",
       "mix": {
         "research": 0,
@@ -449,17 +517,57 @@
       },
       "related": [
         "五月祭ステージ",
-        "ライブ"
+        "RADWIMPS"
       ],
       "evidence": [
         "youtube.com/@sumihosdrums"
       ]
     },
     {
-      "label": "海外旅行の高揚感",
-      "summary": "移動先での小さな発見や未知への高揚を大事にしたいと書いている。",
-      "weight": 64,
-      "category": "thought",
+      "label": "中南米旅行",
+      "summary": "メキシコ・ペルーを巡る長文旅行記を書いている。",
+      "weight": 7,
+      "category": "interest",
+      "mix": {
+        "research": 0,
+        "create": 2,
+        "play": 0,
+        "explore": 3,
+        "reflect": 2
+      },
+      "related": [
+        "メキシコシティ",
+        "マチュピチュ",
+        "リマ空港"
+      ],
+      "evidence": [
+        "note.com/chenchuchu"
+      ]
+    },
+    {
+      "label": "メキシコシティ",
+      "summary": "旅行記で詳しく描写している訪問地。",
+      "weight": 5,
+      "category": "interest",
+      "mix": {
+        "research": 0,
+        "create": 1,
+        "play": 0,
+        "explore": 3,
+        "reflect": 1
+      },
+      "related": [
+        "中南米旅行"
+      ],
+      "evidence": [
+        "note.com/chenchuchu"
+      ]
+    },
+    {
+      "label": "マチュピチュ",
+      "summary": "旅行記の中で畏敬を伴って言及している場所。",
+      "weight": 5,
+      "category": "interest",
       "mix": {
         "research": 0,
         "create": 0,
@@ -469,27 +577,66 @@
       },
       "related": [
         "中南米旅行",
-        "小さな発見"
+        "ペルー"
       ],
       "evidence": [
         "note.com/chenchuchu"
       ]
     },
     {
-      "label": "中南米旅行",
-      "summary": "メキシコやペルーを巡る長文旅行記を書いている。",
-      "weight": 77,
-      "category": "project",
+      "label": "リマ空港",
+      "summary": "旅のハプニングとして記憶に残る地点。",
+      "weight": 4,
+      "category": "interest",
       "mix": {
         "research": 0,
-        "create": 3,
+        "create": 0,
         "play": 0,
         "explore": 3,
-        "reflect": 2
+        "reflect": 1
       },
       "related": [
-        "メキシコシティ",
-        "マチュピチュ"
+        "中南米旅行"
+      ],
+      "evidence": [
+        "note.com/chenchuchu"
+      ]
+    },
+    {
+      "label": "小さな発見を楽しむ姿勢",
+      "summary": "些細な発見を楽しみ、疑問にし、想像を広げたいという考え。",
+      "weight": 6,
+      "category": "thought",
+      "mix": {
+        "research": 0,
+        "create": 0,
+        "play": 0,
+        "explore": 1,
+        "reflect": 3
+      },
+      "related": [
+        "海外旅行",
+        "note"
+      ],
+      "evidence": [
+        "note.com/chenchuchu"
+      ]
+    },
+    {
+      "label": "思い出の文章化",
+      "summary": "旅の記憶を残すために書き、再構築したいという意識。",
+      "weight": 6,
+      "category": "thought",
+      "mix": {
+        "research": 0,
+        "create": 2,
+        "play": 0,
+        "explore": 0,
+        "reflect": 3
+      },
+      "related": [
+        "中南米旅行",
+        "note"
       ],
       "evidence": [
         "note.com/chenchuchu"
